@@ -7,17 +7,454 @@
   <link rel="icon" href="logo.png" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,200;1,200&display=swap" rel="stylesheet">
   <style>
-    html{font-size:17px}html,body{height:100%;margin:0;padding:0;color:#fff;font-family:'Exo 2',sans-serif;font-weight:200;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow:auto;text-transform:uppercase}*{box-sizing:border-box}.video-background{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1}.container{max-width:900px;margin:40px auto;background-color:rgba(0,0,0,.85);padding:40px;border-radius:10px;box-shadow:0 0 20px #722bff}.fortsec-highlight{color:#722bff;text-shadow:0 0 8px #722bff;font-weight:700}h1{color:#00ffe7;text-shadow:0 0 10px #00ffe7;font-size:2.5rem;margin-top:0;text-align:center;background:linear-gradient(45deg,#00ffe7,#722bff);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradientShift 3s ease infinite}p{font-size:1.2em;line-height:1.8em;margin-bottom:30px}.back-btn{display:inline-block;padding:12px 25px;background:linear-gradient(45deg,#00ffe7,#722bff);background-size:200% 200%;animation:gradientShift 3s ease infinite;color:#000;text-decoration:none;border-radius:5px;margin-bottom:30px;font-weight:700;box-shadow:0 0 15px #00ffe7;transition:all .3s ease;position:relative;overflow:hidden}.back-btn:hover{background:linear-gradient(45deg,#000,#722bff);color:#00ffe7;box-shadow:0 0 20px #00ffe7;transform:translateY(-2px)}.back-btn::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,hsla(0,0%,100%,.2),transparent);transition:left .5s}.back-btn:hover::after{left:100%}@keyframes gradientShift{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}.typing-container{overflow:hidden;white-space:nowrap;margin:0 auto;width:0;animation:typing 3.5s steps(40,end) forwards}@keyframes typing{0%{width:0}100%{width:100%}}.mission-statement{background:rgba(114,43,255,.1);padding:20px;border-left:4px solid #00ffe7;margin:30px 0;border-radius:5px}
+    :root {
+      --neon-cyan: #00f3ff;
+      --neon-pink: #ff00ff;
+      --neon-green: #00ff88;
+      --neon-purple: #9d00ff;
+      --dark-bg: #0a0a14;
+      --darker-bg: #050510;
+      --card-bg: rgba(15, 15, 35, 0.8);
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0c0;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      color: var(--text-primary);
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 200;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      overflow: auto;
+      background: var(--darker-bg);
+      position: relative;
+      text-transform: uppercase;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .cyber-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .glow-effect {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(0, 243, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .scanline {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        transparent 50%,
+        rgba(0, 243, 255, 0.03) 51%,
+        transparent 52%
+      );
+      background-size: 100% 4px;
+      pointer-events: none;
+      z-index: 2;
+      animation: scan 8s linear infinite;
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    .floating-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: var(--neon-cyan);
+      border-radius: 50%;
+      opacity: 0;
+      animation: float 15s infinite linear;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.7;
+      }
+      90% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-100px) translateX(20px);
+        opacity: 0;
+      }
+    }
+
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.4;
+      filter: brightness(0.3) contrast(1.2);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      background-color: var(--card-bg);
+      padding: 50px;
+      border-radius: 16px;
+      position: relative;
+      z-index: 10;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 243, 255, 0.1);
+    }
+
+    .fortsec-highlight {
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px var(--neon-cyan);
+      font-weight: 700;
+    }
+
+    h1 {
+      color: var(--neon-cyan);
+      text-shadow: 0 0 15px var(--neon-cyan);
+      font-size: 3rem;
+      margin: 30px 0;
+      text-align: center;
+      background: linear-gradient(45deg, var(--neon-cyan), var(--neon-pink), var(--neon-green));
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease infinite;
+      letter-spacing: 2px;
+      position: relative;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 25%;
+      width: 50%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+      border-radius: 50%;
+      filter: blur(1px);
+    }
+
+    p {
+      font-size: 1.3em;
+      line-height: 1.8em;
+      margin-bottom: 35px;
+      color: var(--text-primary);
+      text-transform: none;
+      font-weight: 300;
+    }
+
+    .back-btn {
+      display: inline-block;
+      padding: 15px 30px;
+      background: linear-gradient(45deg, var(--neon-green), var(--neon-cyan));
+      background-size: 200% 200%;
+      animation: gradientShift 3s ease infinite;
+      color: #000;
+      text-decoration: none;
+      border-radius: 10px;
+      margin-bottom: 40px;
+      font-weight: 700;
+      box-shadow: 0 0 20px var(--neon-green);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      font-size: 1.1em;
+      letter-spacing: 1px;
+    }
+
+    .back-btn:hover {
+      background: linear-gradient(45deg, #000, var(--neon-cyan));
+      color: var(--neon-green);
+      box-shadow: 0 0 25px var(--neon-green);
+      transform: translateY(-3px);
+    }
+
+    .back-btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.6s;
+    }
+
+    .back-btn:hover::after {
+      left: 100%;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0 50%; }
+    }
+
+    .typing-container {
+      overflow: hidden;
+      white-space: nowrap;
+      margin: 0 auto;
+      width: 0;
+      animation: typing 3.5s steps(40, end) forwards;
+      margin-bottom: 50px;
+    }
+
+    @keyframes typing {
+      0% { width: 0; }
+      100% { width: 100%; }
+    }
+
+    .mission-statement {
+      background: rgba(0, 243, 255, 0.1);
+      padding: 25px;
+      border-left: 4px solid var(--neon-cyan);
+      margin: 40px 0;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+    }
+
+    .mission-statement::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+      transition: left 0.7s ease;
+    }
+
+    .mission-statement:hover::before {
+      left: 100%;
+    }
+
+    .mission-statement p {
+      margin: 0;
+      font-weight: 600;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 5px var(--neon-cyan);
+    }
+
+    .section-divider {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+      margin: 50px 0;
+      border-radius: 50%;
+      filter: blur(1px);
+    }
+
+    .specializations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 40px 0;
+    }
+
+    .specialization-card {
+      background: rgba(0, 243, 255, 0.05);
+      border: 1px solid rgba(0, 243, 255, 0.3);
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .specialization-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .specialization-card:hover::before {
+      left: 100%;
+    }
+
+    .specialization-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3);
+    }
+
+    .spec-icon {
+      font-size: 2.5em;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .spec-title {
+      color: var(--neon-cyan);
+      font-size: 1.2em;
+      font-weight: 600;
+      margin-bottom: 10px;
+      text-shadow: 0 0 8px var(--neon-cyan);
+    }
+
+    .spec-desc {
+      color: var(--text-secondary);
+      font-size: 0.9em;
+      line-height: 1.5;
+      text-transform: none;
+    }
+
+    .cyber-badge {
+      display: inline-block;
+      background: rgba(0, 243, 255, 0.1);
+      padding: 8px 15px;
+      border-radius: 20px;
+      border: 1px solid var(--neon-cyan);
+      font-size: 0.9em;
+      margin: 5px;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 5px var(--neon-cyan);
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+    }
+
+    .signature {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.8em;
+      color: var(--text-secondary);
+      opacity: 0.7;
+      transition: all 0.3s ease;
+    }
+
+    .signature:hover {
+      opacity: 1;
+      color: var(--neon-cyan);
+    }
+
+    .deepseek-icon {
+      display: inline-block;
+      margin: 0 5px;
+      font-weight: bold;
+      color: var(--neon-green);
+      text-shadow: 0 0 5px var(--neon-green);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 30px;
+        margin: 20px;
+      }
+      
+      h1 {
+        font-size: 2.2rem;
+        white-space: normal;
+      }
+      
+      .typing-container {
+        white-space: normal;
+        animation: none;
+        width: 100%;
+      }
+      
+      p {
+        font-size: 1.2em;
+      }
+      
+      .back-btn {
+        padding: 12px 25px;
+        font-size: 1em;
+      }
+      
+      .specializations-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .container {
+        padding: 20px;
+      }
+      
+      p {
+        font-size: 1.1em;
+      }
+      
+      .mission-statement {
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 <body>
+
+  <div class="cyber-grid"></div>
+  <div class="glow-effect"></div>
+  <div class="scanline"></div>
+  <div class="floating-particles" id="particles-container"></div>
 
   <video autoplay muted loop class="video-background">
     <source src="002.mp4" type="video/mp4">
   </video>
 
   <div class="container">
-    <a href="javascript:window.close()" class="back-btn">← VOLTAR</a>
+    <a href="javascript:window.close()" class="back-btn">← FECHAR GUIA E VOLTAR</a>
     
     <div class="typing-container">
       <h1>SOBRE A <span class="fortsec-highlight">FORTSEC</span></h1>
@@ -29,18 +466,109 @@
 
     <p>A <span class="fortsec-highlight">FORTSEC</span> SURGIU DA NECESSIDADE DE UM NOVO PARADIGMA NA EDUCAÇÃO EM SEGURANÇA CIBERNÉTICA. FUNDADA POR PROFISSIONAIS COM EXTENSA EXPERIÊNCIA NO SETOR, NOSSA ORGANIZAÇÃO NASCEU DO COMPROMISSO COM A EXCELÊNCIA TÉCNICA E A INTEGRIDADE ÉTICA.</p>
 
+    <div class="section-divider"></div>
+
     <p>NOSSA JORNADA COMEÇOU EM 2021, QUANDO IDENTIFICAMOS UMA LACUNA SIGNIFICATIVA NO MERCADO DE FORMAÇÃO EM SEGURANÇA OFENSIVA. PERCEBEMOS QUE MUITOS CURSOS OFERECIAM CONTEÚDO SUPERFICIAL, DISTANTE DAS NECESSIDADES REAIS DO MERCADO E DOS DESAFIOS ENFRENTADOS POR PROFISSIONAIS NO CAMPO.</p>
+
+    <div class="section-divider"></div>
 
     <p>A <span class="fortsec-highlight">FORTSEC</span> FOI CRIADA COM UMA VISÃO CLARA: DESENVOLVER PROGRAMAS DE FORMAÇÃO QUE PREPAREM VERDADEIRAMENTE OS PROFISSIONAIS PARA OS DESAFIOS DO MUNDO REAL. NOSSOS MÉTODOS COMBINAM TEORIA SÓLIDA COM PRÁTICA INTENSIVA, SEMPRE MANTENDO O COMPROMISSO COM A ÉTICA E A LEGALIDADE.</p>
 
-    <p>ESPECIALIZAMO-NOS EM ÁREAS CRÍTICAS COMO BUG BOUNTY, TESTES DE INVASÃO, ANÁLISE DE VULNERABILIDADES E RESPOSTA A INCIDENTES. NOSSA ABORDAGEM É CENTRADA NA CONSTRUÇÃO DE HABILIDADES PRÁTICAS QUE PERMITAM AOS NOSSOS ALUNOS ATUAR COM CONFIANÇA E COMPETÊNCIA EM AMBIENTES PROFISSIONAIS.</p>
+    <div class="section-divider"></div>
+
+    <p>ESPECIALIZAMO-NOS EM ÁREAS CRÍTICAS COMO:</p>
+
+    <div class="specializations-grid">
+      <div class="specialization-card">
+        <div class="spec-icon">💰</div>
+        <div class="spec-title">BUG BOUNTY</div>
+        <div class="spec-desc">Caça remunerada de vulnerabilidades em sistemas e aplicações</div>
+      </div>
+      
+      <div class="specialization-card">
+        <div class="spec-icon">🔍</div>
+        <div class="spec-title">PENTESTING</div>
+        <div class="spec-desc">Testes de invasão autorizados em infraestruturas corporativas</div>
+      </div>
+      
+      <div class="specialization-card">
+        <div class="spec-icon">📡</div>
+        <div class="spec-title">WIRELESS HACKING</div>
+        <div class="spec-desc">Segurança e análise de redes sem fio e protocolos RF</div>
+      </div>
+      
+      <div class="specialization-card">
+        <div class="spec-icon">💻</div>
+        <div class="spec-title">HARDWARE HACKING</div>
+        <div class="spec-desc">Análise e exploração de dispositivos físicos e sistemas embarcados</div>
+      </div>
+      
+      <div class="specialization-card">
+        <div class="spec-icon">⚡</div>
+        <div class="spec-title">EXPLORAÇÃO DE SISTEMAS</div>
+        <div class="spec-desc">Técnicas avançadas de exploração em sistemas operacionais</div>
+      </div>
+    </div>
+
+    <p style="text-align: center; color: var(--neon-cyan); font-weight: 600;">E MUITAS OUTRAS ÁREAS DE ESPECIALIZAÇÃO AVANÇADA</p>
+
+    <div class="section-divider"></div>
 
     <p>MAIS DO QUE UMA ESCOLA, A <span class="fortsec-highlight">FORTSEC</span> É UMA COMUNIDADE DE PROFISSIONISMO E EXCELÊNCIA. ACREDITAMOS QUE O CONHECIMENTO EM SEGURANÇA CIBERNÉTICA DEVE SER ACESSÍVEL, PRÁTICO E, ACIMA DE TUDO, ÉTICO.</p>
 
+    <div class="section-divider"></div>
+
     <p>NOSSO COMPROMISSO É COM A FORMAÇÃO DE PROFISSIONAIS QUE NÃO APENAS DOMINEM AS TÉCNICAS DE SEGURANÇA OFENSIVA, MAS QUE TAMBÉM COMPREENDAm SUA RESPONSABILIDADE NA PROTEÇÃO DO CIBERESPAÇO E NA CONSTRUÇÃO DE UM AMBIENTE DIGITAL MAIS SEGURO PARA TODOS.</p>
 
+    <div class="section-divider"></div>
+
     <p>JUNTE-SE A NÓS NESTA JORNADA DE EXCELÊNCIA E PROFISSIONALISMO EM SEGURANÇA CIBERNÉTICA.</p>
+
+    <div style="text-align: center; margin-top: 50px;">
+      <span class="cyber-badge">ÉTICA</span>
+      <span class="cyber-badge">EXCELÊNCIA</span>
+      <span class="cyber-badge">INOVAÇÃO</span>
+      <span class="cyber-badge">SEGURANÇA</span>
+    </div>
+
+    <div class="signature">
+      INTERFACE APRIMORADA PELA <span class="deepseek-icon">🧠 DEEPSEEK</span>
+    </div>
   </div>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function createParticles() {
+        const container = document.getElementById('particles-container');
+        const particleCount = 20;
+        
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const left = Math.random() * 100;
+          const delay = Math.random() * 15;
+          const duration = 15 + Math.random() * 10;
+          
+          particle.style.left = `${left}%`;
+          particle.style.animationDelay = `${delay}s`;
+          particle.style.animationDuration = `${duration}s`;
+          
+          const size = 1 + Math.random() * 3;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          const colors = ['#00f3ff', '#ff00ff', '#00ff88', '#9d00ff'];
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          particle.style.background = color;
+          particle.style.boxShadow = `0 0 8px ${color}`;
+          
+          container.appendChild(particle);
+        }
+      }
+
+      createParticles();
+    });
+  </script>
 </body>
 </html>
