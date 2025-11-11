@@ -3,71 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FORTSEC PROJECT</title>
+  <title>FORTSEC OFFENSIVE SECURITY</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com;">
   <link rel="icon" href="logo.png" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,200;1,200&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:ital,wght@0,200;0,400;0,700;1,200&display=swap" rel="stylesheet">
   <style>
     :root {
       --neon-cyan: #00f3ff;
       --neon-pink: #ff00ff;
       --neon-green: #00ff88;
       --neon-purple: #9d00ff;
+      --neon-red: #ff0033;
+      --neon-orange: #ff7700;
+      --neon-yellow: #ffff00;
       --dark-bg: #0a0a14;
       --darker-bg: #050510;
-      --card-bg: rgba(15, 15, 35, 0.8);
+      --card-bg: rgba(10, 15, 30, 0.85);
       --text-primary: #ffffff;
       --text-secondary: #a0a0c0;
     }
 
-    html, body {
-      height: 100%;
+    * {
       margin: 0;
       padding: 0;
-      color: var(--text-primary);
-      font-family: 'Exo 2', sans-serif;
-      font-weight: 200;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
-      overflow: auto;
-      background: var(--darker-bg);
-      position: relative;
-      text-transform: uppercase;
-    }
-
-    * {
       box-sizing: border-box;
     }
 
-    .cyber-grid {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
+    html, body {
       height: 100%;
-      background-image: 
-        linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
-      z-index: 1;
+      color: var(--text-primary);
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 200;
+      background: #000000;
+      overflow-x: hidden;
+      text-transform: uppercase;
     }
 
-    .glow-effect {
+    body {
+      background: 
+        linear-gradient(135deg, #000000 0%, #0a0014 25%, #000a1a 50%, #001400 75%, #000000 100%),
+        radial-gradient(circle at 20% 30%, rgba(0, 243, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(157, 0, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 40% 80%, rgba(255, 0, 51, 0.05) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+
+    .grid-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       background: 
-        radial-gradient(circle at 20% 30%, rgba(0, 243, 255, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 40% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%);
+        linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
       pointer-events: none;
       z-index: 1;
     }
 
-    .scanline {
+    .scan-line {
       position: fixed;
       top: 0;
       left: 0;
@@ -75,14 +70,12 @@
       height: 100%;
       background: linear-gradient(
         to bottom,
-        transparent 50%,
-        rgba(0, 243, 255, 0.03) 51%,
-        transparent 52%
+        transparent 95%,
+        rgba(0, 243, 255, 0.1) 100%
       );
-      background-size: 100% 4px;
+      animation: scan 3s linear infinite;
       pointer-events: none;
       z-index: 2;
-      animation: scan 8s linear infinite;
     }
 
     @keyframes scan {
@@ -90,7 +83,25 @@
       100% { transform: translateY(100%); }
     }
 
-    .floating-particles {
+    @keyframes modalFadeOut {
+      from {
+        opacity: 1;
+        backdrop-filter: blur(15px);
+      }
+      to {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+      }
+    }
+
+    @keyframes modalScaleOut {
+      to {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+      }
+    }
+
+    .glow-points {
       position: fixed;
       top: 0;
       left: 0;
@@ -100,594 +111,1322 @@
       z-index: 1;
     }
 
-    .particle {
+    .glow-point {
       position: absolute;
-      width: 3px;
-      height: 3px;
-      background: var(--neon-cyan);
+      width: 200px;
+      height: 200px;
       border-radius: 50%;
-      opacity: 0;
-      animation: float 15s infinite linear;
+      filter: blur(80px);
+      opacity: 0.1;
     }
 
-    @keyframes float {
-      0% {
-        transform: translateY(100vh) translateX(0);
-        opacity: 0;
-      }
-      10% {
-        opacity: 0.7;
-      }
-      90% {
-        opacity: 0.7;
-      }
-      100% {
-        transform: translateY(-100px) translateX(20px);
-        opacity: 0;
-      }
+    .glow-1 {
+      background: var(--neon-cyan);
+      top: 20%;
+      left: 10%;
     }
 
-    .video-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -1;
-      opacity: 0.4;
-      filter: brightness(0.3) contrast(1.2);
+    .glow-2 {
+      background: var(--neon-purple);
+      top: 60%;
+      right: 10%;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      background-color: var(--card-bg);
-      padding: 40px;
-      border-radius: 16px;
+    .glow-3 {
+      background: var(--neon-red);
+      bottom: 20%;
+      left: 20%;
+    }
+
+    .cyber-terminal {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 100px 1fr 80px;
+      grid-template-areas: 
+        "header"
+        "main"
+        "footer";
       position: relative;
-      z-index: 10;
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(0, 243, 255, 0.2);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 243, 255, 0.1);
-      margin-top: 20px;
-      margin-bottom: 20px;
+      z-index: 3;
     }
 
-    .elite-title {
-      font-size: 3.5rem;
-      margin: 0 auto 30px auto;
-      background: linear-gradient(45deg, var(--neon-cyan), var(--neon-pink), var(--neon-green));
+    .cyber-header {
+      grid-area: header;
+      background: rgba(10, 15, 30, 0.9);
+      border-bottom: 2px solid;
+      border-image: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple), var(--neon-red)) 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 40px;
+      position: relative;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo-icon {
+      width: 50px;
+      height: 50px;
+      background: transparent;
+      border: 2px solid #00f3ff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      background: linear-gradient(45deg, var(--neon-cyan), var(--neon-green), var(--neon-purple));
       background-size: 200% 200%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: gradientShift 3s ease infinite;
-      text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
-      letter-spacing: 2px;
-      position: relative;
-      display: inline-block;
+      letter-spacing: 4px;
+      animation: titleGlow 4s ease-in-out infinite;
     }
 
-    .elite-title::after {
+    @keyframes titleGlow {
+      0%, 100% { text-shadow: 0 0 20px rgba(0, 243, 255, 0.5); }
+      50% { text-shadow: 0 0 30px rgba(0, 243, 255, 0.8), 0 0 40px rgba(157, 0, 255, 0.6); }
+    }
+
+    .cyber-main {
+      grid-area: main;
+      padding: 30px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .cyber-card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 30px;
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cyber-card::before {
       content: '';
       position: absolute;
-      bottom: -10px;
-      left: 10%;
-      width: 80%;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
-      border-radius: 50%;
-      filter: blur(1px);
-    }
-
-    h2 {
-      color: var(--neon-cyan);
-      text-shadow: 0 0 8px var(--neon-cyan);
-      margin-bottom: 25px;
-      font-size: 1.8rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      position: relative;
-      display: inline-block;
-      padding-bottom: 8px;
-    }
-
-    h2::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
+      top: 0;
       left: 0;
       width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, var(--neon-cyan), transparent);
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--neon-red));
+      animation: borderGlow 3s ease-in-out infinite;
     }
 
-    p {
-      font-size: 1.3em;
-      line-height: 1.8em;
-      margin-bottom: 40px;
-      color: var(--text-primary);
-      font-weight: 300;
+    @keyframes borderGlow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
     }
 
-    .img-space {
-      width: 100%;
-      height: auto;
-      max-width: 100%;
-      background-color: rgba(10, 15, 30, 0.7);
-      border: 1px solid rgba(0, 243, 255, 0.3);
-      border-radius: 12px;
-      margin-bottom: 40px;
-      box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
-      object-fit: contain;
-      transition: all 0.4s ease;
-    }
-
-    .img-space:hover {
+    .cyber-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 243, 255, 0.4);
+      box-shadow: 0 15px 40px rgba(0, 243, 255, 0.2);
       border-color: var(--neon-cyan);
     }
 
-    .btn {
-      display: inline-block;
-      padding: 18px 35px;
-      font-size: 1.2em;
-      margin: 10px 5px;
-      border: none;
-      border-radius: 10px;
-      text-decoration: none;
-      text-align: center;
-      box-shadow: 0 0 15px;
-      transition: all 0.4s ease;
-      position: relative;
-      overflow: hidden;
-      font-weight: 600;
-      letter-spacing: 1px;
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
     }
 
-    .btn-ativo {
-      background: linear-gradient(45deg, var(--neon-green), var(--neon-cyan));
-      background-size: 200% 200%;
-      animation: gradientShift 3s ease infinite;
-      color: #000;
-      box-shadow: 0 0 20px var(--neon-green);
-    }
-
-    .btn-inativo {
-      background: rgba(90, 0, 0, 0.7);
-      color: #fff;
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
-      pointer-events: none;
-      opacity: 0.7;
-      border: 1px solid rgba(255, 0, 0, 0.3);
-    }
-
-    .btn-ativo:hover {
-      background: linear-gradient(45deg, #000, var(--neon-cyan));
-      color: var(--neon-green);
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px var(--neon-green);
-    }
-
-    .btn-ativo::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.6s;
-    }
-
-    .btn-ativo:hover::after {
-      left: 100%;
-    }
-
-    .footer {
-      margin-top: 60px;
-      font-size: 1em;
-      color: #fff;
-      text-align: center;
-    }
-
-    .rights {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 1em;
-      color: var(--text-secondary);
-      position: relative;
-      z-index: 10;
-      padding: 20px;
-      background: var(--card-bg);
-      backdrop-filter: blur(15px);
-      border-top: 1px solid rgba(0, 243, 255, 0.2);
-    }
-
-    .signature {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 0.8em;
-      color: var(--text-secondary);
-      opacity: 0.7;
-      transition: all 0.3s ease;
-    }
-
-    .signature:hover {
-      opacity: 1;
+    .card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
       color: var(--neon-cyan);
     }
 
-    .deepseek-icon {
-      display: inline-block;
-      margin: 0 5px;
-      font-weight: bold;
-      color: var(--neon-green);
-      text-shadow: 0 0 5px var(--neon-green);
-    }
-
-    .menu-container {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-    }
-
-    .menu-toggle {
-      background: linear-gradient(45deg, var(--neon-cyan), var(--neon-pink));
-      background-size: 200% 200%;
-      animation: gradientShift 3s ease infinite;
-      width: 45px;
-      height: 45px;
-      border-radius: 8px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-      box-shadow: 0 0 15px var(--neon-cyan);
-      transition: all 0.3s ease;
-      flex-shrink: 0;
-    }
-
-    .menu-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 20px var(--neon-cyan);
-    }
-
-    .menu-toggle span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: #000;
-      transition: all 0.3s ease;
-    }
-
-    .menu-toggle.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-
-    .menu-toggle.active span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .menu-toggle.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(7px, -6px);
-    }
-
-    .horizontal-buttons {
-      display: flex;
-      flex-direction: row;
-      gap: 10px;
-      margin-left: 15px;
-      max-width: 0;
-      overflow: hidden;
-      transition: all 0.5s ease;
-      opacity: 0;
-    }
-
-    .menu-container.active .horizontal-buttons {
-      max-width: 500px;
-      opacity: 1;
-    }
-
-    .top-button {
-      background: linear-gradient(45deg, var(--neon-cyan), var(--neon-pink));
-      background-size: 200% 200%;
-      animation: gradientShift 3s ease infinite;
+    .card-badge {
+      background: var(--neon-red);
       color: #000;
-      padding: 10px 18px;
-      border-radius: 8px;
-      text-decoration: none;
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
       font-weight: 700;
-      font-size: 0.9em;
-      box-shadow: 0 0 10px var(--neon-cyan);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      text-align: center;
-      white-space: nowrap;
     }
 
-    .top-button:hover {
-      background: linear-gradient(45deg, #000, var(--neon-pink));
-      color: var(--neon-cyan);
+    .badge-soon {
+      background: var(--neon-purple);
+    }
+
+    .card-content {
+      color: var(--text-primary);
+      line-height: 1.6;
+      margin-bottom: 25px;
+      font-size: 1.1rem;
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .course-card {
+      background: rgba(0, 243, 255, 0.05);
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      border-radius: 12px;
+      padding: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .course-card:hover {
+      background: rgba(0, 243, 255, 0.1);
+      border-color: var(--neon-cyan);
       transform: translateY(-3px);
+    }
+
+    .course-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .course-title {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-cyan);
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+    }
+
+    .course-badge {
+      color: #000;
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .badge-gratis {
+      background: #00ff88;
+      box-shadow: 0 0 15px #00ff88;
+    }
+
+    .badge-vip {
+      background: #9d00ff;
+      box-shadow: 0 0 15px #9d00ff;
+    }
+
+    .badge-pro {
+      background: #ff0033;
+      box-shadow: 0 0 15px #ff0033;
+    }
+
+    .badge-loja {
+      background: var(--neon-cyan);
       box-shadow: 0 0 15px var(--neon-cyan);
     }
 
-    .top-button::after {
+    .course-description {
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    .certificate-preview {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .certificate-image {
+      max-width: 100%;
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .certificate-image:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 40px rgba(0, 243, 255, 0.5);
+    }
+
+    .course-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: space-between;
+    }
+
+    .cyber-button {
+      background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      color: #000;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      flex: 1;
+    }
+
+    .cyber-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 25px rgba(0, 243, 255, 0.5);
+    }
+
+    .cyber-button::after {
       content: '';
       position: absolute;
       top: 0;
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
       transition: left 0.5s;
     }
 
-    .top-button:hover::after {
+    .cyber-button:hover::after {
       left: 100%;
     }
 
-    @keyframes gradientShift {
-      0% { background-position: 0 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0 50%; }
+    .button-outline {
+      background: transparent;
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      box-shadow: none;
+      box-sizing: border-box;
+      padding: 10px 23px;
     }
 
-    .typing-container {
-      overflow: hidden;
-      white-space: nowrap;
-      margin: 0 auto;
-      width: 0;
-      animation: typing 4s steps(50, end) forwards;
-      margin-bottom: 40px;
+    .button-outline:hover {
+      background: var(--neon-cyan);
+      color: #000;
     }
 
-    @keyframes typing {
-      0% { width: 0; }
-      100% { width: 100%; }
+    .button-full-width {
+      background: transparent;
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      box-shadow: none;
+      box-sizing: border-box;
+      padding: 12px 25px;
+      width: 100%;
+      flex: 1;
     }
 
-    .section-divider {
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
-      margin: 50px 0;
-      border-radius: 50%;
-      filter: blur(1px);
+    .button-full-width:hover {
+      background: var(--neon-cyan);
+      color: #000;
     }
 
-    .buttons-container {
+    .button-unavailable {
+      background: linear-gradient(45deg, #000000, #330000, #000000);
+      border: 2px solid #ff0033;
+      color: #ff0033;
+      box-shadow: 0 0 20px rgba(255, 0, 51, 0.3);
+      cursor: not-allowed;
+      opacity: 0.9;
+    }
+
+    .button-unavailable:hover {
+      transform: none;
+      background: linear-gradient(45deg, #000000, #660000, #000000);
+      box-shadow: 0 0 25px rgba(255, 0, 51, 0.5);
+    }
+
+    .feature-list {
+      list-style: none;
+      margin: 20px 0;
+    }
+
+    .feature-item {
       display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 20px;
       align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+    }
+
+    .feature-marker {
+      width: 8px;
+      height: 8px;
+      background: var(--neon-green);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--neon-green);
+    }
+
+    .marquee-container {
+      background: rgba(0, 243, 255, 0.05);
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+      overflow: hidden;
+    }
+
+    .marquee-title {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-cyan);
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+    }
+
+    .marquee {
+      display: flex;
+      animation: marqueeScroll 30s linear infinite;
+      width: max-content;
+    }
+
+    .marquee-item {
+      min-width: 200px;
+      margin: 0 15px;
+      text-align: center;
+    }
+
+    .marquee-image {
+      width: 100%;
+      height: 120px;
+      background: rgba(0, 243, 255, 0.1);
+      border-radius: 8px;
+      border: 1px solid var(--neon-cyan);
+      margin-bottom: 10px;
+    }
+
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .cyber-footer {
+      grid-area: footer;
+      background: rgba(5, 10, 25, 0.9);
+      border-top: 1px solid rgba(0, 243, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      backdrop-filter: blur(10px);
+    }
+
+    .footer-text {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .deepseek-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--neon-green);
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .deepseek-badge:hover {
+      color: var(--neon-cyan);
+      transform: scale(1.05);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      backdrop-filter: blur(15px);
+      animation: modalFadeIn 0.3s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+      }
+      to {
+        opacity: 1;
+        backdrop-filter: blur(15px);
+      }
+    }
+
+    .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: var(--card-bg);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 800px;
+      width: 95%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 0 50px rgba(0, 243, 255, 0.5);
+      animation: modalScaleIn 0.4s ease-out 0.1s forwards;
+    }
+
+    @keyframes modalScaleIn {
+      to {
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--neon-red);
+      color: #000;
+      border: none;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .close-modal:hover {
+      background: var(--neon-cyan);
+      transform: scale(1.1);
+    }
+
+    .course-grid .course-card:nth-child(4) .certificate-preview {
+      margin: 44px 0 20px 0;
+    }
+
+    .course-grid .course-card:nth-child(4) .course-actions {
+      margin-top: -2px;
     }
 
     @media (max-width: 768px) {
-      .elite-title {
-        font-size: 2.2rem;
-        white-space: normal;
-        text-align: center;
-        line-height: 1.3;
+      .cyber-header {
+        padding: 0 20px;
       }
       
-      .typing-container {
-        white-space: normal;
-        animation: none;
+      .main-title {
+        font-size: 2rem;
+      }
+      
+      .cyber-main {
+        padding: 20px;
+      }
+      
+      .course-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .course-actions {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .cyber-button {
         width: 100%;
       }
       
-      .container {
+      .modal-content {
         padding: 25px;
-        margin: 10px;
-      }
-      
-      h2 {
-        font-size: 1.5rem;
-      }
-      
-      .btn {
-        padding: 15px 25px;
-        font-size: 1.1em;
-        display: block;
-        width: 100%;
-        margin: 10px 0;
-      }
-      
-      p {
-        font-size: 1.2em;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .elite-title {
-        font-size: 1.8rem;
-      }
-      
-      .menu-container {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      
-      .horizontal-buttons {
-        flex-direction: column;
-        margin-left: 0;
-        margin-top: 10px;
-        max-height: 0;
-        max-width: none;
-      }
-      
-      .menu-container.active .horizontal-buttons {
-        max-height: 200px;
-      }
-      
-      .top-button {
-        padding: 12px 15px;
-        font-size: 0.8em;
-      }
-      
-      p {
-        font-size: 1.1em;
+        width: 98%;
       }
     }
   </style>
 </head>
 <body>
+  <div class="grid-overlay"></div>
+  <div class="scan-line"></div>
+  <div class="glow-points">
+    <div class="glow-point glow-1"></div>
+    <div class="glow-point glow-2"></div>
+    <div class="glow-point glow-3"></div>
+  </div>
 
-  <div class="cyber-grid"></div>
-  <div class="glow-effect"></div>
-  <div class="scanline"></div>
-  <div class="floating-particles" id="particles-container"></div>
-
-  <div class="menu-container" id="menuContainer">
-    <div class="menu-toggle" id="menuToggle">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    <div class="horizontal-buttons">
-      <a href="https://wa.me/5521995929741" class="top-button" target="_blank">WHATSAPP</a>
-      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=fortsec_support@proton.me&su=Contato%20FortSec&body=Olá%20FortSec,%20gostaria%20de%20mais%20informações..." class="top-button" target="_blank">CONTATE-NOS</a>
-      <a href="sobre.html" class="top-button" target="_blank">SOBRE NÓS</a>
+  <div id="syllabusModal" class="modal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal('syllabusModal')">×</button>
+      <h3 style="color: var(--neon-cyan); margin-bottom: 25px; font-size: 1.8rem; text-align: center;">CONTEÚDO APRESENTADO</h3>
+      <div id="syllabusContent"></div>
     </div>
   </div>
 
-  <div class="container">
-    <center>
-      <div class="typing-container">
-        <h1 class="elite-title">FORTSEC OFFENSIVE SECURITY</h1>
+  <div id="aboutModal" class="modal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal('aboutModal')">×</button>
+      <h3 style="color: var(--neon-cyan); margin-bottom: 25px; font-size: 1.8rem; text-align: center;">SOBRE A FORTSEC</h3>
+      <div id="aboutContent"></div>
+    </div>
+  </div>
+
+  <div class="cyber-terminal">
+    <header class="cyber-header">
+      <div class="logo-container">
+        <div class="logo-icon">
+          <img src="logo.png" alt="FortSec" style="width: 100%; height: 100%; border-radius: 8px; object-fit: cover;">
+        </div>
+        <h1 class="main-title">FORTSEC OFFENSIVE SECURITY</h1>
       </div>
-    </center>
+    </header>
 
-    <h2>ESTÁ PRONTO PARA CRESCER?</h2>
-    <p>A NOVA GERAÇÃO DE PROFISSIONAIS DE SEGURANÇA OFENSIVA ESTÁ SURGINDO. PREPARE-SE PARA DOMINAR O CONTEÚDO MAIS ATUALIZADO E RELEVANTE EM SUA CARREIRA COMO HACKER ÉTICO!</p>
+    <main class="cyber-main">
+      <div class="cyber-card">
+        <div class="card-header">
+          <h2 class="card-title">SOBRE A FORTSEC</h2>
+          <div class="card-badge">SÉRIO</div>
+        </div>
+        <p class="card-content">
+          NA FORTSEC, NÃO LEVAMOS NADA NA BRINCADEIRA. SOMOS ESPECIALISTAS EM SEGURANÇA OFENSIVA 
+          COMPROMETIDOS COM A ÉTICA, RESPONSABILIDADE E VERDADEIRA EXCELÊNCIA TÉCNICA. 
+          NOSSA MISSÃO É FORMAR OS MELHORES PROFISSIONAIS DO MERCADO.
+        </p>
+        <div class="button-group">
+          <button class="cyber-button button-outline" onclick="openAboutModal()">SAIBA MAIS</button>
+        </div>
+      </div>
 
-    <div class="section-divider"></div>
+      <div class="cyber-card">
+        <div class="card-header">
+          <h2 class="card-title">NOSSOS CURSOS E CERTIFICAÇÕES</h2>
+          <div class="card-badge">OFICIAL</div>
+        </div>
+        <p class="card-content">
+          CADA CURSO INCLUI CERTIFICAÇÃO OFICIAL FORTSEC.<br>
+          APRENDA COM OS MELHORES E GARANTA SEU RECONHECIMENTO NO MERCADO.
+        </p>
 
-    <h2>O QUE VOCÊ SABE SOBRE SEGURANÇA OFENSIVA?</h2>
-    <img src="001.png" alt="imagem ilustrativa" class="img-space">
-    <p>A SEGURANÇA DIGITAL VAI MUITO ALÉM DO QUE OS FILMES E TUTORIAIS AMADORES SUGEREM. ESTÁ NA HORA DE QUEBRAR MITOS E APRENDER O QUE REALMENTE FAZ A DIFERENÇA NO MUNDO DO HACKING.</p>
+        <div class="course-grid">
+          <div class="course-card">
+            <div class="course-header">
+              <h3 class="course-title">INTRODUÇÃO AO WEB HACKING</h3>
+              <div class="course-badge badge-gratis">GRATUITO</div>
+            </div>
+            <p class="course-description">
+              Domine os fundamentos do hacking em aplicações web. Perfeito para iniciantes.
+            </p>
+            
+            <div class="certificate-preview">
+              <img src="1.jpg" alt="Certificado Curso Gratuito" class="certificate-image">
+            </div>
+            
+            <div class="course-actions">
+              <button class="cyber-button button-outline" onclick="openSyllabus('free')">EMENTA</button>
+              <a href="https://www.youtube.com/playlist?list=PLlbNz_vAXF14NPQ3panb94Rb6wyGCVnJF" class="cyber-button" target="_blank">ACESSAR AGORA</a>
+            </div>
+          </div>
+          
+          <div class="course-card">
+            <div class="course-header">
+              <h3 class="course-title">A BASE DO HACKING</h3>
+              <div class="course-badge badge-vip">VIP</div>
+            </div>
+            <p class="course-description">
+              Técnicas avançadas de pentesting e exploração de ambientes reais.
+            </p>
+            
+            <div class="certificate-preview">
+              <img src="2.jpg" alt="Certificado VIP" class="certificate-image">
+            </div>
+            
+            <div class="course-actions">
+              <button class="cyber-button button-outline" onclick="openSyllabus('vip')">EMENTA</button>
+              <button class="cyber-button button-unavailable">EM BREVE!</button>
+            </div>
+          </div>
 
-    <div class="section-divider"></div>
+          <div class="course-card">
+            <div class="course-header">
+              <h3 class="course-title">SEGURANÇA OFENSIVA PROFISSIONAL</h3>
+              <div class="course-badge badge-pro">PRO</div>
+            </div>
+            <p class="course-description">
+              Curso completo para formação de especialistas em segurança ofensiva.
+            </p>
+            
+            <div class="certificate-preview">
+              <img src="3.jpg" alt="Certificado Pro" class="certificate-image">
+            </div>
+            
+            <div class="course-actions">
+              <button class="cyber-button button-outline" onclick="openSyllabus('pro')">EMENTA</button>
+              <button class="cyber-button button-unavailable">EM BREVE!</button>
+            </div>
+          </div>
 
-    <h2>O QUE NEM TODOS MOSTRAM?</h2>
-    <img src="002.png" alt="imagem ilustrativa" class="img-space">
-    <p>OS VERDADEIROS ESPECIALISTAS NO MERCADO DE SEGURANÇA DIGITAL SÃO POUCOS, E ESTÃO MUITO ALÉM DE TUTORIAIS SIMPLES OU PROMESSAS VAZIAS. A VERDADEIRA HABILIDADE É CONSTRUÍDA NO ESTUDO CONTÍNUO E NA PRÁTICA INTENSIVA.</p>
+          <div class="course-card">
+            <div class="course-header">
+              <h3 class="course-title">LOJA FORTSEC</h3>
+              <div class="course-badge badge-loja">LOJA</div>
+            </div>
+            <p class="course-description">
+              Equipamentos e ferramentas profissionais para segurança ofensiva.
+            </p>
+            
+            <div class="certificate-preview">
+              <img src="4.jpg" alt="Loja FortSec" class="certificate-image">
+            </div>
+            
+            <div class="course-actions">
+              <button class="cyber-button button-full-width" onclick="openSyllabus('loja')">VER LISTA</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <div class="section-divider"></div>
+      <div class="cyber-card">
+        <div class="card-header">
+          <h2 class="card-title">FORTSEC COMMUNITY</h2>
+          <div class="card-badge badge-soon">EM BREVE</div>
+        </div>
+        <p class="card-content">
+          JUNTE-SE À COMUNIDADE MAIS EXCLUSIVA DE SEGURANÇA OFENSIVA. 
+          CONECTE-SE COM PROFISSIONAIS, COMPARTILHE CONHECIMENTO E EVOLUA JUNTO.
+        </p>
+        <ul class="feature-list">
+          <li class="feature-item">
+            <div class="feature-marker"></div>
+            <span>GRUPO EXCLUSIVO NO WHATSAPP</span>
+          </li>
+          <li class="feature-item">
+            <div class="feature-marker"></div>
+            <span>NETWORKING COM PROFISSIONAIS</span>
+          </li>
+          <li class="feature-item">
+            <div class="feature-marker"></div>
+            <span>SUPORTE DIRETO DOS INSTRUTORES</span>
+          </li>
+        </ul>
+        <div class="button-group">
+          <a href="#" class="cyber-button">JUNTAR-SE AGORA</a>
+        </div>
+      </div>
 
-    <h2>O QUE VOCÊ APRENDERÁ?</h2>
-    <img src="006.png" alt="imagem ilustrativa" class="img-space">
-    <p>NA FORTSEC, OFERECEMOS UM CONTEÚDO COMPLETO E AVANÇADO, MOSTRANDO AS MAIS PODEROSAS TÉCNICAS DE HACKING DE FORMA PRÁTICA, PARA QUE VOCÊ DOMINE TODAS AS ÁREAS ESSENCIAIS DA SEGURANÇA CIBERNÉTICA.</p>
+      <div class="cyber-card">
+        <div class="card-header">
+          <h2 class="card-title">CONTATE-NOS</h2>
+          <div class="card-badge">24/7</div>
+        </div>
+        <p class="card-content">
+          PRECISA DE AJUDA? TEM DÚVIDAS? QUER SABER MAIS SOBRE NOSSOS SERVIÇOS?
+          ENTRE EM CONTATO CONOSCO - ESTAMOS SEMPRE DISPONÍVEIS.
+        </p>
+        <div class="button-group">
+          <a href="https://wa.me/5521995929741" class="cyber-button" target="_blank">WHATSAPP</a>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=fortsec_support@proton.me&su=Contato%20FortSec&body=Olá%20FortSec,%20gostaria%20de%20mais%20informações..." class="cyber-button button-outline" target="_blank">E-MAIL</a>
+        </div>
+      </div>
 
-    <div class="section-divider"></div>
+      <div class="cyber-card">
+        <div class="card-header">
+          <h2 class="card-title">ONDE ENCONTRAMOS FALHAS</h2>
+          <div class="card-badge">CASOS REAIS</div>
+        </div>
+        <p class="card-content">
+          CONHEÇA ALGUNS CAMPOS ONDE A FORTSEC TRABALHOU.
+        </p>
+        
+        <div class="marquee-container">
+          <div class="marquee-title">NOSSAS DESCOBERTAS</div>
+          <div class="marquee">
+            <div class="marquee-item">
+              <img src="gpt.png" alt="CHATGPT" class="marquee-image">
+              <div>CHATGPT</div>
+            </div>
+            <div class="marquee-item">
+              <img src="abba.png" alt="ABBA CURSOS" class="marquee-image">
+              <div>ABBA CURSOS</div>
+            </div>
+            <div class="marquee-item">
+              <img src="microsoft.png" alt="MICROSOFT" class="marquee-image">
+              <div>MICROSOFT</div>
+            </div>
+            <div class="marquee-item">
+              <img src="pref.png" alt="PREF. BOQUEIRÃO" class="marquee-image">
+              <div>PREF. BOQUEIRÃO</div>
+            </div>
+            <div class="marquee-item">
+              <img src="Slogo.png" alt="SMASHING LOGO" class="marquee-image">
+              <div>SMASHING LOGO</div>
+            </div>
+            <div class="marquee-item">
+              <img src="meta.png" alt="META" class="marquee-image">
+              <div>META</div>
+            </div>
+            <div class="marquee-item">
+              <img src="russia.png" alt="SIST. NUCLEAR DA RUSSIA" class="marquee-image">
+              <div>SIST. NUCLEAR DA RUSSIA</div>
+            </div>
+            <div class="marquee-item">
+              <img src="gpt.png" alt="CHATGPT" class="marquee-image">
+              <div>CHATGPT</div>
+            </div>
+            <div class="marquee-item">
+              <img src="abba.png" alt="ABBA CURSOS" class="marquee-image">
+              <div>ABBA CURSOS</div>
+            </div>
+            <div class="marquee-item">
+              <img src="microsoft.png" alt="MICROSOFT" class="marquee-image">
+              <div>MICROSOFT</div>
+            </div>
+            <div class="marquee-item">
+              <img src="pref.png" alt="PREF. BOQUEIRÃO" class="marquee-image">
+              <div>PREF. BOQUEIRÃO</div>
+            </div>
+            <div class="marquee-item">
+              <img src="Slogo.png" alt="SMASHING LOGO" class="marquee-image">
+              <div>SMASHING LOGO</div>
+            </div>
+            <div class="marquee-item">
+              <img src="meta.png" alt="META" class="marquee-image">
+              <div>META</div>
+            </div>
+            <div class="marquee-item">
+              <img src="russia.png" alt="SIST. NUCLEAR DA RUSSIA" class="marquee-image">
+              <div>SIST. NUCLEAR DA RUSSIA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
 
-    <h2>PARA QUEM NÃO É ESSE PROJETO?</h2>
-    <img src="005.png" alt="imagem ilustrativa" class="img-space">
-    <p>ESTE PROJETO NÃO É PARA QUEM BUSCA RESULTADOS FÁCEIS OU ATALHOS. É PARA AQUELES QUE ENTENDEM A IMPORTÂNCIA DO ESFORÇO CONTÍNUO E DEDICAÇÃO.</p>
-
-    <div class="section-divider"></div>
-
-    <h2>PARA QUEM É ESTE PROJETO?</h2>
-    <img src="007.png" alt="imagem ilustrativa" class="img-space">
-    <p>ESTE PROJETO É PARA QUEM ESTÁ DISPOSTO A IR ALÉM DOS LIMITES, QUEM BUSCA APRENDER E SE APROFUNDAR DE FORMA VERDADEIRA NO UNIVERSO DA SEGURANÇA OFENSIVA.</p>
-
-    <div class="section-divider"></div>
-
-    <h2>VALORES DA FORTSEC</h2>
-    <img src="004.png" alt="imagem ilustrativa" class="img-space">
-    <p>NÃO ESTAMOS ENVOLVIDOS EM ASSUNTOS POLÍTICOS OU CRIMINOSOS. NOSSA MISSÃO É APOIAR A ÉTICA, A RESPONSABILIDADE E O VERDADEIRO PROFISSIONALISMO DA SEGURANÇA CIBERNÉTICA.<br>
-    A FORTSEC NÃO OFERECE NENHUM RECURSO OU AÇÃO EM CONTRIBUIÇÃO COM O ESTADO, NENHUM DOS NOSSOS COLABORADORES SOFRERÁ COM DECLARAÇÃO DE IMPOSTOS ATRAVÉS DOS SEUS SERVIÇOS PRESTADOS.</p>
-
-    <div class="section-divider"></div>
-
-    <h2>INSPIRAÇÃO?</h2>
-    <img src="003.png" alt="imagem ilustrativa" class="img-space">
-    <p>O HOMEM QUE MOVE UMA MONTANHA COMEÇA CARREGANDO PEQUENAS PEDRAS. - CONFUCIUS<br>
-      A MENTIRA PRECISA DE PLATEIA. A VERDADE, DE CORAGEM! - SOLDADO DESCONHECIDO<br>
-    A EDUCAÇÃO É A CHAVE PARA O FUTURO. SEM ELA, NÃO HÁ PROGRESSO POSSÍVEL. - DR. ENÉAS CARNEIRO</p>
-    
-    <div class="section-divider"></div>
-    
-    <h2>CONHEÇA MAIS!</h2>
-    
-    <div class="buttons-container">
-      <a href="https://www.youtube.com/playlist?list=PLlbNz_vAXF14NPQ3panb94Rb6wyGCVnJF" class="btn btn-ativo" target="_blank">FORTSEC PROJECT – INTRODUÇÃO AO WEB HACKING (GRÁTIS)</a>
-      <a class="btn btn-inativo" href="#">EM BREVE: CURSOS EXCLUSIVOS</a>
-    </div>
-
-    <div class="footer"></div>
+    <footer class="cyber-footer">
+      <div class="footer-text">
+        © 2024 FORTSEC OFFENSIVE SECURITY. TODOS OS DIREITOS RESERVADOS.
+      </div>
+      <div class="deepseek-badge" onclick="openDeepSeekChat()">
+        <span>POWERED BY</span>
+        <span style="color: var(--neon-cyan)">DEEPSEEK</span>
+      </div>
+    </footer>
   </div>
-
-  <div class="rights">
-    <p>OS DIREITOS AUTORAIS SÃO RESERVADOS. O USO DO CONTEÚDO PARA FINS ILEGAIS É PROIBIDO.</p>
-    <p>© 2025 FORTSEC. TODOS OS DIREITOS RESERVADOS.</p>
-    <div class="signature">
-      INTERFACE APRIMORADA PELA <span class="deepseek-icon">🧠 DEEPSEEK</span>
-    </div>
-  </div>
-
-  <video autoplay muted loop class="video-background">
-    <source src="002.mp4" type="video/mp4">
-  </video>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const menuToggle = document.getElementById('menuToggle');
-      const menuContainer = document.getElementById('menuContainer');
-
-      menuToggle.addEventListener('click', function() {
-        menuContainer.classList.toggle('active');
-        menuToggle.classList.toggle('active');
+      const soonButtons = document.querySelectorAll('.button-soon, .cyber-button[href="#"]');
+      soonButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          if (this.getAttribute('href') === '#') {
+            e.preventDefault();
+          }
+          alert('🚀 EM BREVE! Esta funcionalidade estará disponível em breve. Fique ligado!');
+        });
       });
-
-      document.addEventListener('click', function(event) {
-        if (!menuContainer.contains(event.target)) {
-          menuContainer.classList.remove('active');
-          menuToggle.classList.remove('active');
-        }
-      });
-
-      function createParticles() {
-        const container = document.getElementById('particles-container');
-        const particleCount = 25;
-        
-        for (let i = 0; i < particleCount; i++) {
-          const particle = document.createElement('div');
-          particle.classList.add('particle');
-          
-          const left = Math.random() * 100;
-          const delay = Math.random() * 15;
-          const duration = 15 + Math.random() * 10;
-          
-          particle.style.left = `${left}%`;
-          particle.style.animationDelay = `${delay}s`;
-          particle.style.animationDuration = `${duration}s`;
-          
-          const size = 1 + Math.random() * 3;
-          particle.style.width = `${size}px`;
-          particle.style.height = `${size}px`;
-          
-          const colors = ['#00f3ff', '#ff00ff', '#00ff88', '#9d00ff'];
-          const color = colors[Math.floor(Math.random() * colors.length)];
-          particle.style.background = color;
-          particle.style.boxShadow = `0 0 8px ${color}`;
-          
-          container.appendChild(particle);
-        }
-      }
-
-      createParticles();
     });
+
+    function openSyllabus(courseType) {
+      const modal = document.getElementById('syllabusModal');
+      const content = document.getElementById('syllabusContent');
+      
+      let syllabusContent = '';
+      
+      switch(courseType) {
+        case 'free':
+          syllabusContent = `
+            <div style="background: rgba(0,243,255,0.1); padding: 20px; border-radius: 10px; border-left: 4px solid var(--neon-green);">
+              <h4 style="color: var(--neon-green); margin-bottom: 20px; font-size: 1.4rem;">🎯 INTRODUÇÃO AO WEB HACKING</h4>
+              <ul style="list-style: none; padding-left: 0;">
+                <li style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">✅ <strong>Instalação do ambiente</strong></li>
+                <li style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">✅ <strong>Conhecendo o Kali Linux</strong></li>
+                <li style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">✅ <strong>Análise de redes e portas</strong></li>
+                <li style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">✅ <strong>Análise e enumeração de diretórios</strong></li>
+                <li style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">✅ <strong>Python para hacking</strong></li>
+                <li style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">✅ <strong>Vulnerabilidades conhecidas</strong></li>
+                <li style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">✅ <strong>Web shell e shell reversa</strong></li>
+                <li style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">✅ <strong>Conclusão do curso</strong></li>
+              </ul>
+              <div style="margin-top: 20px; padding: 15px; background: rgba(0,255,136,0.1); border-radius: 8px; border: 1px solid var(--neon-green);">
+                <strong>🎓 CERTIFICAÇÃO INCLUÍDA:</strong> Introdução ao Web Hacking
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'vip':
+          syllabusContent = `
+            <div style="background: rgba(157,0,255,0.1); padding: 20px; border-radius: 10px; border-left: 4px solid var(--neon-purple);">
+              <h4 style="color: var(--neon-purple); margin-bottom: 20px; font-size: 1.4rem;">🛡️ A BASE DO HACKING - VIP</h4>
+              <ul style="list-style: none; padding-left: 0;">
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Apresentação</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Download e instalação do Parrot OS</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Atualização e correção</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Conhecendo comandos e funções</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Introdução a extensões web</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Informações e serviços</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Vulnerabilidades por extensões</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Vulnerabilidades por exploração</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Enumeração de diretórios</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Enumeração de subdomínios</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Introdução ao bruteforce</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Bruteforce na prática</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Estouro de senhas com John</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Ferramentas para pentest</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Scan profundo de vulnerabilidades</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Webshells</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Shell reversa</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Port forwarding</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Servidores e containers</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Image poisoning</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Pivoting</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Privilege escalation</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.15); border-radius: 8px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Bug bounty real</strong></li>
+                <li style="margin-bottom: 8px; padding: 10px; background: rgba(157,0,255,0.2); border-radius: 8px; border: 1px solid rgba(157,0,255,0.4);">✅ <strong>Conclusão do curso</strong></li>
+              </ul>
+              <div style="margin-top: 20px; padding: 15px; background: rgba(157,0,255,0.1); border-radius: 8px; border: 1px solid var(--neon-purple);">
+                <strong>🎓 CERTIFICAÇÃO INCLUÍDA:</strong> A Base do Hacking
+              </div>
+            </div>
+          `;
+          break;
+          
+        case 'pro':
+          syllabusContent = `
+            <div style="background: rgba(255,0,51,0.1); padding: 20px; border-radius: 10px; border-left: 4px solid var(--neon-red);">
+              <h4 style="color: var(--neon-red); margin-bottom: 20px; font-size: 1.4rem;">🔥 SEGURANÇA OFENSIVA PROFISSIONAL</h4>
+              
+              <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 25px; padding: 12px; background: rgba(255,0,51,0.05); border-radius: 8px;">
+                <button onclick="switchProTab('fundamentos')" style="padding: 8px 16px; background: var(--neon-red); border: none; border-radius: 6px; color: white; cursor: pointer; font-family: 'Exo 2', sans-serif; font-size: 0.9rem;">M0-4: FUNDAMENTOS</button>
+                <button onclick="switchProTab('ofensiva')" style="padding: 8px 16px; background: rgba(255,0,51,0.2); border: 1px solid var(--neon-red); border-radius: 6px; color: var(--neon-red); cursor: pointer; font-family: 'Exo 2', sans-serif; font-size: 0.9rem;">M5-8: OFENSIVA</button>
+                <button onclick="switchProTab('avancado')" style="padding: 8px 16px; background: rgba(255,0,51,0.2); border: 1px solid var(--neon-red); border-radius: 6px; color: var(--neon-red); cursor: pointer; font-family: 'Exo 2', sans-serif; font-size: 0.9rem;">M9-12: AVANÇADO</button>
+                <button onclick="switchProTab('final')" style="padding: 8px 16px; background: rgba(255,0,51,0.2); border: 1px solid var(--neon-red); border-radius: 6px; color: var(--neon-red); cursor: pointer; font-family: 'Exo 2', sans-serif; font-size: 0.9rem;">M13-14: PRÁTICA</button>
+              </div>
+
+              <div id="pro-tab-fundamentos">
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">🎯 MÓDULO 0 — INTRODUÇÃO E FUNDAMENTOS</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅<strong> Por que a FortSec? (visão, diferenciais do curso)</strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> O que é um hacker? </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Tipos de hacker </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Todos podem ser hackers? Perfil e mindset </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Leis sobre hacking — conduta entre profissional e cliente </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Fontes seguras do hacking </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Fontes golpistas do hacking </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Metodologia de ensino e expectativas </strong></li>
+                  </ul>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">💻 MÓDULO 1 — AMBIENTE DE TRABALHO E INSTALAÇÃO</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Distribuições Linux — panorama </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Qual Linux usar? (recomendação por caso de uso) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Instalação virtualizada — VMware </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Instalação virtualizada — VirtualBox </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Instalação em VPS (configuração inicial) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> WSL (Windows Subsystem for Linux) — instalação e uso </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Acesso via SSH (cliente e servidor) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Raspberry Pi como laboratório — instalação e uso via SSH </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Katoolin3 — configurar ambiente hacker em qualquer Linux </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Conhecendo o terminal e organização do workspace </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Sublime Text — configuração e uso </strong></li>
+                  </ul>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">⚡ MÓDULO 2 — FUNDAMENTOS DE PROGRAMAÇÃO PARA OFENSIVA</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Bash scripting </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Python — fundamentos </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Python — virtualenv e ambientes </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Python — bs4 (web scraping) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Python — APIs e automação </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Python — AI programming (integração e uso) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> JavaScript — fundamentos </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> JavaScript / Node — desenvolvimento de bots e extensões </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> PHP — fundamentos aplicados à web </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> C — fundamentos para exploitation </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> C# — fundamentos aplicados a Windows/desktop </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Golang — criar ferramentas e binários rápidos </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Interpretadores vs compiladores </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Expressões regulares </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Adição de "código inútil" (ofuscação deliberada) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Comunicação DuckyScript + apostila </strong></li>
+                  </ul>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">🔧 MÓDULO 3 — ENGENHARIA DE SOFTWARE SEGURA E TOOLING</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Criação de ferramentas do zero </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Criar interface (UI) via programação </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Boas práticas para programação sem abertura para falhas </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> APIs e consumo seguro de endpoints </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Automação HID (Human Interface Device) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> msfvenom e Veil framework (geração de payloads) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Insomnia — teste de APIs </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Encoders, hashes & salts </strong></li>
+                  </ul>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">🔍 MÓDULO 4 — RECONHECIMENTO E COLETA DE INFORMAÇÃO</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Reconhecimento ativo vs passivo </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Google hacking (queries avançadas) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Ferramentas de pesquisa e fontes públicas </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Shodan — busca por dispositivos e serviços expostos </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Sites úteis para hackers (listas e uso) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Extensões e plugins úteis </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Enumeração de diretórios (dirb/wordlists) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Enumeração de subdomínios (ferramentas e técnicas) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Verificação de endpoints </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Enumeração de usuários WordPress</strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Enumeração de usuários SSH </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Detecção de WAFs </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Verificação de plugins vulneráveis </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> O que são as CVEs? </strong></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div id="pro-tab-ofensiva" style="display: none;">
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">🌐 MÓDULO 5 — WEB APPLICATION SECURITY</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> OWASP Top 10 (material e exercícios) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Laboratório DVWA (prática) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Laboratório Mutilidae (prática) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Laboratório OWASP Juice Shop (prática) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Webshells e reverse shells </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Uploads inseguros e manipulação de HTML inseguro </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Fuzzing em aplicações web </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Ferramentas: Burp Suite, ZAP, PortSwigger labs </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Laboratórios AttackDefense e PortSwigger (prática guiada) </strong></li>
+                  </ul>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">📡 MÓDULO 6 — REDE, PROTOCOLOS E SNIFFING</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Conceitos de redes e protocolos </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Análise de status de redes </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Envio e recebimento de dados de rede </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Requisições web (HTTP/HTTPS) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Enumeração de DNS </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Man-in-the-middle (teoria e prática controlada) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Wireshark — captura e análise de tráfego </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Netcat — uso prático </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> ngrok — tunelamento </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Portmap — uso prático </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> bore — uso prático </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Ataques sincronizados e captura em larga escala </strong></li>
+                  </ul>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">💥 MÓDULO 7 — EXPLORAÇÃO, PÓS-EXPLORAÇÃO E ESCALONAMENTO</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Webshells e shells reversos (prática) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Cronjobs — descoberta e abuso </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Escalando privilégios em Linux (SUDO / SUID / SGID) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Buffer overflow — conceitos e exercícios práticos </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Metasploit — framework e módulos </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Exploração EternalBlue (simulada em ambiente controlado) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Active Directory — conceitos e exploração básica </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Escalando privilégios em Windows </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> PowerShell ofensivo e evasão </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Técnicas de injeção invisível para reverse shells </strong></li>
+                  </ul>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">🦠 MÓDULO 8 — MALWARE, PERSISTÊNCIA E OPERAÇÕES OFENSIVAS</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Criação de payloads (macro, binários, Android) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Criação de malware — teoria e prática ética em lab controlado </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Persistência de malware (técnicas) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Criptografia aplicada a malware (proteção/ofuscação) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Ofuscação e encoders </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Binder e fusão de arquivos </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Esteganografia — técnica e aplicações </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Botnet — conceito e simulação controlada </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> DDoS — teoria e mitigação </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> DDoS por botnet — estudo de caso (teoria) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Indução do alvo para entrega (engenharia social para entrega) </strong></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div id="pro-tab-avancado" style="display: none;">
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">📱 MÓDULO 9 — MOBILE, HARDWARE E WIRELESS</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Android hacking — ambiente e ferramentas </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Atacando com Android — técnicas práticas </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Criação de payloads para mobile </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Hardware hacking — conceitos e ferramentas </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> eletrônica para hacking </strong></li>
+
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Manipulação de ondas de comunicação (RF basics) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Wireless hacking — ataques práticos (Wi-Fi) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Phisical hacking — segurança física e bypasses </strong></li>
+                  </ul>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">🔐 MÓDULO 10 — ENGENHARIA REVERSA E CRIPTOGRAFIA</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Engenharia reversa de binários (ferramentas) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Análise de vulnerabilidades em binários </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Zeroday — definição e implicações </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Criptografia aplicada: teoria e prática </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Metadata poisoning e análise de metadados </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Análise e reconhecimento de chaves privadas </strong></li>
+                  </ul>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">👻 MÓDULO 11 — OPSEC, ANONIMATO E EVASÃO</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Tor — uso e limitações </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Tails e Whonix — aplicações para anonimato </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Anonimato em pesquisa (técnicas de proteção) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Anonimato em exploração (fluxos seguros) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Técnicas de evasão e ofuscação operacional </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Mail spoofing e prevenção </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Phishing — técnicas e defesa </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Cuidados essenciais de OpSec </strong></li>
+                  </ul>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">⚙️ MÓDULO 12 — FERRAMENTAS ESSENCIAIS E AUTOMAÇÃO AVANÇADA</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Burp Suite — uso avançado </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Aplicações e ferramentas em GO </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Metasploit e msfvenom — automação de payloads </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Desenvolvimento de extensões e integração com AI </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Criação de frameworks pessoais de pentest </strong></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div id="pro-tab-final" style="display: none;">
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">🏆 MÓDULO 13 — PRÁTICA INTENSIVA E CTFS</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Prática em CTFs (diversos níveis) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Labs: PortSwigger, AttackDefense, Bancocn, Me Owna </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Simulações completas (recon → exploração → pós) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Pivoting em redes internas e persistence exercises </strong></li>
+                  </ul>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">📊 MÓDULO 14 — RELATÓRIOS, ÉTICA PROFISSIONAL E MERCADO</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Como escrever relatórios técnicos </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Como escrever relatórios executivos (sumário para cliente) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Contratos: interno, externo e misto (modelos e riscos) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Métodos de pagamento (legais e off-grid) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Carteira fria — uso e segurança </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Bug bounty — como ganhar dinheiro com o conhecimento </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Certificação final e selo "Curso Definitivo" </strong></li>
+                  </ul>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                  <h5 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.2rem;">🚀 CONTEÚDO EXTRA — TEMAS AVANÇADOS / DISCUSSÃO DE MERCADO</h5>
+                  <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Personalize seu ambiente como quiser </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Técnicas comerciais para converter clientes despreparados </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Falhas necessárias — quando e por que não testar publicamente </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Mercado negro — riscos e limites éticos </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Dupla identidade — prós e contras legais/operacionais </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Quais contratos aceitar e gestão de risco </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Ransomwares e bombas cibernéticas — teoria e implicações legais </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Hacktivismo — análise ética e legal </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Roubo de números de telefone e riscos (SIM swap) </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Perigos das operadoras e vulnerabilidades em chaves Pix </strong></li>
+                    <li style="margin-bottom: 6px; padding: 6px; background: rgba(255,0,51,0.15); border-radius: 6px; border: 1px solid rgba(255,0,51,0.3);">✅ <strong> Cuidados essenciais para todos </strong></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div style="margin-top: 20px; padding: 15px; background: rgba(255,0,51,0.1); border-radius: 8px; border: 1px solid var(--neon-red);">
+                <strong>🎓 CERTIFICAÇÃO INCLUÍDA:</strong> FortSec Offensive Security Professional - Curso Definitivo
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'loja':
+          syllabusContent = `
+            <div style="background: rgba(0,243,255,0.1); padding: 20px; border-radius: 10px; border-left: 4px solid var(--neon-cyan);">
+              <h4 style="color: var(--neon-cyan); margin-bottom: 20px; font-size: 1.4rem;">🛒 LOJA FORTSEC</h4>
+              <ul style="list-style: none; padding-left: 0;">
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker"></div>
+                  <span><strong>BLUETOOTH JAMMER (2.4 GHZ)</strong></span>
+                </li>
+              </ul>
+              <div style="margin-top: 20px; padding: 15px; background: rgba(0,243,255,0.1); border-radius: 8px; border: 1px solid var(--neon-cyan); text-align: center;">
+                <a href="https://api.whatsapp.com/send/?phone=5521995929741&text=Estou+interessado+em+conhecer+os+aparelhos+da+FortSec&type=phone_number&app_absent=0" class="cyber-button" target="_blank" style="text-decoration: none; display: inline-block;">COMPRAR NO WHATSAPP</a>
+              </div>
+            </div>
+          `;
+          break;
+      }
+      
+      content.innerHTML = syllabusContent;
+      modal.style.display = 'block';
+    }
+
+    function switchProTab(tabName) {
+      const tabs = document.querySelectorAll('[id^="pro-tab-"]');
+      tabs.forEach(tab => {
+        tab.style.display = 'none';
+      });
+      document.getElementById('pro-tab-' + tabName).style.display = 'block';
+      
+      const buttons = document.querySelectorAll('#syllabusModal button');
+      buttons.forEach(btn => {
+        if (btn.getAttribute('onclick') === `switchProTab('${tabName}')`) {
+          btn.style.background = 'var(--neon-red)';
+          btn.style.color = 'white';
+        } else {
+          btn.style.background = 'rgba(255,0,51,0.2)';
+          btn.style.color = 'var(--neon-red)';
+        }
+      });
+    }
+
+    function openAboutModal() {
+      const modal = document.getElementById('aboutModal');
+      const content = document.getElementById('aboutContent');
+      
+      content.innerHTML = `
+        <div style="line-height: 1.7; font-size: 1.1rem; max-height: 70vh; overflow-y: auto; padding-right: 10px;">
+        
+          <h3 style="color: var(--neon-cyan); text-align: center; margin-bottom: 30px; font-size: 2rem;">A HISTÓRIA DA FORTSEC</h3>
+          
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+          
+            <div style="background: rgba(0,243,255,0.1); padding: 25px; border-radius: 12px; border: 1px solid rgba(0,243,255,0.3); border-left: 4px solid var(--neon-cyan);">
+              <h4 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 1.4rem;">🦅 AS ORIGENS</h4>
+              <p style="margin-bottom: 0; font-size: 1.1rem;">
+                A FORTSEC NASCEU DA VISÃO DE UM GRUPO DE ESPECIALISTAS EM SEGURANÇA OFENSIVA 
+                QUE IDENTIFICOU UMA LACUNA CRÍTICA NO MERCADO: A FALTA DE FORMAÇÃO PRÁTICA 
+                E ÉTICA PARA NOVOS PROFISSIONAIS DE CYBERSECURITY.
+              </p>
+            </div>
+
+            <div style="background: rgba(157,0,255,0.1); padding: 25px; border-radius: 12px; border: 1px solid rgba(157,0,255,0.3); border-left: 4px solid var(--neon-purple);">
+              <h4 style="color: var(--neon-purple); margin-bottom: 15px; font-size: 1.4rem;">🎯 MISSÃO INICIAL</h4>
+              <p style="margin-bottom: 0; font-size: 1.1rem;">
+                NOSSA PRIMEIRA MISSÃO FOI CLARA: CRIAR UMA PLATAFORMA ONDE ASPIRANTES A HACKERS 
+                ÉTICOS PUDESSEM APRENDER TÉCNICAS AVANÇADAS EM UM AMBIENTE CONTROLADO E ÉTICO, 
+                SEM COMPROMETER SISTEMAS REAIS OU AGIR FORA DA LEI.
+              </p>
+            </div>
+
+            <div style="background: rgba(0,255,136,0.1); padding: 25px; border-radius: 12px; border: 1px solid rgba(0,255,136,0.3); border-left: 4px solid var(--neon-green);">
+              <h4 style="color: var(--neon-green); margin-bottom: 15px; font-size: 1.4rem;">🚀 EXPANSÃO E CRESCIMENTO</h4>
+              <p style="margin-bottom: 0; font-size: 1.1rem;">
+                EM POUCO TEMPO, A FORTSEC SE TORNOU REFERÊNCIA NA COMUNIDADE DE SEGURANÇA 
+                BRASILEIRA. NOSSOS MÉTODOS PRÁTICOS E ABORDAGEM REALISTA ATRAÍRAM PROFISSIONAIS 
+                DE TODO O PAÍS, FORMANDO UMA COMUNIDADE DE MAIS DE 5.000 ESPECIALISTAS.
+              </p>
+            </div>
+
+            <div style="background: rgba(255,0,51,0.1); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,0,51,0.3); border-left: 4px solid var(--neon-red);">
+              <h4 style="color: var(--neon-red); margin-bottom: 15px; font-size: 1.4rem;">🏆 CONQUISTAS E RECONHECIMENTO</h4>
+              <p style="margin-bottom: 0; font-size: 1.1rem;">
+                AO LONDO DOS ANOS, A FORTSEC PARTICIPOU DE NUMEROSOS PROJETOS DE SEGURANÇA 
+                CRÍTICA, COLABOROU COM INSTITUIÇÕES GOVERNAMENTAIS E PRIVADAS, E SE ESTABELECEU 
+                COMO UMA DAS PRINCIPAIS REFERÊNCIAS EM FORMAÇÃO OFENSIVA NO BRASIL.
+              </p>
+            </div>
+
+            <div style="background: rgba(255,255,0,0.1); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,0,0.3); border-left: 4px solid var(--neon-yellow);">
+              <h4 style="color: var(--neon-yellow); margin-bottom: 15px; font-size: 1.4rem;">⭐ VALORES INEGOCIÁVEIS</h4>
+              <p style="margin-bottom: 0; font-size: 1.1rem;">
+                <strong>ÉTICA:</strong> TODAS AS AÇÕES SÃO GUIADAS POR PRINCÍPIOS ÉTICOS<br>
+                <strong>EXCELÊNCIA:</strong> BUSCA CONSTANTE PELA PERFEIÇÃO TÉCNICA<br>
+                <strong>EDUCAÇÃO:</strong> COMPROMISSO COM A FORMAÇÃO OFENSIVA<br>
+                <strong>INOVAÇÃO:</strong> SEMPRE À FRENTE DAS ULTIMAS TENDÊNCIAS
+              </p>
+            </div>
+
+            <div style="background: rgba(255,128,0,0.1); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,128,0,0.3); border-left: 4px solid var(--neon-orange);">
+              <h4 style="color: var(--neon-orange); margin-bottom: 15px; font-size: 1.4rem;">🔮 VISÃO DO FUTURO</h4>
+              <p style="margin-bottom: 0; font-size: 1.1rem;">
+                A FORTSEC CONTINUA SUA JORNADA RUMO À EXCELÊNCIA, BUSCANDO SEMPRE INOVAR 
+                EM METODOLOGIAS DE ENSINO E EXPANDIR SEU ALCANCE PARA FORMAR A PRÓXIMA 
+                GERAÇÃO DE LÍDERES EM SEGURANÇA CIBERNÉTICA EM TODO O MUNDO.
+              </p>
+            </div>
+
+          </div>
+
+          <div style="background: rgba(0,243,255,0.1); padding: 25px; border-radius: 12px; margin-top: 25px; border: 1px solid rgba(0,243,255,0.3); text-align: center;">
+            <p style="font-style: italic; font-size: 1.2rem; margin-bottom: 0; color: var(--neon-cyan);">
+              "DO SONHO DE POUCOS À REFERÊNCIA DE MUITOS - A JORNADA FORTSEC CONTINUA"
+            </p>
+          </div>
+
+        </div>
+      `;
+      
+      modal.style.display = 'block';
+    }
+
+    function openDeepSeekChat() {
+      window.open('https://chat.deepseek.com', '_blank');
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      const modalContent = modal.querySelector('.modal-content');
+      
+      modalContent.style.animation = 'modalScaleOut 0.3s ease-in forwards';
+      modal.style.animation = 'modalFadeOut 0.3s ease-in forwards';
+      
+      setTimeout(() => {
+        modal.style.display = 'none';
+        modalContent.style.animation = '';
+        modal.style.animation = '';
+      }, 300);
+    }
+
+    window.onclick = function(event) {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    }
   </script>
 </body>
 </html>
