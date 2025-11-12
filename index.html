@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FORTSEC OFFENSIVE SECURITY</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com;">
   <link rel="icon" href="https://i.ibb.co/BHW56HBb/profile.png" type="image/x-icon">
@@ -662,6 +662,86 @@
         width: 98%;
       }
     }
+    @media (max-width: 480px) {
+      .cyber-header {
+        flex-direction: column;
+        height: auto;
+        padding: 10px 15px;
+        text-align: center;
+      }
+
+      .main-title {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+      }
+
+      .cyber-main {
+        padding: 10px;
+        gap: 15px;
+      }
+
+      .cyber-card {
+        padding: 15px;
+      }
+
+      .card-title {
+        font-size: 1.4rem;
+      }
+
+      .card-badge {
+        font-size: 0.8rem;
+        padding: 4px 10px;
+      }
+
+      .course-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .course-card {
+        padding: 15px;
+      }
+
+      .course-title {
+        font-size: 1.1rem;
+      }
+
+      .course-description {
+        font-size: 0.95rem;
+      }
+
+      .cyber-button {
+        font-size: 0.9rem;
+        padding: 10px 15px;
+      }
+
+      .cyber-footer {
+        flex-direction: column;
+        padding: 15px;
+        text-align: center;
+        gap: 10px;
+      }
+
+      .footer-text {
+        font-size: 0.8rem;
+      }
+
+      .deepseek-badge {
+        font-size: 0.8rem;
+      }
+
+      .certificate-image {
+        max-width: 100%;
+        height: auto;
+      }
+
+      .glow-points,
+      .grid-overlay,
+      .scan-line {
+        display: none;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1011,7 +1091,7 @@
         case 'pro':
           syllabusContent = `
             <div style="background: rgba(255,0,51,0.1); padding: 20px; border-radius: 10px; border-left: 4px solid var(--neon-red);">
-              <h4 style="color: var(--neon-red); margin-bottom: 20px; font-size: 1.4rem;">🔥 SEGURANÇA OFENSIVA PROFISSIONAL</h4>
+              <h4 style="color: var(--neon-red); margin-bottom: 20px; font-size: 1.4rem;">🔥 SEGURANÇA OFENSIVA PROFISSIONAL <br> <span style="margin-left: 40px;">(EMENTA INCOMPLETA)</span></h4>
               
               <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 25px; padding: 12px; background: rgba(255,0,51,0.05); border-radius: 8px;">
                 <button onclick="switchProTab('fundamentos')" style="padding: 8px 16px; background: var(--neon-red); border: none; border-radius: 6px; color: white; cursor: pointer; font-family: 'Exo 2', sans-serif; font-size: 0.9rem;">M0-4: FUNDAMENTOS</button>
