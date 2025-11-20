@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
@@ -320,6 +321,7 @@
       border-radius: 15px;
       font-size: 0.8rem;
       font-weight: 700;
+      align-self: flex-start;
     }
 
     .badge-gratis {
@@ -865,11 +867,11 @@
 
           <div class="course-card">
             <div class="course-header">
-              <h3 class="course-title">LOJA FORTSEC</h3>
-              <div class="course-badge badge-loja">LOJA</div>
+              <h3 class="course-title">DISPOSITIVOS E EBOOKS</h3>
+              <div class="course-badge badge-loja">LOJA - EBOOKS</div>
             </div>
             <p class="course-description">
-              Equipamentos e ferramentas profissionais para segurança ofensiva.
+              Equipamentos, hardwares e ebooks para segurança ofensiva.
             </p>
             
             <div class="certificate-preview">
@@ -929,7 +931,7 @@
       <div class="cyber-card">
         <div class="card-header">
           <h2 class="card-title">ONDE ENCONTRAMOS FALHAS</h2>
-          <div class="card-badge">CASOS REAIS</div>
+          <div class="card-badge">BUGS REAIS</div>
         </div>
         <p class="card-content">
           CONHEÇA ALGUNS CAMPOS ONDE A FORTSEC TRABALHOU.
@@ -1363,21 +1365,142 @@
         case 'loja':
           syllabusContent = `
             <div style="background: rgba(0,243,255,0.1); padding: 20px; border-radius: 10px; border-left: 4px solid var(--neon-cyan);">
-              <h4 style="color: var(--neon-cyan); margin-bottom: 20px; font-size: 1.4rem;">🛒 LOJA FORTSEC</h4>
+
+            <h4 style="color: var(--neon-cyan); margin-bottom: 20px; font-size: 1.4rem;">👨‍💻 DISPOSITIVOS E EBOOKS</h4>
+
+            <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+              <button id="btn-dispositivos" onclick="switchLojaTab('dispositivos')" style="padding: 10px 18px; border-radius: 8px; background: var(--neon-cyan); color: #000; cursor: pointer; border: 0; font-weight: 600; font-family: 'Exo 2', sans-serif;">DISPOSITIVOS</button>
+              <button id="btn-ebooks" onclick="switchLojaTab('ebooks')" style="padding: 10px 18px; border-radius: 8px; background: rgba(0,243,255,0.2); color: var(--neon-cyan); cursor: pointer; border: 1px solid var(--neon-cyan); font-weight: 600; font-family: 'Exo 2', sans-serif;">EBOOKS</button>
+            </div>
+
+            <div id="loja-tab-dispositivos">
               <ul style="list-style: none; padding-left: 0;">
                 <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
                   <div class="feature-marker"></div>
                   <span><strong>BLUETOOTH JAMMER (2.4 GHZ)</strong></span>
                 </li>
+
                 <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
                   <div class="feature-marker" style="background: var(--neon-orange); box-shadow: 0 0 10px var(--neon-orange);"></div>
                   <span><strong>NOVOS APARELHOS EM BREVE!</strong></span>
                 </li>
               </ul>
+
               <div style="margin-top: 20px; padding: 15px; background: rgba(0,243,255,0.1); border-radius: 8px; border: 1px solid var(--neon-cyan); text-align: center;">
-                <a href="https://api.whatsapp.com/send/?phone=5521995929741&text=Estou+interessado+em+conhecer+os+aparelhos+da+FortSec&type=phone_number&app_absent=0" class="cyber-button" target="_blank" style="text-decoration: none; display: inline-block;">COMPRAR NO WHATSAPP</a>
+                <a href="https://api.whatsapp.com/send/?phone=5521995929741&text=Estou+interessado+em+conhecer+os+aparelhos+da+FortSec&type=phone_number&app_absent=0" class="cyber-button" target="_blank" style="text-decoration: none; display: inline-block;">CONSULTAR</a>
               </div>
             </div>
+
+            <div id="loja-tab-ebooks" style="display:none;">
+              <ul style="list-style: none; padding-left: 0;">
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/An%C3%A1lise%20de%20malware%20Software%20Livre.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">Análise de malware Software Livre</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/OWASP%20TOP%2010%202017%20Portugu%C3%AAs.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">OWASP TOP 10 2017 (Português)</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Fundamentos%20do%20Ethical%20Hacking.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">Fundamentos do ethical hacking</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Ger%C3%AAncia%20de%20Redes%20de%20Computadores.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">Gerência de Redes de Computadores</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Seguran%C3%A7a%20em%20Redes%20sem%20Fio.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">Segurança em Redes sem Fio</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Python%20e%20Django.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">Python e Django</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Shell%20Script%20Profissional.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">Shell Script Profissional</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Black%20Hat%20Python%20Programa%C3%A7%C3%A3o%20para%20Hackers.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">Black Hat Python Programação para Hackers</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Wireless%20Hacking.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">Wireless Hacking</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Pentest%20em%20redes%20sem%20fio.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">Pentest em redes sem fio</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Teste%20de%20invas%C3%A3o%20de%20aplica%C3%A7%C3%B5es%20web.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">Teste de invasão de aplicações web</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/The%20Hacker%20Playbook.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">The Hacker Playbook</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Hacking-Resources.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">Hacking-Resources</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/checklist%20de%20seguran%C3%A7a.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">checklist de segurança</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/guia%20de%20contrata%C3%A7%C3%A3o.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">guia de contratação</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/engenharia%20reversa%20e%20malware.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">engenharia reversa e malware</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/advanced%20penetration%20test.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">advanced penetration test</a>
+                </li>
+
+                <li class="feature-item" style="margin-bottom: 12px; padding: 10px; background: rgba(0,243,255,0.15); border-radius: 8px; border: 1px solid rgba(0,243,255,0.3);">
+                  <div class="feature-marker" style="background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div>
+                  <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/OSCP%20ooffensive%20security.pdf?download=1" download style="color: var(--neon-cyan); text-decoration: none; font-weight: bold; margin-left: 8px;">OSCP offensive security</a>
+                </li>
+
+              </ul>
+            </div>
+
+          </div>
+
+          <script>
+          function switchLojaTab(tab) {
+            document.getElementById('loja-tab-dispositivos').style.display = tab === 'dispositivos' ? 'block' : 'none'
+            document.getElementById('loja-tab-ebooks').style.display = tab === 'ebooks' ? 'block' : 'none'
+
+            document.getElementById('btn-dispositivos').style.background = tab === 'dispositivos' ? 'var(--neon-cyan)' : 'rgba(0,243,255,0.2)'
+            document.getElementById('btn-dispositivos').style.color = tab === 'dispositivos' ? '#000' : 'var(--neon-cyan)'
+
+            document.getElementById('btn-ebooks').style.background = tab === 'ebooks' ? 'var(--neon-cyan)' : 'rgba(0,243,255,0.2)'
+            document.getElementById('btn-ebooks').style.color = tab === 'ebooks' ? '#000' : 'var(--neon-cyan)'
+          }
+
           `;
           break;
       }
@@ -1511,6 +1634,61 @@
         }
       });
     }
+
+    function isValidURL(string) {
+      try {
+        const url = new URL(string);
+        const allowedDomains = [
+          'youtube.com', 
+          'wa.me', 
+          'api.whatsapp.com',
+          'mail.google.com', 
+          'fonts.googleapis.com', 
+          'fonts.gstatic.com', 
+          'chat.deepseek.com'
+        ];
+        
+        return ['https:', 'http:'].includes(url.protocol) && 
+               allowedDomains.some(domain => url.hostname.includes(domain));
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function secureExternalNavigation(url, target = '_blank') {
+      if (isValidURL(url)) {
+        window.open(url, target);
+      } else {
+        alert('URL não permitida por políticas de segurança');
+      }
+    }
+
+    function openDeepSeekChat() {
+      secureExternalNavigation('https://chat.deepseek.com');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('a[href^="http"]').forEach(link => {
+        if (!isValidURL(link.href)) {
+          link.removeAttribute('href');
+          link.style.cursor = 'not-allowed';
+          link.style.opacity = '0.6';
+        }
+      });
+    });
+
+    function switchLojaTab(tab) {
+      document.getElementById('loja-tab-dispositivos').style.display = tab === 'dispositivos' ? 'block' : 'none'
+      document.getElementById('loja-tab-ebooks').style.display = tab === 'ebooks' ? 'block' : 'none'
+
+      document.getElementById('btn-dispositivos').style.background = tab === 'dispositivos' ? 'var(--neon-cyan)' : 'rgba(0,243,255,0.2)'
+      document.getElementById('btn-dispositivos').style.color = tab === 'dispositivos' ? '#000' : 'var(--neon-cyan)'
+
+      document.getElementById('btn-ebooks').style.background = tab === 'ebooks' ? 'var(--neon-cyan)' : 'rgba(0,243,255,0.2)'
+      document.getElementById('btn-ebooks').style.color = tab === 'ebooks' ? '#000' : 'var(--neon-cyan)'
+    }
+
+
   </script>
 </body>
 </html>
