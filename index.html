@@ -619,6 +619,8 @@
             line-height: 1.6;
         }
 
+        
+
         .community-section {
             padding: 120px 30px;
             background: var(--carbon-dark);
@@ -1434,6 +1436,225 @@
                 height: 35px !important;
             }
         }
+
+        .instructor-section {
+            padding: 100px 30px;
+            background: linear-gradient(135deg, var(--carbon-dark) 0%, var(--primary-black) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .instructor-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 70%, rgba(153, 69, 255, 0.1) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .instructor-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .instructor-profile {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 50px;
+            align-items: start;
+            margin-top: 50px;
+        }
+
+        .instructor-image {
+            position: relative;
+        }
+
+        .instructor-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 3px solid var(--accent-purple);
+            box-shadow: 0 20px 40px rgba(153, 69, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .instructor-image:hover img {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(153, 69, 255, 0.5);
+        }
+
+        .instructor-info {
+            padding: 20px 0;
+        }
+
+        .instructor-name {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .instructor-title {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .instructor-description {
+            margin-bottom: 40px;
+        }
+
+        .instructor-description p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .instructor-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(42, 42, 42, 0.3);
+            border-radius: 15px;
+            border: 1px solid var(--metal-dark);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--accent-purple);
+            margin-bottom: 8px;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .instructor-certifications {
+            margin-top: 40px;
+        }
+
+        .instructor-certifications h4 {
+            font-size: 20px;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .certs-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .cert-badge {
+            padding: 10px 20px;
+            background: rgba(0, 168, 255, 0.1);
+            border: 1px solid var(--accent-blue);
+            border-radius: 25px;
+            color: var(--accent-blue);
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .cert-badge:hover {
+            background: var(--accent-blue);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .instructor-profile {
+                grid-template-columns: 250px 1fr;
+                gap: 40px;
+            }
+            
+            .instructor-stats {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .instructor-section {
+                padding: 80px 20px;
+            }
+            
+            .instructor-profile {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                text-align: center;
+            }
+            
+            .instructor-image {
+                max-width: 300px;
+                margin: 0 auto;
+            }
+            
+            .instructor-image img {
+                height: 350px;
+            }
+            
+            .instructor-stats {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .instructor-name {
+                font-size: 28px;
+            }
+            
+            .certs-grid {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .instructor-image {
+                max-width: 250px;
+            }
+            
+            .instructor-image img {
+                height: 300px;
+            }
+            
+            .instructor-name {
+                font-size: 24px;
+            }
+            
+            .stat-number {
+                font-size: 28px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1514,6 +1735,48 @@
                         Ética inegociável, excelência técnica, responsabilidade social e compromisso 
                         com o desenvolvimento contínuo da comunidade de segurança brasileira.
                     </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="instructor-section">
+        <div class="instructor-container">
+            <h2 class="section-title">INSTRUTOR</h2>
+            
+            <div class="instructor-profile">
+                <div class="instructor-image">
+                    <img src="https://i.ibb.co/1fbxvb1Z/my.png" alt="Instrutor FortSec">
+                </div>
+                
+                <div class="instructor-info">
+                    <h3 class="instructor-name">MEYDSON RODRIGUES</h3>
+                    <p class="instructor-title">ESPECIALISTA EM SEGURANÇA OFENSIVA</p>
+                    
+                    <div class="instructor-description">
+                        <p>Profissional com anos de experiência em segurança ofensiva, pentesting e ethical hacking. 
+                        Especialista em testes internos, controle de sistemas e hardwares em geral.</p>
+                        
+                        <p>Minha missão é compartilhar conhecimento prático e formar profissionais capacitados 
+                        para os desafios reais do mercado de segurança da informação.<br>
+                        As brincadeiras do hacker mascarado não se aplicam com a FortSec, levamos tudo a sério!</p>
+                        
+                        <div class="instructor-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">100+</span>
+                                <span class="stat-label">Vulnerabilidades Encontradas</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">10+</span>
+                                <span class="stat-label">Anos de Experiência</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">0%</span>
+                                <span class="stat-label">Contribuição com o estado</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -2529,13 +2792,8 @@
                 title: 'SIST. NUCLEAR DA RÚSSIA',
                 description: 'Falhas em servidores e acessos restritos ao governo.',
                 image: 'https://i.ibb.co/ZR7DNzC4/7.png'
-            },
-            {
-                id: 8,
-                title: 'HACKONE',
-                description: 'Aproximadamente sessenta falhas em 10 segundos usando um smartphone!',
-                image: 'https://i.ibb.co/0jbJLMJP/8.png'
             }
+    
         ];
 
         let horizontalCurrentIndex = 0;
