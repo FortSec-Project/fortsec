@@ -129,14 +129,15 @@ function createCarouselItem(data, index) {
     const isUnavailable = data.secondaryAction === 'showAlert';
     
     const buttonsClass = data.singleButton ? 'single-button' : '';
+    
     const buttonGrid = data.singleButton ? 
         `<div class="card-buttons ${buttonsClass}">
-            <button class="card-cta full-width" onclick="${data.action}('${data.actionParam}')">${data.secondaryText}</button>
+            <button class="card-cta full-width" onclick="handleCourseAction('${data.action}', '${data.actionParam}')">${data.secondaryText}</button>
         </div>` :
         `<div class="card-buttons ${buttonsClass}">
-            <button class="card-cta" onclick="${data.action}('${data.actionParam}')">EMENTA</button>
+            <button class="card-cta" onclick="handleCourseAction('${data.action}', '${data.actionParam}')">EMENTA</button>
             <button class="card-cta ${isUnavailable ? 'unavailable' : ''}" 
-                    onclick="${isUnavailable ? 'showAlert()' : data.secondaryAction + '(\'' + data.secondaryParam + '\')'}">
+                    onclick="${isUnavailable ? "alert('EM BREVE!')" : `handleCourseAction('${data.secondaryAction}', '${data.secondaryParam}')`}">
                 ${data.secondaryText}
             </button>
         </div>`;
@@ -367,6 +368,10 @@ function updateHorizontalCarousel() {
             spacing1 = 220;
             spacing2 = 400;
             spacing3 = 550;
+        } else if (window.innerWidth <= 1024) {
+            spacing1 = 280;
+            spacing2 = 480;
+            spacing3 = 650;
         }
         
         if (absOffset === 0) {
@@ -425,12 +430,24 @@ function startHorizontalAutoSlide() {
     horizontalAutoSlideInterval = setInterval(nextHorizontalSlide, 4000);
 }
 
+function handleCourseAction(action, param) {
+    switch(action) {
+        case 'openSyllabus':
+            openSyllabus(param);
+            break;
+        case 'openLink':
+            window.open(param, '_blank');
+            break;
+        case 'showAlert':
+            alert(param || 'EM BREVE!');
+            break;
+        default:
+            console.log('Ação não reconhecida:', action, param);
+    }
+}
+
 function openSyllabus(courseType) {
     const modal = document.getElementById('syllabusModal');
-    
-    modal.style.cssText = '';
-    modal.querySelector('.modal-content').style.cssText = '';
-    modal.querySelector('.close-modal').style.cssText = '';
     
     if (window.innerWidth <= 768) {
         Object.assign(modal.style, {
@@ -991,14 +1008,6 @@ function switchProTab(tabName) {
 
 function closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
-}
-
-function openLink(url) {
-    window.open(url, '_blank');
-}
-
-function showAlert() {
-    alert('🚀 EM BREVE! Esta funcionalidade estará disponível em breve. Fique ligado!');
 }
 
 document.querySelectorAll('.nav-link').forEach(link => {
