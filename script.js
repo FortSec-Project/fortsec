@@ -336,7 +336,7 @@ function updateHorizontalCarousel() {
     const indicators = document.querySelectorAll('.horizontal-indicator');
     const totalItems = items.length;
     const isMobile = window.innerWidth <= 768;
-    const isTablet = window.innerWidth <= 1024;
+    const isSmallMobile = window.innerWidth <= 480;
     
     items.forEach((item, index) => {
         let offset = index - horizontalCurrentIndex;
@@ -359,14 +359,14 @@ function updateHorizontalCarousel() {
         let spacing2 = 550;
         let spacing3 = 750;
         
-        if (isMobile) {
-            spacing1 = 240;
-            spacing2 = 420;
-            spacing3 = 580;
-        } else if (isTablet) {
-            spacing1 = 280;
-            spacing2 = 480;
-            spacing3 = 650;
+        if (isSmallMobile) {
+            spacing1 = 190;
+            spacing2 = 350;
+            spacing3 = 480;
+        } else if (isMobile) {
+            spacing1 = 220;
+            spacing2 = 400;
+            spacing3 = 550;
         }
         
         if (absOffset === 0) {
@@ -375,19 +375,19 @@ function updateHorizontalCarousel() {
             item.style.zIndex = '10';
         } else if (absOffset === 1) {
             const translateX = sign * spacing1;
-            const scale = isMobile ? 0.85 : 0.9;
+            const scale = isSmallMobile ? 0.85 : (isMobile ? 0.85 : 0.9);
             item.style.transform = `translate(-50%, -50%) translateX(${translateX}px) translateZ(-100px) scale(${scale})`;
             item.style.opacity = '0.8';
             item.style.zIndex = '5';
         } else if (absOffset === 2) {
             const translateX = sign * spacing2;
-            const scale = isMobile ? 0.75 : 0.8;
+            const scale = isSmallMobile ? 0.75 : (isMobile ? 0.75 : 0.8);
             item.style.transform = `translate(-50%, -50%) translateX(${translateX}px) translateZ(-200px) scale(${scale})`;
             item.style.opacity = '0.6';
             item.style.zIndex = '3';
         } else if (absOffset === 3) {
             const translateX = sign * spacing3;
-            const scale = isMobile ? 0.65 : 0.7;
+            const scale = isSmallMobile ? 0.65 : (isMobile ? 0.65 : 0.7);
             item.style.transform = `translate(-50%, -50%) translateX(${translateX}px) translateZ(-300px) scale(${scale})`;
             item.style.opacity = '0.4';
             item.style.zIndex = '2';

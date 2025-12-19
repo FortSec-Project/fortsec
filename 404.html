@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Não Encontrada - FORTSEC OFFENSIVE SECURITY</title>
+    <link rel="icon" href="profile.webp" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:ital,wght@0,200;0,400;0,700;1,200&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-black: #0a0a0a;
+            --carbon-dark: #121212;
+            --carbon-medium: #1a1a1a;
+            --carbon-light: #2a2a2a;
+            --metal-dark: #3a3a3a;
+            --metal-light: #4a4a4a;
+            --accent-red: #ff3333;
+            --accent-blue: #00a8ff;
+            --accent-green: #00ff88;
+            --accent-purple: #9945ff;
+            --accent-cyan: #00ffff;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-dim: #808080;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', 'Exo 2', sans-serif;
+            background: var(--primary-black);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .error-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--primary-black);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.03) 2px,
+                    rgba(255, 255, 255, 0.03) 4px),
+                repeating-linear-gradient(90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.03) 2px,
+                    rgba(255, 255, 255, 0.03) 4px),
+                radial-gradient(circle at 50% 50%, 
+                    rgba(153, 69, 255, 0.15) 0%, 
+                    transparent 50%);
+            z-index: 0;
+        }
+
+        .error-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .error-code {
+            font-size: 180px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent-red), var(--accent-purple), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            font-family: 'Orbitron', monospace;
+            text-shadow: 0 0 30px rgba(153, 69, 255, 0.3);
+            animation: glitch 5s infinite;
+        }
+
+        .error-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .error-message {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+            line-height: 1.6;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .error-button {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border: none;
+            border-radius: 30px;
+            color: var(--text-primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(153, 69, 255, 0.3);
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .error-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(153, 69, 255, 0.5);
+        }
+
+        .error-button:hover::before {
+            left: 100%;
+        }
+
+        @keyframes glitch {
+            0%, 100% {
+                transform: translate(0);
+                text-shadow: 0 0 20px rgba(153, 69, 255, 0.5);
+            }
+            1% {
+                transform: translate(-2px, 2px);
+                text-shadow: 2px -2px 0 var(--accent-red);
+            }
+            2% {
+                transform: translate(2px, -2px);
+                text-shadow: -2px 2px 0 var(--accent-cyan);
+            }
+            3% {
+                transform: translate(-2px, -2px);
+                text-shadow: 2px 2px 0 var(--accent-purple);
+            }
+            4% {
+                transform: translate(2px, 2px);
+                text-shadow: -2px -2px 0 var(--accent-blue);
+            }
+            5% {
+                transform: translate(0);
+                text-shadow: none;
+            }
+        }
+
+        @keyframes scanline {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            animation: scanline 8s linear infinite;
+            z-index: 2;
+            opacity: 0.3;
+        }
+
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 120px;
+            }
+            
+            .error-title {
+                font-size: 28px;
+            }
+            
+            .error-message {
+                font-size: 16px;
+                padding: 0 20px;
+            }
+            
+            .error-button {
+                padding: 12px 30px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .error-code {
+                font-size: 90px;
+            }
+            
+            .error-title {
+                font-size: 22px;
+            }
+            
+            .error-message {
+                font-size: 14px;
+            }
+            
+            .error-button {
+                padding: 10px 25px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scanline"></div>
+    <div class="error-container">
+        <div class="error-content">
+            <h1 class="error-code">404</h1>
+            <h2 class="error-title">PÁGINA NÃO ENCONTRADA</h2>
+            <p class="error-message">
+                A página que você está tentando acessar não existe ou foi movida.
+                Verifique o endereço digitado ou retorne à página inicial.
+            </p>
+            <a href="./index.html" class="error-button">VOLTAR PARA PÁGINA INICIAL</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const button = document.querySelector('.error-button');
+            
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = './index.html';
+            });
+
+            const errorCode = document.querySelector('.error-code');
+            
+            setInterval(() => {
+                errorCode.style.animation = 'none';
+                setTimeout(() => {
+                    errorCode.style.animation = 'glitch 5s infinite';
+                }, 50);
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
