@@ -35,14 +35,5 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": false,
-  "rewrites": [
-    {
-      "source": "/((?!404\\.html$).*)",
-      "destination": "/index.html"
-    }
-  ],
-  "errorPages": {
-    "404": "/404.html"
-  }
+  "trailingSlash": false
 }
