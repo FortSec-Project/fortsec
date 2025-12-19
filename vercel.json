@@ -9,7 +9,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' https://fonts.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-ancestors 'none';"
+          "value": "default-src 'self'; script-src 'self' https://fonts.googleapis.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-ancestors 'none';"
         },
         {
           "key": "X-Frame-Options",
@@ -34,10 +34,15 @@
       ]
     }
   ],
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/:path*",
+      "source": "/((?!404\\.html$).*)",
       "destination": "/index.html"
     }
-  ]
+  ],
+  "errorPages": {
+    "404": "/404.html"
+  }
 }
