@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificado - FORTSEC OFFENSIVE SECURITY</title>
+    <link rel="icon" href="profile.webp" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:ital,wght@0,200;0,400;0,700;1,200&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'TT Squares';
+            src: url('tt-squares-regular.woff2') format('woff2'),
+                 url('tt-squares-regular.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        :root {
+            --primary-black: #0a0a0a;
+            --carbon-dark: #121212;
+            --carbon-medium: #1a1a1a;
+            --carbon-light: #2a2a2a;
+            --metal-dark: #3a3a3a;
+            --metal-light: #4a4a4a;
+            --accent-red: #ff3333;
+            --accent-blue: #00a8ff;
+            --accent-green: #00ff88;
+            --accent-purple: #9945ff;
+            --accent-cyan: #00ffff;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-dim: #808080;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', 'Exo 2', sans-serif;
+            background: var(--primary-black);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.03) 2px,
+                    rgba(255, 255, 255, 0.03) 4px),
+                repeating-linear-gradient(90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.03) 2px,
+                    rgba(255, 255, 255, 0.03) 4px),
+                linear-gradient(135deg,
+                    var(--primary-black) 0%,
+                    var(--carbon-dark) 25%,
+                    var(--carbon-medium) 50%,
+                    var(--carbon-dark) 75%,
+                    var(--primary-black) 100%);
+            z-index: -2;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(180deg,
+                    rgba(18, 18, 18, 0.98) 0%,
+                    rgba(18, 18, 18, 0.9) 50%,
+                    rgba(18, 18, 18, 0) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            margin-right: 15px;
+            position: relative;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .logo-text .fortsec {
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text .security {
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-left: 5px;
+        }
+
+        .certificate-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 120px 20px 60px;
+            text-align: center;
+        }
+
+        .certificate-content {
+            max-width: 800px;
+            width: 100%;
+            background: linear-gradient(135deg, var(--carbon-medium), var(--carbon-dark));
+            border: 2px solid var(--metal-dark);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .certificate-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.5),
+                    transparent);
+            animation: scanline 3s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(500px);
+            }
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 18px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .input-label {
+            display: block;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--carbon-dark);
+            border: 2px solid var(--metal-dark);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 15px rgba(153, 69, 255, 0.3);
+        }
+
+        .generate-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border: none;
+            border-radius: 30px;
+            color: var(--text-primary);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(153, 69, 255, 0.3);
+            font-size: 16px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(153, 69, 255, 0.5);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .certificate-preview {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--carbon-dark);
+            border-radius: 10px;
+            border: 1px solid var(--metal-dark);
+            display: none;
+        }
+
+        .certificate-preview.active {
+            display: block;
+        }
+
+        .preview-title {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #certificateCanvas {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 10px;
+            border: 1px solid var(--metal-dark);
+            background: #fff;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .instructions {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(153, 69, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(153, 69, 255, 0.3);
+            text-align: left;
+        }
+
+        .instructions h4 {
+            color: var(--accent-purple);
+            margin-bottom: 10px;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .instructions ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .instructions li {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .instructions li:before {
+            content: '▸';
+            color: var(--accent-purple);
+            position: absolute;
+            left: 0;
+        }
+
+        .loading {
+            display: none;
+            color: var(--accent-cyan);
+            margin-top: 20px;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 2px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .back-link {
+            margin-top: 40px;
+        }
+
+        .back-link a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: var(--accent-cyan);
+        }
+
+        @media (max-width: 768px) {
+            .certificate-content {
+                padding: 25px 20px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .section-subtitle {
+                font-size: 16px;
+            }
+            
+            .name-input {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+            
+            .generate-btn {
+                padding: 12px 30px;
+                font-size: 14px;
+            }
+        }
+
+        .footer {
+            background: var(--primary-black);
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--metal-dark);
+            margin-top: 40px;
+        }
+
+        .footer-text {
+            color: var(--text-dim);
+            font-size: 12px;
+            font-family: 'Orbitron', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <img src="profile.webp" alt="FortSec">
+                </div>
+                <span class="logo-text">
+                    <span class="fortsec">FORTSEC</span>
+                    <span class="security">SECURITY</span>
+                </span>
+            </a>
+        </nav>
+    </header>
+
+    <main class="certificate-container">
+        <div class="certificate-content">
+            <h1 class="section-title">CERTIFICADO DE CONCLUSÃO</h1>
+            <p class="section-subtitle">
+                Gere seu certificado para o curso <strong>INTRODUÇÃO AO WEB HACKING</strong><br>
+                Preencha seu nome completo abaixo e clique em gerar certificado.
+            </p>
+            
+            <div class="input-group">
+                <label for="studentName" class="input-label">NOME COMPLETO</label>
+                <input 
+                    type="text" 
+                    id="studentName" 
+                    class="name-input" 
+                    placeholder="Digite seu nome completo como deseja no certificado"
+                    maxlength="100"
+                >
+            </div>
+            
+            <button id="generateBtn" class="generate-btn">
+                🎓 GERAR CERTIFICADO
+            </button>
+            
+            <div class="loading" id="loading">
+                ⚡ GERANDO CERTIFICADO...
+            </div>
+            
+            <div class="certificate-preview" id="previewContainer">
+                <h4 class="preview-title">PRÉVIA DO CERTIFICADO</h4>
+                <canvas id="certificateCanvas" width="1200" height="800"></canvas>
+            </div>
+            
+            <div class="instructions">
+                <h4>📋 INSTRUÇÕES</h4>
+                <ul>
+                    <li>Digite seu nome completo como deseja que apareça no certificado</li>
+                    <li>Clique em "GERAR CERTIFICADO" para criar seu certificado personalizado</li>
+                    <li>O certificado será gerado com a data atual automaticamente</li>
+                    <li>Clique com o botão direito na imagem para salvar ou imprimir</li>
+                    <li>Certificado válido para o curso <strong>Introdução ao Web Hacking</strong></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← VOLTAR PARA A PÁGINA INICIAL</a>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="footer-text">
+            2024 FORTSEC OFFENSIVE SECURITY - CERTIFICADO DE CONCLUSÃO
+        </div>
+    </footer>
+
+    <script src="certificado.js"></script>
+</body>
+</html>
