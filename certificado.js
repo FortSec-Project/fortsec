@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
             maxWidth: 700
         },
         date: {
-            x: 320,
+            x: 200,
             y: 680,
             fontSize: 16,
             fontFamily: "Calibri, 'Gill Sans', 'Trebuchet MS', sans-serif",
