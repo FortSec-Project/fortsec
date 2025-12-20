@@ -658,12 +658,12 @@ function openSyllabus(courseType) {
                             <li style="margin-bottom: 6px; padding: 6px; background: rgba(157,0,255,0.15); border-radius: 6px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Webshells</strong></li>
                             <li style="margin-bottom: 6px; padding: 6px; background: rgba(157,0,255,0.15); border-radius: 6px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Shell reversa</strong></li>
                             <li style="margin-bottom: 6px; padding: 6px; background: rgba(157,0,255,0.15); border-radius: 6px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Port forwarding</strong></li>
-                            <li style="margin-bottom: 6px; padding: 6px; background: rgba(157,0,255,0.15); border-radius: 6px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Servidores e containers</strong></li>
                             <li style="margin-bottom: 6px; padding: 6px; background: rgba(157,0,255,0.15); border-radius: 6px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Image poisoning</strong></li>
                             <li style="margin-bottom: 6px; padding: 6px; background: rgba(157,0,255,0.15); border-radius: 6px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Pivoting</strong></li>
                             <li style="margin-bottom: 6px; padding: 6px; background: rgba(157,0,255,0.15); border-radius: 6px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Privilege escalation</strong></li>
                             <li style="margin-bottom: 6px; padding: 6px; background: rgba(157,0,255,0.15); border-radius: 6px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Bug bounty real</strong></li>
                             <li style="margin-bottom: 6px; padding: 6px; background: rgba(157,0,255,0.15); border-radius: 6px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Conclusão do curso</strong></li>
+                            <li style="margin-bottom: 6px; padding: 6px; background: rgba(157,0,255,0.15); border-radius: 6px; border: 1px solid rgba(157,0,255,0.3);">✅ <strong>Bônus</strong></li>
                         </ul>
 
                         <div style="margin-top: 20px; padding: 15px; background: rgba(157,0,255,0.1); border-radius: 8px; border: 1px solid var(--accent-purple);">
