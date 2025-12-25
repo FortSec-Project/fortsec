@@ -160,49 +160,52 @@ document.addEventListener('DOMContentLoaded', function() {
         downloadBtn.textContent = 'GERANDO PDF...';
         downloadBtn.disabled = true;
         
-        function loadJSPDF() {
+        function loadScript(url) {
             return new Promise((resolve, reject) => {
-                if (window.jspdf) {
-                    resolve();
-                    return;
-                }
-                
                 const script = document.createElement('script');
-                script.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
-                script.onload = () => {
-                    setTimeout(resolve, 500);
-                };
-                script.onerror = () => {
-                    reject(new Error('Falha ao carregar jsPDF'));
-                };
+                script.src = url;
+                script.onload = () => resolve();
+                script.onerror = () => reject();
                 document.head.appendChild(script);
             });
         }
         
-        loadJSPDF()
-            .then(() => {
-                if (!window.jspdf) {
-                    throw new Error('jsPDF não disponível');
-                }
-                
+        function generatePDF() {
+            try {
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('landscape', 'mm', 'a4');
-                const pdfWidth = 297;
-                const margin = 10;
-                const imgWidth = pdfWidth - (margin * 2);
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const margin = 15;
+                const imgWidth = pageWidth - (margin * 2);
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
                 
                 pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
                 pdf.save(pdfName);
-            })
-            .catch(error => {
-                console.error('Erro PDF:', error);
-                alert('Não foi possível gerar o PDF. Baixe como PNG ou tente novamente.');
-            })
-            .finally(() => {
-                downloadBtn.textContent = originalText;
-                downloadBtn.disabled = false;
-            });
+            } catch (error) {
+                alert('Erro ao gerar PDF. Baixe como PNG.');
+                console.error('PDF Error:', error);
+            }
+        }
+        
+        if (window.jspdf) {
+            generatePDF();
+            downloadBtn.textContent = originalText;
+            downloadBtn.disabled = false;
+        } else {
+            loadScript('https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js')
+                .then(() => {
+                    setTimeout(() => {
+                        generatePDF();
+                    }, 500);
+                })
+                .catch(() => {
+                    alert('Não foi possível carregar o gerador de PDF.');
+                })
+                .finally(() => {
+                    downloadBtn.textContent = originalText;
+                    downloadBtn.disabled = false;
+                });
+        }
     }
     
     document.getElementById('downloadPNG').addEventListener('click', downloadPNG);
