@@ -153,20 +153,56 @@ document.addEventListener('DOMContentLoaded', function() {
     function downloadPDF() {
         const name = studentNameInput.value.trim() || 'Certificado';
         const pdfName = `Certificado-FortSec-${name.replace(/\s+/g, '-')}.pdf`;
-        
         const imgData = canvas.toDataURL('image/png');
-        const pdfWidth = 297;
-        const pdfHeight = 210;
-        const margin = 10;
         
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('landscape', 'mm', 'a4');
+        const downloadBtn = document.getElementById('downloadPDF');
+        const originalText = downloadBtn.textContent;
+        downloadBtn.textContent = 'GERANDO PDF...';
+        downloadBtn.disabled = true;
         
-        const imgWidth = pdfWidth - (margin * 2);
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        function loadJSPDF() {
+            return new Promise((resolve, reject) => {
+                if (window.jspdf) {
+                    resolve();
+                    return;
+                }
+                
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
+                script.onload = () => {
+                    setTimeout(resolve, 500);
+                };
+                script.onerror = () => {
+                    reject(new Error('Falha ao carregar jsPDF'));
+                };
+                document.head.appendChild(script);
+            });
+        }
         
-        pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
-        pdf.save(pdfName);
+        loadJSPDF()
+            .then(() => {
+                if (!window.jspdf) {
+                    throw new Error('jsPDF não disponível');
+                }
+                
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('landscape', 'mm', 'a4');
+                const pdfWidth = 297;
+                const margin = 10;
+                const imgWidth = pdfWidth - (margin * 2);
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
+                pdf.save(pdfName);
+            })
+            .catch(error => {
+                console.error('Erro PDF:', error);
+                alert('Não foi possível gerar o PDF. Baixe como PNG ou tente novamente.');
+            })
+            .finally(() => {
+                downloadBtn.textContent = originalText;
+                downloadBtn.disabled = false;
+            });
     }
     
     document.getElementById('downloadPNG').addEventListener('click', downloadPNG);
