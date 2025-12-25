@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
             maxWidth: 700
         },
         date: {
-            x: 200,
+            x: 320,
             y: 680,
             fontSize: 16,
             fontFamily: "Calibri, 'Gill Sans', 'Trebuchet MS', sans-serif",
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function drawCenteredText(context, text, x, y, maxWidth, fontSize, fontFamily, color) {
-        context.font = `${fontSize}px ${fontFamily}`;
+        context.font = `500 ${fontSize}px ${fontFamily}`;
         context.fillStyle = color;
         context.textAlign = 'center';
         context.textBaseline = 'middle';
@@ -142,69 +142,35 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 800);
     }
     
-    canvas.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
+    function downloadPNG() {
+        const link = document.createElement('a');
+        const name = studentNameInput.value.trim() || 'Certificado';
+        link.download = `Certificado-FortSec-${name.replace(/\s+/g, '-')}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    }
+    
+    function downloadPDF() {
+        const name = studentNameInput.value.trim() || 'Certificado';
+        const pdfName = `Certificado-FortSec-${name.replace(/\s+/g, '-')}.pdf`;
         
-        const menu = document.createElement('div');
-        menu.style.position = 'fixed';
-        menu.style.background = 'var(--carbon-dark)';
-        menu.style.border = '1px solid var(--accent-purple)';
-        menu.style.padding = '10px';
-        menu.style.borderRadius = '5px';
-        menu.style.zIndex = '10000';
-        menu.style.left = e.pageX + 'px';
-        menu.style.top = e.pageY + 'px';
+        const imgData = canvas.toDataURL('image/png');
+        const pdfWidth = 297;
+        const pdfHeight = 210;
+        const margin = 10;
         
-        menu.innerHTML = `
-            <div style="color: var(--text-primary); font-family: 'Orbitron'; font-size: 12px; margin-bottom: 5px;">Salvar Certificado:</div>
-            <button style="background: var(--accent-purple); color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-right: 5px;" onclick="saveAsPNG()">PNG</button>
-            <button style="background: var(--accent-blue); color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;" onclick="printCertificate()">Imprimir</button>
-        `;
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('landscape', 'mm', 'a4');
         
-        document.body.appendChild(menu);
+        const imgWidth = pdfWidth - (margin * 2);
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
         
-        setTimeout(() => {
-            document.addEventListener('click', function removeMenu() {
-                document.body.removeChild(menu);
-                document.removeEventListener('click', removeMenu);
-            });
-        }, 10);
-        
-        window.saveAsPNG = function() {
-            const link = document.createElement('a');
-            const name = studentNameInput.value.trim() || 'Certificado';
-            link.download = `Certificado-FortSec-${name.replace(/\s+/g, '-')}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-            document.body.removeChild(menu);
-        };
-        
-        window.printCertificate = function() {
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                    <head>
-                        <title>Imprimir Certificado</title>
-                        <style>
-                            body { margin: 0; padding: 20px; text-align: center; }
-                            img { max-width: 100%; height: auto; }
-                        </style>
-                    </head>
-                    <body>
-                        <img src="${canvas.toDataURL('image/png')}" alt="Certificado">
-                        <script>
-                            window.onload = function() {
-                                window.print();
-                                setTimeout(() => window.close(), 1000);
-                            };
-                        </script>
-                    </body>
-                </html>
-            `);
-            printWindow.document.close();
-            document.body.removeChild(menu);
-        };
-    });
+        pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
+        pdf.save(pdfName);
+    }
+    
+    document.getElementById('downloadPNG').addEventListener('click', downloadPNG);
+    document.getElementById('downloadPDF').addEventListener('click', downloadPDF);
     
     generateBtn.addEventListener('click', generateCertificate);
     

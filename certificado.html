@@ -6,6 +6,7 @@
     <title>Certificado - FORTSEC OFFENSIVE SECURITY</title>
     <link rel="icon" href="profile.webp" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:ital,wght@0,200;0,400;0,700;1,200&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         @font-face {
             font-family: 'TT Squares';
@@ -360,6 +361,42 @@
             color: var(--accent-cyan);
         }
 
+        .download-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            padding: 14px 35px;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            min-width: 180px;
+        }
+
+        .png-btn {
+            background: linear-gradient(135deg, var(--accent-purple), #7a36cc);
+        }
+
+        .pdf-btn {
+            background: linear-gradient(135deg, var(--accent-red), #cc3333);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
         @media (max-width: 768px) {
             .certificate-content {
                 padding: 25px 20px;
@@ -381,6 +418,18 @@
             .generate-btn {
                 padding: 12px 30px;
                 font-size: 14px;
+            }
+            
+            .download-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .download-btn {
+                width: 100%;
+                max-width: 280px;
+                padding: 12px 25px;
             }
         }
 
@@ -444,6 +493,14 @@
             <div class="certificate-preview" id="previewContainer">
                 <h4 class="preview-title">PRÉVIA DO CERTIFICADO</h4>
                 <canvas id="certificateCanvas" width="1200" height="800"></canvas>
+                <div class="download-buttons">
+                    <button id="downloadPNG" class="download-btn png-btn">
+                        ⬇️ BAIXAR PNG
+                    </button>
+                    <button id="downloadPDF" class="download-btn pdf-btn">
+                        📄 BAIXAR PDF
+                    </button>
+                </div>
             </div>
             
             <div class="instructions">
