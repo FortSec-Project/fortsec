@@ -150,66 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
         link.click();
     }
     
-    function downloadPDF() {
-        const name = studentNameInput.value.trim() || 'Certificado';
-        const pdfName = `Certificado-FortSec-${name.replace(/\s+/g, '-')}.pdf`;
-        const imgData = canvas.toDataURL('image/png');
-        
-        const downloadBtn = document.getElementById('downloadPDF');
-        const originalText = downloadBtn.textContent;
-        downloadBtn.textContent = 'GERANDO PDF...';
-        downloadBtn.disabled = true;
-        
-        function loadScript(url) {
-            return new Promise((resolve, reject) => {
-                const script = document.createElement('script');
-                script.src = url;
-                script.onload = () => resolve();
-                script.onerror = () => reject();
-                document.head.appendChild(script);
-            });
-        }
-        
-        function generatePDF() {
-            try {
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('landscape', 'mm', 'a4');
-                const pageWidth = pdf.internal.pageSize.getWidth();
-                const margin = 15;
-                const imgWidth = pageWidth - (margin * 2);
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                
-                pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
-                pdf.save(pdfName);
-            } catch (error) {
-                alert('Erro ao gerar PDF. Baixe como PNG.');
-                console.error('PDF Error:', error);
-            }
-        }
-        
-        if (window.jspdf) {
-            generatePDF();
-            downloadBtn.textContent = originalText;
-            downloadBtn.disabled = false;
-        } else {
-            loadScript('https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js')
-                .then(() => {
-                    setTimeout(() => {
-                        generatePDF();
-                    }, 500);
-                })
-                .catch(() => {
-                    alert('Não foi possível carregar o gerador de PDF.');
-                })
-                .finally(() => {
-                    downloadBtn.textContent = originalText;
-                    downloadBtn.disabled = false;
-                });
-        }
-    }
-    
     document.getElementById('downloadPNG').addEventListener('click', downloadPNG);
-    document.getElementById('downloadPDF').addEventListener('click', downloadPDF);
     
     generateBtn.addEventListener('click', generateCertificate);
     
