@@ -503,9 +503,6 @@ function openSyllabus(courseType) {
                         <strong>BLUETOOTH JAMMER (2.4 GHZ)</strong>
                     </div>
                     <div class="device-item">
-                        <strong>RASPBERRY PI ZERO 2W - 32GB</strong>
-                    </div>
-                    <div class="device-item">
                         <strong> >>> NOVOS APARELHOS EM BREVE!</strong>
                     </div>
                     <div style="margin-top: 20px; text-align: center;">
