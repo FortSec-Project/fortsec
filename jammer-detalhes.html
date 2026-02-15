@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bluetooth Jammer 2.4 GHz - FORTSEC</title>
+    <link rel="icon" href="profile.webp" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/"
+        }
+    }
+    </script>
+    <style>
+        :root {
+            --primary-black: #0a0a0a;
+            --carbon-dark: #121212;
+            --carbon-medium: #1a1a1a;
+            --accent-green: #00ff88;
+            --accent-cyan: #00ffff;
+            --accent-purple: #9945ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: var(--primary-black);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(153, 69, 255, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .logo-icon img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-purple);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fortsec {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .security {
+            font-size: 12px;
+            letter-spacing: 3px;
+            color: var(--accent-cyan);
+        }
+
+        .product-container {
+            max-width: 1400px;
+            margin: 120px auto 60px;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .viewer-section {
+            position: relative;
+        }
+
+        #canvas-container {
+            width: 100%;
+            height: 600px;
+            background: linear-gradient(135deg, var(--carbon-medium), var(--carbon-dark));
+            border-radius: 20px;
+            border: 2px solid var(--accent-cyan);
+            box-shadow: 0 10px 40px rgba(0, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .viewer-instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 12px;
+            color: var(--accent-cyan);
+            text-align: center;
+        }
+
+        .specs-section {
+            background: var(--carbon-dark);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid var(--accent-green);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .product-title {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 30px;
+            color: var(--accent-green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .specs-list {
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 16px;
+            line-height: 2;
+            color: var(--accent-green);
+        }
+
+        .spec-line {
+            margin-bottom: 15px;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .spec-label {
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        .spec-value {
+            color: var(--accent-green);
+        }
+
+        .typing-cursor {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .order-button {
+            margin-top: 40px;
+            padding: 18px 50px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
+            border: none;
+            border-radius: 30px;
+            color: #000;
+            font-weight: 900;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .order-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.6);
+        }
+
+        @media (max-width: 1024px) {
+            .product-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            #canvas-container {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-container {
+                padding: 20px;
+                margin-top: 100px;
+            }
+            .product-title {
+                font-size: 24px;
+            }
+            .specs-section {
+                padding: 25px;
+            }
+            .order-button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <img src="profile.webp" alt="FortSec Logo">
+                </div>
+                <div class="logo-text">
+                    <span class="fortsec">FORTSEC</span>
+                    <span class="security">SECURITY</span>
+                </div>
+            </a>
+        </nav>
+    </header>
+
+    <div class="product-container">
+        <div class="viewer-section">
+            <div id="canvas-container">
+                <div class="viewer-instructions">
+                    🖱️ Arraste para rotacionar | 🔄 Scroll para zoom
+                </div>
+            </div>
+        </div>
+
+        <div class="specs-section">
+            <h1 class="product-title">BLUETOOTH JAMMER</h1>
+            <div class="specs-list" id="specs-container"></div>
+            <a href="relatorio.html" class="order-button">ENCOMENDAR AGORA!</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // Specs animation
+        const specs = [
+            { label: 'MODELO', value: 'Bluetooth Jammer 2.4 GHz' },
+            { label: 'ANTENAS', value: '12 dBI omni-direcional' },
+            { label: 'ALCANCE', value: '30-50 metros omni-direcional' },
+            { label: 'POTÊNCIA', value: '3W' },
+            { label: 'ALIMENTAÇÃO', value: 'USB-C ou USB-V8 (cabo incluso)' },
+            { label: 'DIMENSÕES', value: '83.82mm x 62.54mm' },
+            { label: 'MATERIAL', value: 'FR4-Standard TG 135-140' },
+            { label: 'COR', value: 'Preta' }
+        ];
+
+        function typeSpec(element, text, index) {
+            if (index < text.length) {
+                element.textContent += text.charAt(index);
+                setTimeout(() => typeSpec(element, text, index + 1), 30);
+            } else {
+                element.nextElementSibling.style.display = 'none';
+            }
+        }
+
+        function displaySpecs() {
+            const container = document.getElementById('specs-container');
+            let delay = 0;
+            
+            specs.forEach((spec, i) => {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'spec-line';
+                    line.style.animationDelay = `${i * 0.1}s`;
+                    
+                    const label = document.createElement('span');
+                    label.className = 'spec-label';
+                    label.textContent = `${spec.label}: `;
+                    
+                    const value = document.createElement('span');
+                    value.className = 'spec-value';
+                    
+                    const cursor = document.createElement('span');
+                    cursor.className = 'typing-cursor';
+                    cursor.textContent = '▋';
+                    
+                    line.appendChild(label);
+                    line.appendChild(value);
+                    line.appendChild(cursor);
+                    container.appendChild(line);
+                    
+                    setTimeout(() => typeSpec(value, spec.value, 0), 100);
+                }, delay);
+                
+                delay += 800;
+            });
+        }
+
+        displaySpecs();
+
+        
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x1a1a1a);
+
+        
+        const camera = new THREE.PerspectiveCamera(
+            45,
+            container.clientWidth / container.clientHeight,
+            0.1,
+            1000
+        );
+        camera.position.set(0, 0, 130);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.minDistance = 100;
+        controls.maxDistance = 300;
+        controls.target.set(0, 0, 0);
+        
+        
+        controls.minPolarAngle = Math.PI / 2;
+        controls.maxPolarAngle = Math.PI / 2;
+        controls.enablePan = false;
+
+       
+        controls.addEventListener('start', () => {
+            autoRotate = false;
+        });
+
+        
+        controls.addEventListener('end', () => {
+            setTimeout(() => {
+                autoRotate = true;
+            }, 2000);
+        });
+
+        // Iluminação
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+        scene.add(ambientLight);
+
+        const directionalLight1 = new THREE.DirectionalLight(0x00ffff, 1.2);
+        directionalLight1.position.set(5, 5, 5);
+        scene.add(directionalLight1);
+
+        const directionalLight2 = new THREE.DirectionalLight(0x00ff88, 1.0);
+        directionalLight2.position.set(-5, 3, -5);
+        scene.add(directionalLight2);
+        
+        const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight3.position.set(0, 10, 0);
+        scene.add(directionalLight3);
+
+        let modelObject = null;
+        let modelGroup = new THREE.Group(); // Grupo como pivot
+        scene.add(modelGroup);
+        
+        let autoRotate = true;
+        let rotationSpeed = 0.005;
+
+        // Carregar modelo
+        const loader = new GLTFLoader();
+        
+        loader.load(
+            'bluetooth-jammer.glb',
+            (gltf) => {
+                const model = gltf.scene;
+                
+                // Materiais
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        if (Array.isArray(child.material)) {
+                            child.material.forEach(mat => {
+                                mat.side = THREE.DoubleSide;
+                            });
+                        } else {
+                            child.material.side = THREE.DoubleSide;
+                        }
+                    }
+                });
+                
+                // Centralizar primeiro
+                const box = new THREE.Box3().setFromObject(model);
+                const center = box.getCenter(new THREE.Vector3());
+                model.position.sub(center);
+                
+               
+                model.rotation.x = 90 * Math.PI / 180;
+                model.rotation.y = 0 * Math.PI / 180;
+                model.rotation.z = 0 * Math.PI / 180;
+                
+                // Escala
+                model.scale.setScalar(1.0);
+                
+               
+                model.position.set(55, 12, 0);
+                
+                modelGroup.add(model);
+                modelObject = model;
+                
+                console.log('✅ Modelo carregado com auto-rotação!');
+            },
+            (xhr) => {
+                console.log(`Carregando: ${(xhr.loaded / xhr.total * 100).toFixed(1)}%`);
+            },
+            (error) => {
+                console.error('Erro ao carregar modelo:', error);
+            }
+        );
+
+        // Animação
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            
+            // AUTO-ROTAÇÃO do GRUPO no eixo Y (gira sobre si mesmo)
+            if (autoRotate) {
+                modelGroup.rotation.y += rotationSpeed;
+            }
+            
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Responsive
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+    </script>
+</body>
+</html>

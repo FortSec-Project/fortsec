@@ -46,14 +46,28 @@ const coursesData = [
     },
     {
         id: 4,
-        title: 'DISPOSITIVOS E EBOOKS',
+        title: 'EBOOKS',
+        description: '',
+        image: 'ebooks.webp',
+        tech: [],
+        badge: 'GRATUITO',
+        badgeColor: '#00ff88',
+        action: 'openSyllabus',
+        actionParam: 'ebooks',
+        secondaryAction: null,
+        secondaryText: 'VER LISTA',
+        singleButton: true
+    },
+    {
+        id: 5,
+        title: 'DISPOSITIVOS',
         description: '',
         image: 'hard.webp',
         tech: [],
         badge: 'PEDIDOS',
         badgeColor: '#00ffff',
         action: 'openSyllabus',
-        actionParam: 'loja',
+        actionParam: 'dispositivos',
         secondaryAction: null,
         secondaryText: 'VER LISTA',
         singleButton: true
@@ -492,114 +506,109 @@ function openSyllabus(courseType) {
         modal.style.display = 'block';
     }
     
-    if (courseType === 'loja') {
-        document.getElementById('lojaTabs').style.display = 'flex';
+    if (courseType === 'ebooks') {
+        document.getElementById('lojaTabs').style.display = 'none';
         
         let content = `
-            <div id="tab-dispositivos" class="tab-content active">
-                <div style="background: rgba(157,0,255,0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #cccccc;">
-                    <h4 style="color: #cccccc; margin-bottom: 15px;">🛠️ DISPOSITIVOS DISPONÍVEIS</h4>
-                    <div class="device-item">
-                        <strong>BLUETOOTH JAMMER (2.4 GHZ)</strong>
+            <div style="background: rgba(157,0,255,0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #cccccc;">
+                <h4 style="color: #cccccc; margin-bottom: 15px;">📚 EBOOKS DISPONÍVEIS</h4>
+                <div style="max-height: 300px; overflow-y: auto; padding-right: 10px;">
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/An%C3%A1lise%20de%20malware%20Software%20Livre.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Análise de malware Software Livre</a>
                     </div>
-                    <div class="device-item">
-                        <strong> >>> NOVOS APARELHOS EM BREVE!</strong>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/OWASP%20TOP%2010%202017%20Portugu%C3%AAs.pdf?download=1" download onclick="downloadEbook(event, this)">📖 OWASP TOP 10 2017 (Português)</a>
                     </div>
-                    <div style="margin-top: 20px; text-align: center;">
-                        <a href="https://wa.me/5521998556473" 
-                        class="card-cta" target="_blank" style="text-decoration: none;">
-                            ENCOMENDAR
-                        </a>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Fundamentos%20do%20Ethical%20Hacking.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Fundamentos do ethical hacking</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Ger%C3%AAncia%20de%20Redes%20de%20Computadores.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Gerência de Redes de Computadores</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Seguran%C3%A7a%20em%20Redes%20sem%20Fio.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Segurança em Redes sem Fio</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Python%20e%20Django.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Python e Django</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Shell%20Script%20Profissional.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Shell Script Profissional</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Black%20Hat%20Python%20Programa%C3%A7%C3%A3o%20para%20Hackers.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Black Hat Python Programação para Hackers</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Wireless%20Hacking.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Wireless Hacking</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Pentest%20em%20redes%20sem%20fio.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Pentest em redes sem fio</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Teste%20de%20invas%C3%A3o%20de%20aplica%C3%A7%C3%B5es%20web.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Teste de invasão de aplicações web</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/The%20Hacker%20Playbook.pdf?download=1" download onclick="downloadEbook(event, this)">📖 The Hacker Playbook</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Hacking-Resources.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Hacking-Resources</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/checklist%20de%20seguran%C3%A7a.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Checklist de segurança</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/guia%20de%20contrata%C3%A7%C3%A3o.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Guia de contratação</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/engenharia%20reversa%20e%20malware.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Engenharia reversa e malware</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/advanced%20penetration%20test.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Advanced penetration test</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/OSCP%20ooffensive%20security.pdf?download=1" download onclick="downloadEbook(event, this)">📖 OSCP offensive security</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Hacking%20Para%20Leigos.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Hacking Para Leigos</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Engenharia%20Social.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Engenharia Social</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Engenharia%20reversa%20de%20c%C3%B3digo%20malicioso.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Engenharia reversa de código malicioso</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Engenharia%20De%20Software%20.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Engenharia De Software</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Comecando%20Com%20o%20Linux%20.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Começando Com o Linux</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Arquitetura%20e%20protocolo%20de%20rede%20TCP-IP.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Arquitetura e protocolo de rede TCP-IP</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/A%20Arte%20de%20Invadir.pdf?download=1" download onclick="downloadEbook(event, this)">📖 A Arte de Invadir</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/10%20Ferramentas%20de%20Varredura%20de%20Portas.pdf?download=1" download onclick="downloadEbook(event, this)">📖 10 Ferramentas de Varredura de Portas</a>
+                    </div>
+                    <div class="ebook-item">
+                        <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Linux%20A%20B%C3%ADblia.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Linux A Bíblia</a>
                     </div>
                 </div>
             </div>
-
-            <div id="tab-ebooks" class="tab-content">
-                <div style="background: rgba(157,0,255,0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #cccccc;">
-                    <h4 style="color: #cccccc; margin-bottom: 15px;">📚 EBOOKS DISPONÍVEIS</h4>
-                    <div style="max-height: 300px; overflow-y: auto; padding-right: 10px;">
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/An%C3%A1lise%20de%20malware%20Software%20Livre.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Análise de malware Software Livre</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/OWASP%20TOP%2010%202017%20Portugu%C3%AAs.pdf?download=1" download onclick="downloadEbook(event, this)">📖 OWASP TOP 10 2017 (Português)</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Fundamentos%20do%20Ethical%20Hacking.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Fundamentos do ethical hacking</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Ger%C3%AAncia%20de%20Redes%20de%20Computadores.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Gerência de Redes de Computadores</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Seguran%C3%A7a%20em%20Redes%20sem%20Fio.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Segurança em Redes sem Fio</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Python%20e%20Django.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Python e Django</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Shell%20Script%20Profissional.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Shell Script Profissional</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Black%20Hat%20Python%20Programa%C3%A7%C3%A3o%20para%20Hackers.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Black Hat Python Programação para Hackers</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Wireless%20Hacking.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Wireless Hacking</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Pentest%20em%20redes%20sem%20fio.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Pentest em redes sem fio</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Teste%20de%20invas%C3%A3o%20de%20aplica%C3%A7%C3%B5es%20web.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Teste de invasão de aplicações web</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/The%20Hacker%20Playbook.pdf?download=1" download onclick="downloadEbook(event, this)">📖 The Hacker Playbook</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Hacking-Resources.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Hacking-Resources</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/checklist%20de%20seguran%C3%A7a.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Checklist de segurança</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/guia%20de%20contrata%C3%A7%C3%A3o.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Guia de contratação</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/engenharia%20reversa%20e%20malware.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Engenharia reversa e malware</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/advanced%20penetration%20test.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Advanced penetration test</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/OSCP%20ooffensive%20security.pdf?download=1" download onclick="downloadEbook(event, this)">📖 OSCP offensive security</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Hacking%20Para%20Leigos.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Hacking Para Leigos</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Engenharia%20Social.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Engenharia Social</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Engenharia%20reversa%20de%20c%C3%B3digo%20malicioso.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Engenharia reversa de código malicioso</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Engenharia%20De%20Software%20.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Engenharia De Software</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Comecando%20Com%20o%20Linux%20.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Começando Com o Linux</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Arquitetura%20e%20protocolo%20de%20rede%20TCP-IP.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Arquitetura e protocolo de rede TCP-IP</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/A%20Arte%20de%20Invadir.pdf?download=1" download onclick="downloadEbook(event, this)">📖 A Arte de Invadir</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/10%20Ferramentas%20de%20Varredura%20de%20Portas.pdf?download=1" download onclick="downloadEbook(event, this)">📖 10 Ferramentas de Varredura de Portas</a>
-                        </div>
-                        <div class="ebook-item">
-                            <a href="https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Linux%20A%20B%C3%ADblia.pdf?download=1" download onclick="downloadEbook(event, this)">📖 Linux A Bíblia</a>
-                        </div>
-                    </div>
+        `;
+        
+        document.getElementById('syllabusContent').innerHTML = content;
+    } else if (courseType === 'dispositivos') {
+        document.getElementById('lojaTabs').style.display = 'none';
+        
+        let content = `
+            <div style="background: rgba(157,0,255,0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #cccccc;">
+                <h4 style="color: #cccccc; margin-bottom: 15px;">🛠️ DISPOSITIVOS DISPONÍVEIS</h4>
+                <div class="device-item" style="cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(0,255,255,0.1)'" onmouseout="this.style.background='transparent'">
+                    <a href="jammer-detalhes.html" style="text-decoration: none; color: #cccccc; display: block; padding: 10px;" target="_blank">
+                        <strong>BLUETOOTH JAMMER (2.4 GHZ)</strong>
+                    </a>
                 </div>
             </div>
         `;
