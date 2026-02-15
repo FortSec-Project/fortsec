@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste Import Map</title>
+    <script type="importmap">
+{
+  "imports": {
+    "three": "./libs/three/three.module.js",
+    "three/addons/": "./libs/three/addons/"
+  }
+}
+</script>
+</head>
+<body>
+    <h1 style="color: #0f0; font-family: monospace;">TESTE IMPORT MAP</h1>
+    <div id="status" style="color: #0f0; font-family: monospace; padding: 20px;"></div>
+    
+    <script type="module">
+        const statusDiv = document.getElementById('status');
+        
+        try {
+            statusDiv.innerHTML += '✅ Script type="module" carregado<br>';
+            
+            // Tentar importar Three.js
+            import('three').then(THREE => {
+                statusDiv.innerHTML += '✅ Three.js importado com sucesso!<br>';
+                statusDiv.innerHTML += `✅ Versão: ${THREE.REVISION}<br>`;
+                
+                // Tentar importar GLTFLoader
+                return import('three/addons/loaders/GLTFLoader.js');
+            }).then(module => {
+                statusDiv.innerHTML += '✅ GLTFLoader importado com sucesso!<br>';
+                statusDiv.innerHTML += '<br><strong style="color: #0f0;">TUDO FUNCIONANDO!</strong>';
+            }).catch(error => {
+                statusDiv.innerHTML += `❌ ERRO: ${error.message}<br>`;
+                console.error(error);
+            });
+            
+        } catch (error) {
+            statusDiv.innerHTML += `❌ ERRO CRÍTICO: ${error.message}<br>`;
+            console.error(error);
+        }
+    </script>
+</body>
+</html>
