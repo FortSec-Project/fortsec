@@ -46,16 +46,52 @@
         .radio-option { display: flex; align-items: center; gap: 10px; cursor: pointer; }
         .radio-option input[type="radio"] { width: 20px; height: 20px; cursor: pointer; accent-color: var(--accent-cyan); }
         .radio-option label { font-size: 14px; color: var(--text-secondary); cursor: pointer; }
-        .email-input { width: 100%; padding: 15px 20px; background: var(--carbon-medium); border: 2px solid var(--accent-cyan); border-radius: 10px; color: var(--text-primary); font-size: 16px; font-family: 'Orbitron', sans-serif; transition: all 0.3s ease; }
-        .email-input:focus { outline: none; border-color: var(--accent-green); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
-        .email-input::placeholder { color: var(--text-secondary); opacity: 0.5; }
         .submit-button { width: 100%; padding: 18px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border: none; border-radius: 30px; color: var(--text-primary); font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(0, 255, 255, 0.4); font-family: 'Orbitron', sans-serif; margin-top: 30px; }
-        .submit-button:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0, 255, 255, 0.6); }
-        .submit-button:disabled { opacity: 0.5; cursor: not-allowed; }
-        .success-message { background: rgba(0, 255, 136, 0.1); border: 2px solid var(--accent-green); border-radius: 15px; padding: 30px; text-align: center; display: none; max-width: 800px; width: 100%; }
-        .success-message h2 { color: var(--accent-green); margin-bottom: 15px; font-size: 24px; }
-        .success-message p { color: var(--text-secondary); line-height: 1.6; }
-        .error-message { background: rgba(255, 51, 51, 0.1); border: 2px solid var(--accent-red); border-radius: 15px; padding: 20px; text-align: center; display: none; max-width: 800px; width: 100%; margin-top: 20px; }
+        .submit-button:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0, 255, 255, 0.6); }
+        .whatsapp-note { text-align: center; margin-top: 20px; color: var(--accent-green); font-size: 14px; }
+        .success-message { 
+            background: rgba(0, 255, 136, 0.1); 
+            border: 2px solid var(--accent-green); 
+            border-radius: 15px; 
+            padding: 40px; 
+            text-align: center; 
+            display: none; 
+            max-width: 800px; 
+            width: 100%; 
+            margin-top: 20px;
+        }
+        .success-message h2 { 
+            color: var(--accent-green); 
+            margin-bottom: 20px; 
+            font-size: 24px; 
+        }
+        .success-message p { 
+            color: var(--text-secondary); 
+            line-height: 1.6; 
+            margin-bottom: 30px; 
+        }
+        .back-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            border: none;
+            border-radius: 30px;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(153, 69, 255, 0.4);
+            font-family: 'Orbitron', sans-serif;
+            margin-top: 20px;
+        }
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(153, 69, 255, 0.6);
+        }
         @media (max-width: 768px) {
             .form-container { padding: 25px; }
             .page-title { font-size: 22px; }
@@ -81,61 +117,77 @@
         </div>
     </div>
 
-    <form action="https://getform.io/f/asp9j2ew56x" method="POST" class="form-container" id="securityForm">
+    <div class="form-container" id="formContainer">
         <div class="form-group">
             <p class="question">1. Você mora perto de algum ponto público de saúde?</p>
             <div class="radio-group">
-                <div class="radio-option"><input type="radio" id="q1-sim" name="Pergunta 1 - Ponto de Saúde" value="SIM" required><label for="q1-sim">Sim</label></div>
-                <div class="radio-option"><input type="radio" id="q1-nao" name="Pergunta 1 - Ponto de Saúde" value="NÃO"><label for="q1-nao">Não</label></div>
+                <div class="radio-option"><input type="radio" id="q1-sim" name="q1" value="SIM" required><label for="q1-sim">Sim</label></div>
+                <div class="radio-option"><input type="radio" id="q1-nao" name="q1" value="NÃO"><label for="q1-nao">Não</label></div>
             </div>
         </div>
         
         <div class="form-group">
             <p class="question">2. Você tem vizinhos dependentes de aparelhos como medidores de glicose, marca-passo ou semelhantes que precisam de comunicação contínua para funcionar e são manipulados por controle de radiofrequência?</p>
             <div class="radio-group">
-                <div class="radio-option"><input type="radio" id="q2-sim" name="Pergunta 2 - Dispositivos Médicos" value="SIM" required><label for="q2-sim">Sim</label></div>
-                <div class="radio-option"><input type="radio" id="q2-nao" name="Pergunta 2 - Dispositivos Médicos" value="NÃO"><label for="q2-nao">Não</label></div>
+                <div class="radio-option"><input type="radio" id="q2-sim" name="q2" value="SIM" required><label for="q2-sim">Sim</label></div>
+                <div class="radio-option"><input type="radio" id="q2-nao" name="q2" value="NÃO"><label for="q2-nao">Não</label></div>
             </div>
         </div>
         
         <div class="form-group">
             <p class="question">3. Você entende que este dispositivo é ilegal e está sendo comercializado para fins educativos em ambientes controlados e salas isoladas?</p>
             <div class="radio-group">
-                <div class="radio-option"><input type="radio" id="q3-sim" name="Pergunta 3 - Entende Restrição" value="SIM" required><label for="q3-sim">Sim</label></div>
-                <div class="radio-option"><input type="radio" id="q3-nao" name="Pergunta 3 - Entende Restrição" value="NÃO"><label for="q3-nao">Não</label></div>
+                <div class="radio-option"><input type="radio" id="q3-sim" name="q3" value="SIM" required><label for="q3-sim">Sim</label></div>
+                <div class="radio-option"><input type="radio" id="q3-nao" name="q3" value="NÃO"><label for="q3-nao">Não</label></div>
             </div>
         </div>
         
-        <div class="form-group">
-            <p class="question">4. Preencha este campo com seu melhor email para verificação de venda:</p>
-            <input type="email" class="email-input" name="Email do Cliente" placeholder="seu@email.com" required>
-        </div>
-
-        <input type="hidden" name="_subject" value="🚨 Novo Relatório de Segurança - Bluetooth Jammer">
-        <input type="hidden" name="Produto" value="Bluetooth Jammer 2.4 GHz">
-        <input type="hidden" name="Data e Hora" id="dataHora" value="">
-        <input type="hidden" name="_redirect" value="https://fortsec-project.github.io/fortsec/relatorio.html?success=true">
-        
-        <button type="submit" class="submit-button" id="submitBtn">ENVIAR RELATÓRIO</button>
-    </form>
+        <button onclick="enviarWhatsApp()" class="submit-button">ENVIAR RELATÓRIO VIA WHATSAPP</button>
+        <p class="whatsapp-note">📱 Você será redirecionado para o WhatsApp</p>
+    </div>
 
     <div class="success-message" id="successMessage">
         <h2>✅ RELATÓRIO ENVIADO COM SUCESSO!</h2>
         <p>Obrigado por responder ao questionário de segurança.</p>
-        <p>Em breve você receberá um email com instruções detalhadas de como proceder com a compra.</p>
-        <p style="margin-top: 20px; color: var(--accent-cyan);"><strong>Verifique sua caixa de entrada e spam.</strong></p>
-    </div>
-
-    <div class="error-message" id="errorMessage">
-        <h3 style="color: var(--accent-red);">❌ Erro ao enviar</h3>
-        <p id="errorText"></p>
+        <p>Em breve você receberá uma resposta no WhatsApp.</p>
+        <a href="index.html" class="back-button">VOLTAR PARA PÁGINA INICIAL</a>
     </div>
 
     <script>
-        document.getElementById('dataHora').value = new Date().toLocaleString('pt-BR');
-        
-        if (window.location.search.includes('success=true')) {
-            document.getElementById('securityForm').style.display = 'none';
+        function enviarWhatsApp() {
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelector('input[name="q2"]:checked');
+            const q3 = document.querySelector('input[name="q3"]:checked');
+            
+            if (!q1 || !q2 || !q3) {
+                alert('Por favor, responda todas as perguntas antes de enviar!');
+                return;
+            }
+            
+            const resposta1 = q1.value === 'SIM' ? '✅ Sim' : '❌ Não';
+            const resposta2 = q2.value === 'SIM' ? '✅ Sim' : '❌ Não';
+            const resposta3 = q3.value === 'SIM' ? '✅ Sim' : '❌ Não';
+            
+            const mensagem = `*RELATÓRIO DE SEGURANÇA - FORTSEC*
+
+1. Você mora perto de algum ponto público de saúde?
+${resposta1}
+
+2. Você tem vizinhos dependentes de aparelhos médicos?
+${resposta2}
+
+3. Você entende que este dispositivo é para fins educativos?
+${resposta3}
+
+📅 *Data:* ${new Date().toLocaleString('pt-BR')}`;
+            
+            const numero = '5521998556473'; 
+            
+            const mensagemCodificada = encodeURIComponent(mensagem);
+            const url = `https://wa.me/${numero}?text=${mensagemCodificada}`;
+            window.open(url, '_blank');
+            
+            document.getElementById('formContainer').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
         }
     </script>
