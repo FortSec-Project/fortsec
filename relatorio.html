@@ -105,8 +105,10 @@
         </div>
         <div class="form-group">
             <p class="question">4. Preencha este campo com seu melhor email para verificação de venda:</p>
-            <input type="email" class="email-input" id="emailInput" placeholder="seu@email.com" required>
+            <input type="email" class="email-input" id="emailInput" name="email" placeholder="seu@email.com" required>
         </div>
+        <input type="hidden" name="_subject" value="🚨 Novo Relatório de Segurança - Bluetooth Jammer">
+        <input type="hidden" name="_next" value="https://seusite.com/relatorio.html">
         <button type="submit" class="submit-button" id="submitBtn">ENVIAR RELATÓRIO</button>
     </form>
 
@@ -123,14 +125,6 @@
     </div>
 
     <script>
-        // ⚠️⚠️⚠️ CONFIGURE SUA CHAVE AQUI ⚠️⚠️⚠️
-        // 1. Acesse: https://web3forms.com/
-        // 2. Digite: contato@fortsecsecurity.com
-        // 3. Copie a Access Key que aparecer
-        // 4. Cole abaixo no lugar de 'YOUR_ACCESS_KEY_HERE'
-        
-        const ACCESS_KEY = 'eebe169a-fd3d-4b6a-ae7c-49873a5847a4';
-
         const form = document.getElementById('securityForm');
         const submitBtn = document.getElementById('submitBtn');
         const successMsg = document.getElementById('successMessage');
@@ -139,12 +133,6 @@
 
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
-
-            if (ACCESS_KEY === 'YOUR_ACCESS_KEY_HERE') {
-                errorText.textContent = '⚠️ Configure sua Access Key do Web3Forms primeiro! Leia o START-HERE.txt';
-                errorMsg.style.display = 'block';
-                return;
-            }
 
             submitBtn.disabled = true;
             submitBtn.textContent = 'ENVIANDO...';
@@ -155,32 +143,29 @@
             const q3 = document.querySelector('input[name="q3"]:checked').value;
             const email = document.getElementById('emailInput').value;
 
-            const formData = {
-                access_key: ACCESS_KEY,
-                subject: "🚨 Novo Relatório de Segurança - Bluetooth Jammer",
-                from_name: "FortSec Security",
-                "Pergunta 1 - Ponto de Saúde": q1,
-                "Pergunta 2 - Dispositivos Médicos": q2,
-                "Pergunta 3 - Entende Restrição": q3,
-                "Email do Cliente": email,
-                "Produto": "Bluetooth Jammer 2.4 GHz",
-                "Data e Hora": new Date().toLocaleString('pt-BR')
-            };
+            // Criando FormData com todos os campos
+            const formData = new FormData();
+            formData.append('name', 'Cliente FortSec');
+            formData.append('email', email);
+            formData.append('message', `Pergunta 1: ${q1}\nPergunta 2: ${q2}\nPergunta 3: ${q3}\nProduto: Bluetooth Jammer 2.4 GHz\nData: ${new Date().toLocaleString('pt-BR')}`);
+            formData.append('_subject', '🚨 Novo Relatório de Segurança - Bluetooth Jammer');
 
             try {
-                const response = await fetch('https://api.web3forms.com/submit', {
+                const response = await fetch('https://formspree.io/f/mbdaydgl', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
                 });
 
                 const data = await response.json();
 
-                if (data.success) {
+                if (response.ok) {
                     form.style.display = 'none';
                     successMsg.style.display = 'block';
                 } else {
-                    throw new Error(data.message || 'Erro desconhecido');
+                    throw new Error(data.error || 'Erro ao enviar mensagem');
                 }
             } catch (error) {
                 errorText.textContent = 'Erro: ' + error.message + '. Tente novamente.';
