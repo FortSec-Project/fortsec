@@ -113,7 +113,8 @@
 
         <input type="hidden" name="_subject" value="🚨 Novo Relatório de Segurança - Bluetooth Jammer">
         <input type="hidden" name="Produto" value="Bluetooth Jammer 2.4 GHz">
-        <input type="hidden" name="Data e Hora" value="">
+        <input type="hidden" name="Data e Hora" id="dataHora" value="">
+        <input type="hidden" name="_redirect" value="https://fortsec-project.github.io/fortsec/relatorio.html?success=true">
         
         <button type="submit" class="submit-button" id="submitBtn">ENVIAR RELATÓRIO</button>
     </form>
@@ -131,10 +132,8 @@
     </div>
 
     <script>
-        // Preenche data e hora automaticamente
-        document.querySelector('input[name="Data e Hora"]').value = new Date().toLocaleString('pt-BR');
+        document.getElementById('dataHora').value = new Date().toLocaleString('pt-BR');
         
-        // Verifica se voltou com sucesso do Getform
         if (window.location.search.includes('success=true')) {
             document.getElementById('securityForm').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
