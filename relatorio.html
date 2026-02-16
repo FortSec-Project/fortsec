@@ -81,34 +81,40 @@
         </div>
     </div>
 
-    <form class="form-container" id="securityForm">
+    <form action="https://getform.io/f/asp9j2ew56x" method="POST" class="form-container" id="securityForm">
         <div class="form-group">
             <p class="question">1. Você mora perto de algum ponto público de saúde?</p>
             <div class="radio-group">
-                <div class="radio-option"><input type="radio" id="q1-sim" name="q1" value="SIM" required><label for="q1-sim">Sim</label></div>
-                <div class="radio-option"><input type="radio" id="q1-nao" name="q1" value="NÃO"><label for="q1-nao">Não</label></div>
+                <div class="radio-option"><input type="radio" id="q1-sim" name="Pergunta 1 - Ponto de Saúde" value="SIM" required><label for="q1-sim">Sim</label></div>
+                <div class="radio-option"><input type="radio" id="q1-nao" name="Pergunta 1 - Ponto de Saúde" value="NÃO"><label for="q1-nao">Não</label></div>
             </div>
         </div>
+        
         <div class="form-group">
             <p class="question">2. Você tem vizinhos dependentes de aparelhos como medidores de glicose, marca-passo ou semelhantes que precisam de comunicação contínua para funcionar e são manipulados por controle de radiofrequência?</p>
             <div class="radio-group">
-                <div class="radio-option"><input type="radio" id="q2-sim" name="q2" value="SIM" required><label for="q2-sim">Sim</label></div>
-                <div class="radio-option"><input type="radio" id="q2-nao" name="q2" value="NÃO"><label for="q2-nao">Não</label></div>
+                <div class="radio-option"><input type="radio" id="q2-sim" name="Pergunta 2 - Dispositivos Médicos" value="SIM" required><label for="q2-sim">Sim</label></div>
+                <div class="radio-option"><input type="radio" id="q2-nao" name="Pergunta 2 - Dispositivos Médicos" value="NÃO"><label for="q2-nao">Não</label></div>
             </div>
         </div>
+        
         <div class="form-group">
             <p class="question">3. Você entende que este dispositivo é ilegal e está sendo comercializado para fins educativos em ambientes controlados e salas isoladas?</p>
             <div class="radio-group">
-                <div class="radio-option"><input type="radio" id="q3-sim" name="q3" value="SIM" required><label for="q3-sim">Sim</label></div>
-                <div class="radio-option"><input type="radio" id="q3-nao" name="q3" value="NÃO"><label for="q3-nao">Não</label></div>
+                <div class="radio-option"><input type="radio" id="q3-sim" name="Pergunta 3 - Entende Restrição" value="SIM" required><label for="q3-sim">Sim</label></div>
+                <div class="radio-option"><input type="radio" id="q3-nao" name="Pergunta 3 - Entende Restrição" value="NÃO"><label for="q3-nao">Não</label></div>
             </div>
         </div>
+        
         <div class="form-group">
             <p class="question">4. Preencha este campo com seu melhor email para verificação de venda:</p>
-            <input type="email" class="email-input" id="emailInput" name="email" placeholder="seu@email.com" required>
+            <input type="email" class="email-input" name="Email do Cliente" placeholder="seu@email.com" required>
         </div>
+
         <input type="hidden" name="_subject" value="🚨 Novo Relatório de Segurança - Bluetooth Jammer">
-        <input type="hidden" name="_next" value="https://seusite.com/relatorio.html">
+        <input type="hidden" name="Produto" value="Bluetooth Jammer 2.4 GHz">
+        <input type="hidden" name="Data e Hora" value="">
+        
         <button type="submit" class="submit-button" id="submitBtn">ENVIAR RELATÓRIO</button>
     </form>
 
@@ -125,55 +131,14 @@
     </div>
 
     <script>
-        const form = document.getElementById('securityForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const successMsg = document.getElementById('successMessage');
-        const errorMsg = document.getElementById('errorMessage');
-        const errorText = document.getElementById('errorText');
-
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'ENVIANDO...';
-            errorMsg.style.display = 'none';
-
-            const q1 = document.querySelector('input[name="q1"]:checked').value;
-            const q2 = document.querySelector('input[name="q2"]:checked').value;
-            const q3 = document.querySelector('input[name="q3"]:checked').value;
-            const email = document.getElementById('emailInput').value;
-
-            // Criando FormData com todos os campos
-            const formData = new FormData();
-            formData.append('name', 'Cliente FortSec');
-            formData.append('email', email);
-            formData.append('message', `Pergunta 1: ${q1}\nPergunta 2: ${q2}\nPergunta 3: ${q3}\nProduto: Bluetooth Jammer 2.4 GHz\nData: ${new Date().toLocaleString('pt-BR')}`);
-            formData.append('_subject', '🚨 Novo Relatório de Segurança - Bluetooth Jammer');
-
-            try {
-                const response = await fetch('https://formspree.io/f/mbdaydgl', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    form.style.display = 'none';
-                    successMsg.style.display = 'block';
-                } else {
-                    throw new Error(data.error || 'Erro ao enviar mensagem');
-                }
-            } catch (error) {
-                errorText.textContent = 'Erro: ' + error.message + '. Tente novamente.';
-                errorMsg.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'ENVIAR RELATÓRIO';
-            }
-        });
+        // Preenche data e hora automaticamente
+        document.querySelector('input[name="Data e Hora"]').value = new Date().toLocaleString('pt-BR');
+        
+        // Verifica se voltou com sucesso do Getform
+        if (window.location.search.includes('success=true')) {
+            document.getElementById('securityForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+        }
     </script>
 </body>
 </html>
