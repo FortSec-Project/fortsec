@@ -203,6 +203,36 @@
             box-shadow: 0 8px 30px rgba(0, 255, 136, 0.6);
         }
 
+        .guide-button {
+            margin-top: 40px;
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #ff2244, #ff6644);
+            border: none;
+            border-radius: 30px;
+            color: #fff;
+            font-weight: 900;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 34, 68, 0.4);
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .guide-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 34, 68, 0.6);
+        }
+
+        .buttons-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
         @media (max-width: 1024px) {
             .product-container {
                 grid-template-columns: 1fr;
@@ -258,7 +288,10 @@
         <div class="specs-section">
             <h1 class="product-title">BLUETOOTH JAMMER</h1>
             <div class="specs-list" id="specs-container"></div>
-            <a href="relatorio.html" class="order-button">ENCOMENDAR AGORA!</a>
+            <div class="buttons-row">
+                <a href="relatorio.html" class="order-button">ENCOMENDAR AGORA!</a>
+                <a href="Jammer_Guia.pdf" download class="guide-button">GUIA</a>
+            </div>
         </div>
     </div>
 
