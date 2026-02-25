@@ -233,7 +233,75 @@
             flex-wrap: wrap;
         }
 
-        @media (max-width: 1024px) {
+        .price-block {
+            margin: 30px 0 10px;
+            padding: 20px 24px;
+            background: linear-gradient(135deg, rgba(0,255,136,0.07), rgba(0,255,255,0.05));
+            border: 1px solid rgba(0, 255, 136, 0.35);
+            border-radius: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .price-block::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+        }
+
+        .price-label {
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 3px;
+            color: var(--accent-cyan);
+            margin-bottom: 6px;
+        }
+
+        .price-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--accent-green);
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            white-space: nowrap;
+        }
+
+        .price-cents {
+            font-size: 20px;
+        }
+
+        .price-badges {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+        }
+
+        .badge-pix {
+            background: rgba(0, 255, 136, 0.15);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .badge-frete {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        
             .product-container {
                 grid-template-columns: 1fr;
                 gap: 40px;
@@ -288,6 +356,16 @@
         <div class="specs-section">
             <h1 class="product-title">BLUETOOTH JAMMER</h1>
             <div class="specs-list" id="specs-container"></div>
+
+            <div class="price-block">
+                <div class="price-label">PREÇO</div>
+                <div class="price-value">R$ 350<span class="price-cents">,00</span></div>
+                <div class="price-badges">
+                    <span class="badge badge-pix">⚡ PIX</span>
+                    <span class="badge badge-frete">🚚 FRETE GRÁTIS — TODO BRASIL</span>
+                </div>
+            </div>
+
             <div class="buttons-row">
                 <a href="relatorio.html" class="order-button">ENCOMENDAR AGORA!</a>
                 <a href="Jammer_Guia.pdf" download class="guide-button">GUIA</a>
