@@ -301,7 +301,7 @@
             color: var(--accent-cyan);
         }
 
-        
+        @media (max-width: 768px) {
             .product-container {
                 grid-template-columns: 1fr;
                 gap: 40px;
@@ -309,9 +309,6 @@
             #canvas-container {
                 height: 400px;
             }
-        }
-
-        @media (max-width: 768px) {
             .product-container {
                 padding: 20px;
                 margin-top: 100px;
@@ -358,7 +355,7 @@
             <div class="specs-list" id="specs-container"></div>
 
             <div class="price-block">
-                <div class="price-label">PREÇO</div>
+                <div class="price-label">VALOR</div>
                 <div class="price-value">R$ 350<span class="price-cents">,00</span></div>
                 <div class="price-badges">
                     <span class="badge badge-pix">⚡ PIX</span>
@@ -385,9 +382,7 @@
             { label: 'POTÊNCIA', value: '3W' },
             { label: 'ALIMENTAÇÃO', value: 'USB-C ou USB-V8 (cabo incluso)' },
             { label: 'DIMENSÕES', value: '83.82mm x 62.54mm' },
-            { label: 'MATERIAL', value: 'FR4-Standard TG 135-140' },
-            { label: 'COR', value: 'Preta' },
-            { label: 'ACABAMENTO', value: 'Arte e conectores em ouro'}
+            { label: 'MATERIAL', value: 'FR4-Standard TG 135-140' }
         ];
 
         function typeSpec(element, text, index) {
