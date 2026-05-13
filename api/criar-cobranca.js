@@ -105,7 +105,7 @@ export default async function handler(req, res) {
     const payment = new Payment(mp);
     mpPayment = await payment.create({
       body: {
-        transaction_amount: 1.00, // TESTE — trocar para 350.00 em produção
+        transaction_amount: 350.00,
         description:        'Bluetooth Jammer 2.4 GHz - FORTSEC',
         payment_method_id:  'pix',
         payer: {
