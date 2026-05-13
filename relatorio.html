@@ -834,7 +834,7 @@
                 return;
             }
 
-            badge.textContent = `${qtd} UNIDADE${qtd === 1 ? '' : 'S'} DISPONÍVEL${qtd === 1 ? '' : 'IS'}`;
+            badge.textContent = `QUANTIDADE · ${qtd} UNIDADE${qtd === 1 ? '' : 'S'}`;
         } catch (_) {
             document.getElementById('stockText').textContent = 'DISPONÍVEL';
         }
