@@ -1,0 +1,8 @@
+{
+  "name": "fortsec",
+  "version": "1.0.0",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.0",
+    "mercadopago": "^2.0.0"
+  }
+}
