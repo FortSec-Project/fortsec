@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esgotado — Bluetooth Jammer | FORTSEC</title>
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <link rel="icon" href="profile.webp" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-black: #0a0a0a;
+            --carbon-dark:   #121212;
+            --carbon-medium: #1a1a1a;
+            --accent-green:  #00ff88;
+            --accent-cyan:   #00ffff;
+            --accent-purple: #9945ff;
+            --accent-red:    #ff3333;
+            --text-primary:  #ffffff;
+            --text-secondary:#b0b0b0;
+            --text-dim:      #606060;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: var(--primary-black);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background:
+                repeating-linear-gradient(0deg,  transparent, transparent 2px, rgba(255,255,255,0.016) 2px, rgba(255,255,255,0.016) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.016) 2px, rgba(255,255,255,0.016) 4px);
+            z-index: -1; pointer-events: none;
+        }
+
+        /* Glow de fundo vermelho */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255,51,51,0.06) 0%, transparent 70%);
+            z-index: -1; pointer-events: none;
+        }
+
+        /* ── HEADER ─── */
+        .header {
+            position: fixed; top: 0; width: 100%;
+            z-index: 1000;
+            background: rgba(10,10,10,0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(153,69,255,0.2);
+        }
+
+        .nav-container {
+            max-width: 1400px; margin: 0 auto;
+            padding: 18px 40px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .logo { display: flex; align-items: center; gap: 14px; text-decoration: none; color: #fff; }
+        .logo-icon img { width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--accent-purple); }
+        .logo-text { display: flex; flex-direction: column; }
+        .fortsec  { font-size: 22px; font-weight: 900; letter-spacing: 2px; }
+        .security { font-size: 11px; letter-spacing: 3px; color: var(--accent-cyan); }
+
+        /* ── CONTEÚDO CENTRAL ─── */
+        .main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 20px 60px;
+        }
+
+        .content {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Status ESGOTADO */
+        .esgotado-badge {
+            display: inline-block;
+            background: rgba(255,51,51,0.1);
+            border: 1px solid rgba(255,51,51,0.4);
+            border-radius: 8px;
+            padding: 7px 20px;
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 11px; letter-spacing: 4px;
+            color: var(--accent-red);
+            margin-bottom: 30px;
+            animation: badgePulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes badgePulse {
+            from { box-shadow: 0 0 10px rgba(255,51,51,0.15); }
+            to   { box-shadow: 0 0 25px rgba(255,51,51,0.35); }
+        }
+
+        /* Título grande */
+        .big-title {
+            font-size: clamp(54px, 10vw, 90px);
+            font-weight: 900;
+            letter-spacing: 4px;
+            line-height: 1;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .big-title-text {
+            background: linear-gradient(135deg, var(--accent-red) 0%, #ff8800 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(255,51,51,0.5));
+        }
+
+        /* Glitch effect */
+        .big-title::before,
+        .big-title::after {
+            content: 'ESGOTADO';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-red) 0%, #ff8800 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glitch1 6s infinite;
+        }
+
+        .big-title::before { color: var(--accent-cyan); animation: glitch1 6s infinite; }
+        .big-title::after  { color: var(--accent-red);  animation: glitch2 6s infinite; }
+
+        @keyframes glitch1 {
+            0%, 92%, 96%, 100% { clip-path: none; transform: translateX(-50%); }
+            93% { clip-path: inset(20% 0 70% 0); transform: translateX(calc(-50% - 3px)); }
+            95% { clip-path: inset(50% 0 30% 0); transform: translateX(calc(-50% + 3px)); }
+        }
+        @keyframes glitch2 {
+            0%, 92%, 96%, 100% { clip-path: none; transform: translateX(-50%); }
+            93% { clip-path: inset(60% 0 10% 0); transform: translateX(calc(-50% + 3px)); }
+            95% { clip-path: inset(10% 0 80% 0); transform: translateX(calc(-50% - 3px)); }
+        }
+
+        .sub-title {
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 15px; letter-spacing: 2px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .product-name-sub {
+            font-size: 14px; font-weight: 700;
+            letter-spacing: 3px; color: var(--text-dim);
+            margin-bottom: 50px;
+        }
+
+        /* Divider */
+        .divider {
+            width: 80px; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-red), transparent);
+            margin: 0 auto 50px;
+        }
+
+        /* Card de lista de espera */
+        .waitlist-card {
+            background: var(--carbon-dark);
+            border: 1px solid rgba(153,69,255,0.3);
+            border-radius: 20px;
+            padding: 36px 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .waitlist-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+        }
+
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 14px;
+        }
+
+        .card-title {
+            font-size: 16px; font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 13px; color: var(--text-secondary);
+            line-height: 1.7; margin-bottom: 28px;
+        }
+
+        .input-row {
+            display: flex; gap: 12px;
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 13px 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            outline: none;
+            transition: border-color .25s, box-shadow .25s;
+            -webkit-appearance: none;
+        }
+        .email-input::placeholder { color: rgba(255,255,255,0.2); }
+        .email-input:focus {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 2px rgba(153,69,255,0.12);
+        }
+        .email-input.err { border-color: var(--accent-red); }
+
+        .btn-notify {
+            padding: 13px 22px;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-cyan) 100%);
+            border: none; border-radius: 10px;
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700; font-size: 12px; letter-spacing: 1px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: transform .25s, box-shadow .25s, opacity .25s;
+            box-shadow: 0 4px 20px rgba(153,69,255,0.3);
+        }
+        .btn-notify:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 28px rgba(153,69,255,0.5);
+        }
+        .btn-notify:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+        .btn-spin {
+            display: none;
+            width: 16px; height: 16px;
+            border: 2px solid rgba(0,0,0,.25);
+            border-top-color: #000;
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+            margin: 0 auto;
+        }
+        .btn-loading .btn-text { display: none; }
+        .btn-loading .btn-spin { display: block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Feedback */
+        .feedback {
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 12px;
+            margin-top: 14px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            display: none;
+        }
+        .feedback.show    { display: block; }
+        .feedback.success { background: rgba(0,255,136,.08); border: 1px solid var(--accent-green); color: var(--accent-green); }
+        .feedback.error   { background: rgba(255,51,51,.08);  border: 1px solid var(--accent-red);   color: var(--accent-red);   }
+
+        /* Back link */
+        .back-section {
+            margin-top: 32px;
+        }
+
+        .back-link {
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 13px; letter-spacing: 1px;
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .back-link:hover { color: var(--accent-cyan); }
+
+        /* ── FOOTER ─── */
+        .footer {
+            text-align: center;
+            padding: 24px;
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 11px; letter-spacing: 2px;
+            color: var(--text-dim);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        @media (max-width: 600px) {
+            .nav-container { padding: 15px 20px; }
+            .waitlist-card { padding: 24px 20px; }
+            .input-row { flex-direction: column; }
+            .btn-notify { padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <img src="profile.webp" alt="FortSec">
+                </div>
+                <div class="logo-text">
+                    <span class="fortsec">FORTSEC</span>
+                    <span class="security">SECURITY</span>
+                </div>
+            </a>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="content">
+
+            <div class="esgotado-badge">● FORA DE ESTOQUE</div>
+
+            <h1 class="big-title">
+                <span class="big-title-text">ESGOTADO</span>
+            </h1>
+
+            <p class="sub-title">TODAS AS UNIDADES FORAM VENDIDAS</p>
+            <p class="product-name-sub">BLUETOOTH JAMMER 2.4 GHz · FORTSEC</p>
+
+            <div class="divider"></div>
+
+            <div class="waitlist-card">
+                <div class="card-icon">🔔</div>
+                <div class="card-title">AVISE-ME QUANDO CHEGAR</div>
+                <div class="card-desc">
+                    Deixe seu e-mail e você será o primeiro a saber quando um novo lote estiver disponível. Sem spam — apenas um aviso quando o estoque for reposto.
+                </div>
+
+                <div class="input-row">
+                    <input type="email"
+                           id="waitlistEmail"
+                           class="email-input"
+                           placeholder="seu@email.com"
+                           maxlength="120"
+                           autocomplete="email">
+                    <button class="btn-notify" id="notifyBtn" onclick="entrarFila()">
+                        <span class="btn-text">QUERO SER AVISADO</span>
+                        <span class="btn-spin"></span>
+                    </button>
+                </div>
+
+                <div id="feedback" class="feedback"></div>
+            </div>
+
+            <div class="back-section">
+                <a href="jammer-detalhes.html" class="back-link">← Ver detalhes do produto</a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a href="index.html" class="back-link">Voltar ao início</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        FORTSEC OFFENSIVE SECURITY — TODOS OS DIREITOS RESERVADOS
+    </footer>
+
+<script>
+(function () {
+    'use strict';
+
+    function sanitizeEmail(val) {
+        if (typeof val !== 'string') return '';
+        return val.replace(/[<>"';&`\\]/g, '').trim().toLowerCase().slice(0, 120);
+    }
+
+    function emailValido(e) {
+        return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(e);
+    }
+
+    function showFeedback(msg, type) {
+        const el = document.getElementById('feedback');
+        el.textContent = msg;
+        el.className   = `feedback ${type} show`;
+    }
+
+    // Rate limit simples
+    let lastTry = 0;
+
+    window.entrarFila = async function () {
+        const now = Date.now();
+        if (now - lastTry < 10_000) {
+            showFeedback('Aguarde alguns segundos antes de tentar novamente.', 'error');
+            return;
+        }
+        lastTry = now;
+
+        const emailEl = document.getElementById('waitlistEmail');
+        const email   = sanitizeEmail(emailEl.value);
+
+        emailEl.classList.remove('err');
+
+        if (!emailValido(email)) {
+            emailEl.classList.add('err');
+            showFeedback('Digite um e-mail válido.', 'error');
+            return;
+        }
+
+        const btn = document.getElementById('notifyBtn');
+        btn.disabled = true;
+        btn.classList.add('btn-loading');
+
+        try {
+            const r   = await fetch('/api/waitlist', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ email })
+            });
+            const res = await r.json();
+
+            if (r.ok || r.status === 409) {
+                showFeedback('✓ E-mail cadastrado! Você será avisado quando o estoque for reposto.', 'success');
+                emailEl.value    = '';
+                btn.disabled     = true; // não deixa enviar de novo
+            } else {
+                throw new Error(res.erro || 'Erro ao cadastrar.');
+            }
+
+        } catch (err) {
+            showFeedback(err.message || 'Erro ao cadastrar. Tente novamente.', 'error');
+            btn.disabled = false;
+        } finally {
+            btn.classList.remove('btn-loading');
+        }
+    };
+
+    // Enter também submete
+    document.getElementById('waitlistEmail').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') window.entrarFila();
+    });
+
+})();
+</script>
+</body>
+</html>
