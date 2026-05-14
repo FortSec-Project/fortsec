@@ -7,6 +7,7 @@
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="mp-public-key" content="APP_USR-e1ed3cc7-2868-43a8-8165-9c7b34a279b2">
     <link rel="icon" href="profile.webp" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -572,6 +573,61 @@
         /* ─────────────────────────────────────────────────── */
         /* RESPONSIVE                                         */
         /* ─────────────────────────────────────────────────── */
+
+        /* ── SELETOR DE PAGAMENTO ────────────────────────── */
+        .payment-selector {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px;
+        }
+        .method-btn {
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            padding: 16px 12px; background: rgba(255,255,255,0.03);
+            border: 2px solid rgba(255,255,255,0.1); border-radius: 14px;
+            cursor: pointer; transition: all .25s; width: 100%;
+        }
+        .method-btn:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.06); }
+        .method-btn.pix-active  { border-color: var(--accent-cyan);   background: rgba(0,255,255,0.05); }
+        .method-btn.card-active { border-color: var(--accent-purple); background: rgba(153,69,255,0.05); }
+        .method-icon { font-size: 22px; }
+        .method-name { font-size: 13px; font-weight: 900; letter-spacing: 2px; color: var(--text-primary); }
+        .method-desc { font-family: "Ubuntu Mono", monospace; font-size: 10px; letter-spacing: 1px; color: var(--text-dim); }
+        .method-btn.pix-active  .method-desc { color: var(--accent-cyan); }
+        .method-btn.card-active .method-desc { color: var(--accent-purple); }
+
+        /* ── CAMPOS DO CARTÃO ─────────────────────────────── */
+        .card-section { margin-top: 4px; }
+        .mp-field {
+            width: 100%; height: 44px; padding: 0 4px;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; overflow: hidden; transition: border-color .25s, box-shadow .25s;
+        }
+        .mp-field.mp-focused { border-color: var(--accent-cyan); box-shadow: 0 0 0 2px rgba(0,255,255,0.09); }
+        .mp-field.mp-error   { border-color: var(--accent-red); }
+        .mp-input {
+            width: 100%; padding: 11px 15px; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+            color: var(--text-primary); font-family: "Ubuntu Mono", monospace; font-size: 14px;
+            outline: none; transition: border-color .25s, box-shadow .25s; -webkit-appearance: none;
+        }
+        .mp-input::placeholder { color: rgba(255,255,255,0.2); }
+        .mp-input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 0 2px rgba(0,255,255,0.09); }
+        .mp-select {
+            width: 100%; padding: 11px 15px; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+            color: var(--text-primary); font-family: "Ubuntu Mono", monospace; font-size: 13px;
+            outline: none; cursor: pointer; -webkit-appearance: none; transition: border-color .25s;
+        }
+        .mp-select:focus { border-color: var(--accent-purple); box-shadow: 0 0 0 2px rgba(153,69,255,0.09); }
+        .mp-select option { background: #121212; color: #fff; }
+        .mp-err { font-family: "Ubuntu Mono", monospace; font-size: 10px; color: var(--accent-red); margin-top: 4px; display: none; }
+        .mp-err.show { display: block; }
+
+        /* ── RESULTADO DO CARTÃO ──────────────────────────── */
+        #step-cartao { display: none; }
+        .cartao-card { background: var(--carbon-dark); text-align: center; }
+        .cartao-card.approved { border: 2px solid var(--accent-green); box-shadow: 0 10px 50px rgba(0,255,136,0.15); }
+        .cartao-card.rejected { border: 2px solid var(--accent-red);   box-shadow: 0 10px 50px rgba(255,51,51,0.1); }
+        .cartao-card.pending  { border: 2px solid var(--accent-cyan);  box-shadow: 0 10px 50px rgba(0,255,255,0.1); }
+
         @media (max-width: 900px) {
             .page-container {
                 grid-template-columns: 1fr;
@@ -743,6 +799,58 @@
                             </div>
                         </div>
 
+                        <div class="section-sep">— FORMA DE PAGAMENTO</div>
+                        <div class="payment-selector">
+                            <button type="button" class="method-btn pix-active" id="btnPix" onclick="selecionarMetodo('pix')">
+                                <span class="method-icon">⚡</span>
+                                <span class="method-name">PIX</span>
+                                <span class="method-desc">À vista · R$ 350,00</span>
+                            </button>
+                            <button type="button" class="method-btn" id="btnCartao" onclick="selecionarMetodo('cartao')">
+                                <span class="method-icon">💳</span>
+                                <span class="method-name">CARTÃO</span>
+                                <span class="method-desc">Até 5x sem juros</span>
+                            </button>
+                        </div>
+
+                        <!-- Campos do cartão -->
+                        <div id="cardSection" class="card-section" style="display:none">
+                            <div class="form-group">
+                                <label>NÚMERO DO CARTÃO <span class="req">*</span></label>
+                                <div class="mp-field" id="mp-cardNumber"></div>
+                                <div class="mp-err" id="mp-cardNumber-err"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>VALIDADE <span class="req">*</span></label>
+                                    <input type="text" id="mp-expiry" class="mp-input"
+                                           placeholder="MM/AA" maxlength="5" inputmode="numeric">
+                                    <div class="mp-err" id="mp-expiry-err"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>CVV <span class="req">*</span></label>
+                                    <div class="mp-field" id="mp-cvv"></div>
+                                    <div class="mp-err" id="mp-cvv-err"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>NOME NO CARTÃO <span class="req">*</span></label>
+                                <input type="text" id="mp-cardholderName" class="mp-input"
+                                       placeholder="Como aparece no cartão" maxlength="80" autocomplete="cc-name">
+                                <div class="mp-err" id="mp-name-err"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>PARCELAS <span class="req">*</span></label>
+                                <select id="mp-installments" class="mp-select">
+                                    <option value="1">1x de R$ 350,00 — sem juros</option>
+                                    <option value="2">2x de R$ 175,00 — sem juros</option>
+                                    <option value="3">3x de R$ 116,67 — sem juros</option>
+                                    <option value="4">4x de R$ 87,50 — sem juros</option>
+                                    <option value="5">5x de R$ 70,00 — sem juros</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <button type="submit" class="btn-primary" id="submitBtn">
                             <span class="btn-text">PROSSEGUIR PARA PAGAMENTO ⚡</span>
                             <span class="btn-loader"></span>
@@ -786,6 +894,15 @@
                 </div>
             </div>
 
+            <!-- ── STEP 2.5: Resultado Cartão ── -->
+            <div id="step-cartao">
+                <div class="card cartao-card" id="cartaoCard">
+                    <div class="success-icon" id="cartaoIcon" style="margin:0 auto 22px">?</div>
+                    <div class="success-title" id="cartaoTitle" style="font-size:22px;font-weight:900;letter-spacing:2px;margin-bottom:18px"></div>
+                    <div class="success-msg" id="cartaoMsg" style="font-family:'Ubuntu Mono',monospace;font-size:13px;color:var(--text-secondary);line-height:1.8"></div>
+                </div>
+            </div>
+
             <!-- ── STEP 3: Sucesso ── -->
             <div id="step-success">
                 <div class="card success-card">
@@ -811,13 +928,80 @@
     let timerInterval = null;
     let submitCount   = 0;
     let lastSubmitAt  = 0;
+    let metodoPagamento = 'pix';
+    let mpInstance    = null;
+    let cardFields    = null;
 
     // ── Inicialização ─────────────────────────────────────
     window.addEventListener('DOMContentLoaded', async () => {
         await checkStock();
         setupMasks();
         setupCEP();
+        initMP();
     });
+
+    // ── Inicializar SDK do Mercado Pago ───────────────────
+    function initMP() {
+        const publicKey = document.querySelector('meta[name="mp-public-key"]')?.content;
+        if (!publicKey || !window.MercadoPago) return;
+        try {
+            mpInstance = new MercadoPago(publicKey, { locale: 'pt-BR' });
+        } catch(_) {}
+    }
+
+    // ── Seletor de método de pagamento ───────────────────
+    window.selecionarMetodo = function(metodo) {
+        metodoPagamento = metodo;
+
+        const btnPix    = document.getElementById('btnPix');
+        const btnCartao = document.getElementById('btnCartao');
+        const cardSec   = document.getElementById('cardSection');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (metodo === 'pix') {
+            btnPix.className    = 'method-btn pix-active';
+            btnCartao.className = 'method-btn';
+            cardSec.style.display = 'none';
+            submitBtn.querySelector('.btn-text').textContent = 'PROSSEGUIR PARA PAGAMENTO ⚡';
+        } else {
+            btnCartao.className = 'method-btn card-active';
+            btnPix.className    = 'method-btn';
+            cardSec.style.display = 'block';
+            submitBtn.querySelector('.btn-text').textContent = 'PAGAR COM CARTÃO 💳';
+            montarCamposCartao();
+        }
+    };
+
+    // ── Montar campos seguros do MP ───────────────────────
+    function montarCamposCartao() {
+        if (!mpInstance || cardFields) return;
+        try {
+            cardFields = mpInstance.fields;
+            cardFields.create('cardNumber', {
+                placeholder: '0000 0000 0000 0000',
+                style: {
+                    base: {
+                        color: '#ffffff',
+                        fontFamily: '"Ubuntu Mono", monospace',
+                        fontSize: '14px',
+                        '::placeholder': { color: 'rgba(255,255,255,0.2)' }
+                    }
+                }
+            }).mount('#mp-cardNumber');
+
+            cardFields.create('securityCode', {
+                placeholder: '123',
+                style: {
+                    base: {
+                        color: '#ffffff',
+                        fontFamily: '"Ubuntu Mono", monospace',
+                        fontSize: '14px',
+                        '::placeholder': { color: 'rgba(255,255,255,0.2)' }
+                    }
+                }
+            }).mount('#mp-cvv');
+        } catch(_) {}
+    }
 
     // ── Verificação de estoque ────────────────────────────
     async function checkStock() {
@@ -1012,7 +1196,7 @@
     document.getElementById('orderForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        // Rate limit client-side: máx 4 tentativas em 2 minutos
+        // Rate limit client-side
         const now = Date.now();
         if (now - lastSubmitAt < 120_000) {
             submitCount++;
@@ -1037,16 +1221,51 @@
             bairro:      sanitize(document.getElementById('bairro').value, 80),
             cidade:      sanitize(document.getElementById('cidade').value, 80),
             estado:      sanitize(document.getElementById('estado').value, 2).toUpperCase(),
+            metodo:      metodoPagamento,
         };
 
         if (!validarForm(payload)) return;
 
-        // Estado de carregamento
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
         btn.classList.add('btn-loading');
 
         try {
+            // ── Cartão: tokenizar antes de enviar ──────────
+            if (metodoPagamento === 'cartao') {
+                const expiry = document.getElementById('mp-expiry').value.replace(/\D/g,'');
+                const nome   = sanitize(document.getElementById('mp-cardholderName').value, 80);
+                const parc   = parseInt(document.getElementById('mp-installments').value, 10);
+
+                if (expiry.length !== 4) {
+                    showFieldErr('mp-expiry', 'Validade inválida (MM/AA)');
+                    btn.disabled = false; btn.classList.remove('btn-loading'); return;
+                }
+                if (!nome || nome.length < 3) {
+                    document.getElementById('mp-name-err').textContent = 'Informe o nome no cartão';
+                    document.getElementById('mp-name-err').classList.add('show');
+                    btn.disabled = false; btn.classList.remove('btn-loading'); return;
+                }
+
+                // Tokenizar via SDK do MP (dados do cartão nunca passam pelo nosso servidor)
+                let token;
+                try {
+                    const tokenResult = await mpInstance.fields.createCardToken({
+                        cardholderName:    nome,
+                        cardExpirationMonth: expiry.slice(0, 2),
+                        cardExpirationYear:  '20' + expiry.slice(2, 4),
+                    });
+                    token = tokenResult.id;
+                } catch(mpErr) {
+                    showAlert('form-alert', 'Dados do cartão inválidos. Verifique e tente novamente.', 'error');
+                    btn.disabled = false; btn.classList.remove('btn-loading'); return;
+                }
+
+                payload.card_token    = token;
+                payload.parcelas      = parc;
+                payload.cardholder    = nome;
+            }
+
             const r = await fetch('/api/criar-cobranca', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1065,7 +1284,12 @@
             }
 
             paymentId = res.payment_id;
-            mostrarPix(res);
+
+            if (metodoPagamento === 'pix') {
+                mostrarPix(res);
+            } else {
+                mostrarResultadoCartao(res);
+            }
 
         } catch (err) {
             showAlert('form-alert', err.message || 'Erro de conexão. Tente novamente.', 'error');
@@ -1073,6 +1297,49 @@
             btn.classList.remove('btn-loading');
         }
     });
+
+    // ── Resultado do cartão ───────────────────────────────
+    function mostrarResultadoCartao(res) {
+        document.getElementById('step-form').style.display    = 'none';
+        document.getElementById('step-cartao').style.display  = 'block';
+
+        const card  = document.getElementById('cartaoCard');
+        const icon  = document.getElementById('cartaoIcon');
+        const title = document.getElementById('cartaoTitle');
+        const msg   = document.getElementById('cartaoMsg');
+
+        if (res.status === 'approved') {
+            card.classList.add('approved');
+            icon.textContent  = '✓';
+            icon.style.background    = 'rgba(0,255,136,0.08)';
+            icon.style.borderColor   = 'var(--accent-green)';
+            title.style.color = 'var(--accent-green)';
+            title.textContent = 'PAGAMENTO APROVADO!';
+            msg.innerHTML = `Seu pedido foi confirmado! 🎉<br>
+                Aparelho em separação, você receberá o código de rastreio por e-mail.<br><br>
+                <span class="success-highlight">Fique de olho na sua caixa de entrada.</span>`;
+        } else if (res.status === 'in_process' || res.status === 'pending') {
+            card.classList.add('pending');
+            icon.textContent  = '⏳';
+            icon.style.background    = 'rgba(0,255,255,0.08)';
+            icon.style.borderColor   = 'var(--accent-cyan)';
+            title.style.color = 'var(--accent-cyan)';
+            title.textContent = 'PAGAMENTO EM ANÁLISE';
+            msg.innerHTML = `Seu pagamento está sendo processado.<br>
+                Você receberá um e-mail assim que for confirmado.<br><br>
+                <span class="success-highlight">Isso pode levar alguns minutos.</span>`;
+        } else {
+            card.classList.add('rejected');
+            icon.textContent  = '✗';
+            icon.style.background    = 'rgba(255,51,51,0.08)';
+            icon.style.borderColor   = 'var(--accent-red)';
+            title.style.color = 'var(--accent-red)';
+            title.textContent = 'PAGAMENTO RECUSADO';
+            msg.innerHTML = `Não foi possível processar o pagamento.<br>
+                Verifique os dados do cartão ou tente outro cartão.<br><br>
+                <a href="/relatorio" style="color:var(--accent-cyan)">← Tentar novamente</a>`;
+        }
+    }
 
     // ── Tela Pix ──────────────────────────────────────────
     function mostrarPix(data) {

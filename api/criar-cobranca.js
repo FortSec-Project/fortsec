@@ -100,35 +100,60 @@ export default async function handler(req, res) {
   }
 
   // ── Criar pagamento no Mercado Pago ───────────────────
+  const metodo    = d.metodo === 'cartao' ? 'cartao' : 'pix';
+  const cardToken = sanitize(body.card_token || '', 100);
+  const parcelas  = Math.min(Math.max(parseInt(body.parcelas || 1, 10), 1), 5);
+  const cardholder = sanitize(body.cardholder || '', 80);
+
+  if (metodo === 'cartao' && !cardToken) {
+    return res.status(422).json({ erro: 'Token do cartão ausente' });
+  }
+
   let mpPayment;
   try {
     const payment = new Payment(mp);
-    mpPayment = await payment.create({
-      body: {
-        transaction_amount: 350.00,
-        description:        'Bluetooth Jammer 2.4 GHz - FORTSEC',
-        payment_method_id:  'pix',
-        payer: {
-          email:             d.email,
-          first_name:        d.nome.split(' ')[0],
-          last_name:         d.nome.split(' ').slice(1).join(' ') || '-',
-          identification:    { type: 'CPF', number: d.cpf },
-          address: {
-            zip_code:      d.cep,
-            street_name:   d.logradouro,
-            street_number: d.numero,
-            neighborhood:  d.bairro,
-            city:          d.cidade,
-            federal_unit:  d.estado,
-          }
-        },
-        notification_url: `${process.env.SITE_URL}/api/webhook`,
-        date_of_expiration: new Date(Date.now() + 15 * 60 * 1000).toISOString(), // 15 min
-      }
-    });
+
+    const payBody = metodo === 'pix'
+      ? {
+          transaction_amount: 350.00,
+          description:        'Bluetooth Jammer 2.4 GHz - FORTSEC',
+          payment_method_id:  'pix',
+          payer: {
+            email:          d.email,
+            first_name:     d.nome.split(' ')[0],
+            last_name:      d.nome.split(' ').slice(1).join(' ') || '-',
+            identification: { type: 'CPF', number: d.cpf },
+            address: {
+              zip_code:      d.cep,
+              street_name:   d.logradouro,
+              street_number: d.numero,
+              neighborhood:  d.bairro,
+              city:          d.cidade,
+              federal_unit:  d.estado,
+            }
+          },
+          notification_url:    `${process.env.SITE_URL}/api/webhook`,
+          date_of_expiration:  new Date(Date.now() + 15 * 60 * 1000).toISOString(),
+        }
+      : {
+          transaction_amount:  350.00,
+          description:         'Bluetooth Jammer 2.4 GHz - FORTSEC',
+          token:               cardToken,
+          installments:        parcelas,
+          payment_method_id:   'credit_card',
+          payer: {
+            email:          d.email,
+            first_name:     d.nome.split(' ')[0],
+            last_name:      d.nome.split(' ').slice(1).join(' ') || '-',
+            identification: { type: 'CPF', number: d.cpf },
+          },
+          notification_url: `${process.env.SITE_URL}/api/webhook`,
+        };
+
+    mpPayment = await payment.create({ body: payBody });
+
   } catch (mpErr) {
     console.error('[criar-cobranca] MP error:', mpErr.message);
-    // Libera a reserva atômica se MP falhou
     await supabase.rpc('liberar_reserva', { produto_id: 'jammer' });
     return res.status(502).json({ erro: 'Erro ao gerar cobrança. Tente novamente.' });
   }
@@ -137,8 +162,9 @@ export default async function handler(req, res) {
   const { error: insertErr } = await supabase.from('pedidos').insert({
     mp_payment_id:  String(mpPayment.id),
     status:         'pendente',
+    metodo:         metodo,
     nome:           d.nome,
-    cpf:            d.cpf,   // armazenado sem formatação
+    cpf:            d.cpf,
     email:          d.email,
     cep:            d.cep,
     logradouro:     d.logradouro,
@@ -154,11 +180,27 @@ export default async function handler(req, res) {
     // Não bloqueia o cliente — pagamento já existe no MP
   }
 
+  // Salvar metodo no pedido
+  const metodoSalvo = metodo;
   const txInfo = mpPayment.point_of_interaction?.transaction_data;
 
-  return res.status(200).json({
-    payment_id:      String(mpPayment.id),
-    qr_code:         txInfo?.qr_code         || '',
-    qr_code_base64:  txInfo?.qr_code_base64  || '',
-  });
+  // Resposta diferente para Pix e Cartão
+  if (metodoSalvo === 'pix') {
+    return res.status(200).json({
+      payment_id:     String(mpPayment.id),
+      qr_code:        txInfo?.qr_code        || '',
+      qr_code_base64: txInfo?.qr_code_base64 || '',
+    });
+  } else {
+    // Cartão: retorna status imediatamente
+    const st = mpPayment.status; // approved | rejected | in_process
+    if (st === 'rejected') {
+      // Libera estoque pois não foi pago
+      await supabase.rpc('liberar_reserva', { produto_id: 'jammer' });
+    }
+    return res.status(200).json({
+      payment_id: String(mpPayment.id),
+      status:     st,
+    });
+  }
 }
