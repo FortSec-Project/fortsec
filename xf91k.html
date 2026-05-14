@@ -275,8 +275,15 @@
                placeholder="••••••••" autocomplete="off"
                onkeydown="if(event.key==='Enter')login()">
 
-        <button class="login-btn" onclick="login()">ENTRAR</button>
-        <div class="login-err" id="loginErr">Token inválido</div>
+        <label class="login-label" style="margin-top:4px" id="captchaLabel">VERIFICAÇÃO</label>
+        <input type="text" id="captchaInput" class="login-input"
+               placeholder="?" autocomplete="off" inputmode="numeric"
+               onkeydown="if(event.key==='Enter')login()">
+
+        <button class="login-btn" id="loginBtn" onclick="login()">ENTRAR</button>
+
+        <div class="login-err" id="loginErr"></div>
+        <div id="lockMsg" style="display:none;font-family:Ubuntu Mono,monospace;font-size:11px;color:var(--red);margin-top:14px"></div>
     </div>
 </div>
 
@@ -367,22 +374,113 @@
     let adminToken  = '';
     let allPedidos  = [];
 
+    // ── Captcha matemático ────────────────────────────────
+    let captchaAnswer = 0;
+
+    function gerarCaptcha() {
+        const a = Math.floor(Math.random() * 20) + 1;
+        const b = Math.floor(Math.random() * 20) + 1;
+        const ops = [
+            { label: `${a} + ${b}`, answer: a + b },
+            { label: `${a} × ${b}`, answer: a * b },
+            { label: `${Math.max(a,b)} - ${Math.min(a,b)}`, answer: Math.max(a,b) - Math.min(a,b) }
+        ];
+        const op = ops[Math.floor(Math.random() * ops.length)];
+        captchaAnswer = op.answer;
+        document.getElementById('captchaLabel').textContent = `VERIFICAÇÃO: QUANTO É ${op.label}?`;
+        document.getElementById('captchaInput').value = '';
+    }
+
+    // ── Bloqueio por tentativas ───────────────────────────
+    const MAX_TENTATIVAS = 5;
+    const BLOQUEIO_MS    = 10 * 60 * 1000; // 10 minutos
+    const STORAGE_KEY    = '_fs_lock';
+
+    function getBloqueio() {
+        try { return JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
+    }
+
+    function setBloqueio(data) {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function estaBloqueado() {
+        const d = getBloqueio();
+        if (!d.bloqueadoAte) return false;
+        if (Date.now() < d.bloqueadoAte) return true;
+        setBloqueio({});
+        return false;
+    }
+
+    function registrarFalha() {
+        const d = getBloqueio();
+        const tentativas = (d.tentativas || 0) + 1;
+        if (tentativas >= MAX_TENTATIVAS) {
+            setBloqueio({ tentativas, bloqueadoAte: Date.now() + BLOQUEIO_MS });
+        } else {
+            setBloqueio({ tentativas });
+        }
+        return tentativas;
+    }
+
+    function resetarFalhas() { setBloqueio({}); }
+
+    function mostrarErro(msg) {
+        const el = document.getElementById('loginErr');
+        el.textContent = msg;
+        el.classList.add('show');
+    }
+
+    function verificarBloqueio() {
+        if (!estaBloqueado()) return false;
+        const d = getBloqueio();
+        const restam = Math.ceil((d.bloqueadoAte - Date.now()) / 60000);
+        document.getElementById('lockMsg').style.display = 'block';
+        document.getElementById('lockMsg').textContent   = `Acesso bloqueado. Tente novamente em ${restam} minuto(s).`;
+        document.getElementById('loginBtn').disabled     = true;
+        document.getElementById('tokenInput').disabled   = true;
+        document.getElementById('captchaInput').disabled = true;
+        return true;
+    }
+
     // ── Login ─────────────────────────────────────────────
     window.login = async function () {
-        const t = document.getElementById('tokenInput').value.trim();
-        if (!t) return;
+        if (verificarBloqueio()) return;
 
-        const err = document.getElementById('loginErr');
-        err.classList.remove('show');
+        const t   = document.getElementById('tokenInput').value.trim();
+        const cap = parseInt(document.getElementById('captchaInput').value.trim(), 10);
+
+        document.getElementById('loginErr').classList.remove('show');
+
+        if (!t) { mostrarErro('Digite o token de acesso.'); return; }
+
+        if (isNaN(cap) || cap !== captchaAnswer) {
+            registrarFalha();
+            gerarCaptcha();
+            mostrarErro('Resposta incorreta. Tente novamente.');
+            return;
+        }
 
         try {
             const r = await fetch('/api/admin?action=dashboard', {
                 headers: { 'Authorization': `Bearer ${t}` }
             });
-            if (!r.ok) { err.classList.add('show'); return; }
 
+            if (!r.ok) {
+                const tentativas = registrarFalha();
+                gerarCaptcha();
+                const restam = MAX_TENTATIVAS - tentativas;
+                if (restam <= 0) {
+                    verificarBloqueio();
+                } else {
+                    mostrarErro(`Token inválido. ${restam} tentativa(s) restante(s).`);
+                }
+                return;
+            }
+
+            resetarFalhas();
             adminToken = t;
-            sessionStorage.setItem('admin_token', t); // persiste na sessão
+            sessionStorage.setItem('admin_token', t);
 
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('dashboard').style.display   = 'block';
@@ -390,7 +488,7 @@
             const d = await r.json();
             renderDashboard(d);
         } catch (_) {
-            err.classList.add('show');
+            mostrarErro('Erro de conexão. Tente novamente.');
         }
     };
 
@@ -400,10 +498,13 @@
         document.getElementById('loginScreen').style.display = 'flex';
         document.getElementById('dashboard').style.display   = 'none';
         document.getElementById('tokenInput').value = '';
+        gerarCaptcha();
     };
 
     // Revalidar sessão ao carregar
     window.addEventListener('DOMContentLoaded', async () => {
+        gerarCaptcha();
+        if (verificarBloqueio()) return;
         const saved = sessionStorage.getItem('admin_token');
         if (!saved) return;
         document.getElementById('tokenInput').value = saved;
