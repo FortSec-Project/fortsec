@@ -574,6 +574,48 @@
         /* RESPONSIVE                                         */
         /* ─────────────────────────────────────────────────── */
 
+
+        /* ── SELETOR DE QUANTIDADE ───────────────────────── */
+        .qty-selector {
+            display: flex; align-items: center; gap: 0;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(0,255,136,0.3);
+            border-radius: 12px; overflow: hidden;
+            width: fit-content;
+        }
+
+        .qty-btn {
+            width: 40px; height: 40px;
+            background: none; border: none;
+            color: var(--accent-green);
+            font-size: 20px; font-weight: 700;
+            cursor: pointer; transition: background .2s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .qty-btn:hover { background: rgba(0,255,136,0.08); }
+        .qty-btn:disabled { opacity: .3; cursor: not-allowed; }
+
+        .qty-display {
+            min-width: 48px; text-align: center;
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 18px; font-weight: 700;
+            color: var(--text-primary);
+            border-left: 1px solid rgba(0,255,136,0.15);
+            border-right: 1px solid rgba(0,255,136,0.15);
+            padding: 0 10px; line-height: 40px;
+        }
+
+        .qty-total {
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 13px; color: var(--accent-green);
+            margin-left: 14px; letter-spacing: 1px;
+        }
+
+        .qty-wrap {
+            display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
+            margin-bottom: 4px;
+        }
+
         /* ── SELETOR DE PAGAMENTO ────────────────────────── */
         .payment-selector {
             display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px;
@@ -704,6 +746,19 @@
                     <div id="form-alert" class="alert"></div>
 
                     <form id="orderForm" novalidate autocomplete="on">
+
+                        <!-- Quantidade -->
+                        <div class="form-group">
+                            <label>QUANTIDADE</label>
+                            <div class="qty-wrap">
+                                <div class="qty-selector">
+                                    <button type="button" class="qty-btn" id="qtyMinus" onclick="alterarQtd(-1)">−</button>
+                                    <span class="qty-display" id="qtyDisplay">1</span>
+                                    <button type="button" class="qty-btn" id="qtyPlus" onclick="alterarQtd(1)">+</button>
+                                </div>
+                                <span class="qty-total" id="qtyTotal">R$ 320,00</span>
+                            </div>
+                        </div>
 
                         <!-- Nome -->
                         <div class="form-group">
@@ -931,6 +986,9 @@
     let metodoPagamento = 'pix';
     let mpInstance    = null;
     let cardFields    = null;
+    let quantidade    = 1;
+    let estoqueMax    = 1;
+    const PRECO_UNIT  = 320.00;
 
     // ── Inicialização ─────────────────────────────────────
     window.addEventListener('DOMContentLoaded', async () => {
@@ -947,6 +1005,46 @@
         try {
             mpInstance = new MercadoPago(publicKey, { locale: 'pt-BR' });
         } catch(_) {}
+    }
+
+    // ── Seletor de quantidade ────────────────────────────
+    window.alterarQtd = function(delta) {
+        const nova = quantidade + delta;
+        if (nova < 1 || nova > estoqueMax) return;
+        quantidade = nova;
+        atualizarQtdUI();
+    };
+
+    function atualizarQtdUI() {
+        document.getElementById('qtyDisplay').textContent = quantidade;
+        document.getElementById('qtyMinus').disabled = quantidade <= 1;
+        document.getElementById('qtyPlus').disabled  = quantidade >= estoqueMax;
+
+        const total = (PRECO_UNIT * quantidade).toFixed(2).replace('.', ',');
+        document.getElementById('qtyTotal').textContent = `R$ ${total}`;
+
+        // Atualiza parcelas do cartão
+        atualizarParcelas();
+
+        // Atualiza descrição do PIX
+        const pixDesc = document.querySelector('#btnPix .method-desc');
+        if (pixDesc) pixDesc.textContent = `À vista · R$ ${total}`;
+    }
+
+    function atualizarParcelas() {
+        const sel = document.getElementById('mp-installments');
+        if (!sel) return;
+        const total = PRECO_UNIT * quantidade;
+        const opcoes = [
+            [1, total],
+            [2, total / 2],
+            [3, total / 3],
+            [4, total / 4],
+            [5, total / 5],
+        ];
+        sel.innerHTML = opcoes.map(([n, v]) =>
+            `<option value="${n}">${n}x de R$ ${v.toFixed(2).replace('.', ',')} — sem juros</option>`
+        ).join('');
     }
 
     // ── Seletor de método de pagamento ───────────────────
@@ -1019,6 +1117,8 @@
             }
 
             badge.textContent = `QUANTIDADE · ${qtd} UNIDADE${qtd === 1 ? '' : 'S'}`;
+            estoqueMax = qtd;
+            atualizarQtdUI();
         } catch (_) {
             document.getElementById('stockText').textContent = 'DISPONÍVEL';
         }
@@ -1222,6 +1322,7 @@
             cidade:      sanitize(document.getElementById('cidade').value, 80),
             estado:      sanitize(document.getElementById('estado').value, 2).toUpperCase(),
             metodo:      metodoPagamento,
+            quantidade:  quantidade,
         };
 
         if (!validarForm(payload)) return;

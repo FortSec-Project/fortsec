@@ -193,8 +193,9 @@ export default async function handler(req, res) {
     .update({ status: 'pago', pago_em: new Date().toISOString() })
     .eq('mp_payment_id', paymentId);
 
-  // Decrementar estoque (de forma atômica — RPC no Supabase)
-  await supabase.rpc('decrementar_estoque', { produto_id: 'jammer' });
+  // Decrementar estoque pela quantidade comprada
+  const qtd = pedido.quantidade || 1;
+  await supabase.rpc('decrementar_estoque_qtd', { produto_id: 'jammer', qtd });
 
   // Disparar e-mails
   await Promise.allSettled([

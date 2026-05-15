@@ -86,17 +86,28 @@ export default async function handler(req, res) {
   if (!d.logradouro || !d.numero || !d.bairro || !d.cidade || !d.estado)
     return res.status(422).json({ erro: 'Endereço incompleto' });
 
-  // ── Verificar estoque (operação atômica via RPC) ──────
-  const { data: stock, error: stockErr } = await supabase
-    .rpc('reservar_estoque', { produto_id: 'jammer' });
+  const quantidade = Math.min(Math.max(parseInt(body.quantidade || 1, 10), 1), 99);
 
-  if (stockErr || !stock) {
-    console.error('[criar-cobranca] reservar_estoque:', stockErr?.message);
+  // ── Verificar estoque (operação atômica via RPC) ──────
+  const { data: estoqueAtual, error: stockErr } = await supabase
+    .from('estoque')
+    .select('quantidade')
+    .eq('produto', 'jammer')
+    .single();
+
+  if (stockErr || !estoqueAtual) {
+    console.error('[criar-cobranca] estoque:', stockErr?.message);
     return res.status(500).json({ erro: 'Erro ao verificar estoque' });
   }
 
-  if (stock === 'sem_estoque') {
+  if (estoqueAtual.quantidade <= 0) {
     return res.status(410).json({ erro: 'Produto esgotado' });
+  }
+
+  if (estoqueAtual.quantidade < quantidade) {
+    return res.status(422).json({
+      erro: `Estoque insuficiente. Disponível: ${estoqueAtual.quantidade} unidade(s).`
+    });
   }
 
   // ── Criar pagamento no Mercado Pago ───────────────────
@@ -115,8 +126,8 @@ export default async function handler(req, res) {
 
     const payBody = metodo === 'pix'
       ? {
-          transaction_amount: 320.00,
-          description:        'Bluetooth Jammer 2.4 GHz - FORTSEC',
+          transaction_amount: 320.00 * quantidade,
+          description:        `Bluetooth Jammer 2.4 GHz x${quantidade} - FORTSEC`,
           payment_method_id:  'pix',
           payer: {
             email:          d.email,
@@ -136,8 +147,8 @@ export default async function handler(req, res) {
           date_of_expiration:  new Date(Date.now() + 15 * 60 * 1000).toISOString(),
         }
       : {
-          transaction_amount:  320.00,
-          description:         'Bluetooth Jammer 2.4 GHz - FORTSEC',
+          transaction_amount:  320.00 * quantidade,
+          description:         `Bluetooth Jammer 2.4 GHz x${quantidade} - FORTSEC`,
           token:               cardToken,
           installments:        parcelas,
           payment_method_id:   'credit_card',
@@ -163,6 +174,7 @@ export default async function handler(req, res) {
     mp_payment_id:  String(mpPayment.id),
     status:         'pendente',
     metodo:         metodo,
+    quantidade:     quantidade,
     nome:           d.nome,
     cpf:            d.cpf,
     email:          d.email,
