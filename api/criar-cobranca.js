@@ -115,7 +115,7 @@ export default async function handler(req, res) {
 
     const payBody = metodo === 'pix'
       ? {
-          transaction_amount: 350.00,
+          transaction_amount: 320.00,
           description:        'Bluetooth Jammer 2.4 GHz - FORTSEC',
           payment_method_id:  'pix',
           payer: {
@@ -136,7 +136,7 @@ export default async function handler(req, res) {
           date_of_expiration:  new Date(Date.now() + 15 * 60 * 1000).toISOString(),
         }
       : {
-          transaction_amount:  350.00,
+          transaction_amount:  320.00,
           description:         'Bluetooth Jammer 2.4 GHz - FORTSEC',
           token:               cardToken,
           installments:        parcelas,
