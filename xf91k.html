@@ -340,6 +340,7 @@
                                 <th>NOME</th>
                                 <th>EMAIL</th>
                                 <th>CPF</th>
+                                <th>QTD</th>
                                 <th>STATUS</th>
                                 <th>DATA</th>
                                 <th>RASTREIO</th>
@@ -570,6 +571,7 @@
                 <td>${esc(p.nome || '—')}</td>
                 <td>${esc(p.email || '—')}</td>
                 <td style="font-family:'Ubuntu Mono',monospace">${cpfFmt}</td>
+                <td style="font-family:'Ubuntu Mono',monospace;color:var(--cyan);text-align:center">${p.quantidade || 1}</td>
                 <td><span class="status-badge status-${p.status || 'pendente'}">${(p.status || 'pendente').toUpperCase()}</span></td>
                 <td style="font-family:'Ubuntu Mono',monospace;color:var(--dim)">${data}</td>
                 <td>
