@@ -879,7 +879,8 @@
                                 <div class="form-group">
                                     <label>VALIDADE <span class="req">*</span></label>
                                     <input type="text" id="mp-expiry" class="mp-input"
-                                           placeholder="MM/AA" maxlength="5" inputmode="numeric">
+                                           placeholder="MM/AA" maxlength="5" inputmode="numeric"
+                                           oninput="mascaraValidade(this)">
                                     <div class="mp-err" id="mp-expiry-err"></div>
                                 </div>
                                 <div class="form-group">
@@ -1153,6 +1154,13 @@
             this.value = v;
         });
     }
+
+    // ── Máscara validade cartão ───────────────────────────
+    window.mascaraValidade = function(el) {
+        let v = el.value.replace(/\D/g, '').slice(0, 4);
+        if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
+        el.value = v;
+    };
 
     // ── CEP → ViaCEP ──────────────────────────────────────
     function setupCEP() {
