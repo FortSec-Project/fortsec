@@ -329,9 +329,18 @@
 
             <!-- Pedidos -->
             <div class="tab-panel active" id="tab-pedidos">
-                <div class="search-bar" style="padding-top:20px">
+                <div class="search-bar" style="padding-top:20px;display:flex;gap:10px;flex-wrap:wrap">
                     <input type="text" id="searchInput" class="search-input"
-                           placeholder="Buscar por nome, e-mail ou CPF..." oninput="filtrarPedidos()">
+                           placeholder="Buscar por nome, e-mail ou CPF..." oninput="filtrarPedidos()"
+                           style="flex:1;min-width:200px">
+                    <select id="statusFilter" class="search-input" onchange="filtrarPedidos()"
+                            style="width:auto;cursor:pointer;padding:10px 14px">
+                        <option value="">TODOS OS STATUS</option>
+                        <option value="pendente">PENDENTE</option>
+                        <option value="pago">PAGO</option>
+                        <option value="enviado">ENVIADO</option>
+                        <option value="cancelado">CANCELADO</option>
+                    </select>
                 </div>
                 <div class="table-wrap">
                     <table>
@@ -533,7 +542,7 @@
 
         // Pedidos
         allPedidos = d.pedidos || [];
-        renderPedidos(allPedidos);
+        filtrarPedidos();
 
         // Waitlist
         const wl = d.waitlist || [];
@@ -591,13 +600,22 @@
     }
 
     window.filtrarPedidos = function () {
-        const q = document.getElementById('searchInput').value.toLowerCase();
-        if (!q) { renderPedidos(allPedidos); return; }
-        renderPedidos(allPedidos.filter(p =>
+        const q      = document.getElementById('searchInput').value.toLowerCase();
+        const status = document.getElementById('statusFilter').value;
+
+        let lista = allPedidos;
+
+        // Oculta cancelados por padrão (sem filtro de status selecionado)
+        if (!status) lista = lista.filter(p => p.status !== 'cancelado');
+        else         lista = lista.filter(p => (p.status || 'pendente') === status);
+
+        if (q) lista = lista.filter(p =>
             (p.nome  || '').toLowerCase().includes(q) ||
             (p.email || '').toLowerCase().includes(q) ||
             (p.cpf   || '').includes(q)
-        ));
+        );
+
+        renderPedidos(lista);
     };
 
     // ── Atualizar estoque ─────────────────────────────────
