@@ -461,6 +461,12 @@ function handleCourseAction(action, param) {
 }
 
 function openSyllabus(courseType) {
+    // Redireciona ebooks para página dedicada
+    if (courseType === 'ebooks') {
+        window.location.href = '/ebooks';
+        return;
+    }
+
     const modal = document.getElementById('syllabusModal');
     
     if (window.innerWidth <= 768) {
