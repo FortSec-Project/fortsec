@@ -293,33 +293,25 @@
     const BASE = 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com';
 
     const ebooks = [
-        { title: 'Análise de Malware Software Livre',          file: 'Análise de malware Software Livre.pdf' },
-        { title: 'OWASP TOP 10 2017 (Português)',              file: 'OWASP TOP 10 2017 Português.pdf' },
-        { title: 'Fundamentos do Ethical Hacking',             file: 'Fundamentos do Ethical Hacking.pdf' },
-        { title: 'Gerência de Redes de Computadores',          file: 'Gerência de Redes de Computadores.pdf' },
-        { title: 'Segurança em Redes sem Fio',                 file: 'Segurança em Redes sem Fio.pdf' },
-        { title: 'Python e Django',                            file: 'Python e Django.pdf' },
-        { title: 'Shell Script Profissional',                  file: 'Shell Script Profissional.pdf' },
-        { title: 'Black Hat Python — Programação para Hackers',file: 'Black Hat Python Programação para Hackers.pdf' },
-        { title: 'Wireless Hacking',                           file: 'Wireless Hacking.pdf' },
-        { title: 'Pentest em Redes sem Fio',                   file: 'Pentest em redes sem fio.pdf' },
-        { title: 'Teste de Invasão de Aplicações Web',         file: 'Teste de invasão de aplicações web.pdf' },
-        { title: 'The Hacker Playbook',                        file: 'The Hacker Playbook.pdf' },
-        { title: 'Hacking Resources',                          file: 'Hacking-Resources.pdf' },
-        { title: 'Checklist de Segurança',                     file: 'checklist de segurança.pdf' },
-        { title: 'Guia de Contratação',                        file: 'guia de contratação.pdf' },
-        { title: 'Engenharia Reversa e Malware',               file: 'engenharia reversa e malware.pdf' },
-        { title: 'Advanced Penetration Test',                  file: 'advanced penetration test.pdf' },
-        { title: 'OSCP Offensive Security',                    file: 'OSCP ooffensive security.pdf' },
-        { title: 'Hacking Para Leigos',                        file: 'Hacking Para Leigos.pdf' },
-        { title: 'Engenharia Social',                          file: 'Engenharia Social.pdf' },
-        { title: 'Engenharia Reversa de Código Malicioso',     file: 'Engenharia reversa de código malicioso.pdf' },
-        { title: 'Engenharia de Software',                     file: 'Engenharia De Software .pdf' },
-        { title: 'Começando com o Linux',                      file: 'Comecando Com o Linux .pdf' },
-        { title: 'Arquitetura e Protocolo de Rede TCP/IP',     file: 'Arquitetura e protocolo de rede TCP-IP.pdf' },
-        { title: 'A Arte de Invadir',                          file: 'A Arte de Invadir.pdf' },
-        { title: '10 Ferramentas de Varredura de Portas',      file: '10 Ferramentas de Varredura de Portas.pdf' },
-        { title: 'Linux — A Bíblia',                           file: 'Linux A Bíblia.pdf' },
+        { title: 'Introdução ao Pentest (Daniel Moreno)', file: 'Introdução ao Pentest (Daniel Moreno).pdf', cover: 'introducao-ao-pentest.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Introdu%C3%A7%C3%A3o%20ao%20Pentest%20%28Daniel%20Moreno%29.pdf'},
+        { title: 'Pentest em aplicações web (Daniel Moreno)', file: 'Pentest em aplicações web (Daniel Moreno).pdf', cover: 'pentest-em-aplicacoes-web.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Pentest%20em%20aplica%C3%A7%C3%B5es%20web%20%28Daniel%20Moreno%29.pdf' },
+        { title: 'Pentest em redes sem fio (Daniel Moreno)', file: 'Pentest em redes sem fio (Daniel Moreno).pdf', cover: 'introducao-em-redes-sem-fio.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Pentest%20em%20redes%20sem%20fio%20%28Daniel%20Moreno%29.pdf'},
+        { title: 'Black Hat Python Programação Python para Hackers e Pentesters (Justin Seitz)', file: 'Black Hat Python Programação Python para Hackers e Pentesters (Justin Seitz).pdf', cover: 'black-hat-python.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Black%20Hat%20Python%20Programa%C3%A7%C3%A3o%20Python%20para%20Hackers%20e%20Pentesters%20%28Justin%20Seitz%29.pdf'},
+        { title: 'Hacking com Kali Linux Técnicas práticas para testes de invasão (Broad, James)', file: 'Hacking com Kali Linux Técnicas práticas para testes de invasão (James Broad Andrew Bindner [Broad, James]).pdf', cover: 'kali-linux.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Hacking%20com%20Kali%20Linux%20T%C3%A9cnicas%20pr%C3%A1ticas%20para%20testes%20de%20invas%C3%A3o%20%28James%20Broad%20Andrew%20Bindner%20%5BBroad%2C%20James%5D%29.pdf'},
+        { title: 'Introducao a Estruturas de Dados Com Tecnicas de Programacao em C (Waldemar Celes)', file: 'Introducao a Estruturas de Dados Com Tecnicas de Programacao em C (Waldemar Celes).pdf', cover: 'estrutura-de-dados.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Introducao%20a%20Estruturas%20de%20Dados%20Com%20Tecnicas%20de%20Programacao%20em%20C%20%28Waldemar%20Celes%29.pdf'},
+        { title: 'Hackeando computadores (CONLEY, INAYA)', file: 'Hackeando computadores (CONLEY, INAYA).pdf', cover: 'hackeando-computadores.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Hackeando%20computadores%20%28CONLEY%2C%20INAYA%29.pdf'},
+        { title: 'Linux – A Bíblia', file: 'Linux – A Biblia.pdf', cover: 'linux-a-biblia.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Linux%20%E2%80%93%20A%20Biblia.pdf'},
+        { title: 'Linux monitoramento de redes', file: 'Linux monitoramento de redes.pdf', cover: 'linux-monitoramento.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Linux%20monitoramento%20de%20redes.pdf'},
+        { title: 'Redes de computadores e comunicação de dados (Curt White)', file: 'Redes de computadores e comunicação de dados (Curt White).pdf', cover: 'como-funciona-redes.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Redes%20de%20computadores%20e%20comunica%C3%A7%C3%A3o%20de%20dados%20%28Curt%20White%29.pdf'},
+        { title: 'Como o Linux Funciona - O que todo superusuário deveria saber (Brian Ward)', file: 'Como o Linux Funciona O - que todo superusuário deveria saber (Brian Ward).pdf', cover: 'como-o-linux-funciona.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Como%20o%20Linux%20Funciona%20O%20que%20todo%20superusu%C3%A1rio%20deveria%20saber%20%28Brian%20Ward%29.pdf'},
+        { title: 'Exploração de Vulnerabilidades em Redes TCP/IP', file: 'Exploração de Vulnerabilidades em Redes TCPIP - 3ª Edição Revisada e Ampliada (Melo, S.).pdf', cover: 'exploracao-em-redes.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Explora%C3%A7%C3%A3o%20de%20Vulnerabilidades%20em%20Redes%20TCPIP%20-%203%C2%AA%20Edi%C3%A7%C3%A3o%20Revisada%20e%20Ampliada%20%28Melo%2C%20S.%29.pdf'},
+        { title: '10 Ferramentas de Varredura de Portas', file: '10 Ferramentas de Varredura de Portas.pdf', cover: '10-ferramentas.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/10%20Ferramentas%20de%20Varredura%20de%20Portas.pdf'},
+        { title: 'LGPD - Lei Geral de Proteção de Dados', file: 'LGPD - Lei Geral de Proteção de Dados.pdf', cover: 'lgpd.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/LGPD%20-%20Lei%20Geral%20de%20Prote%C3%A7%C3%A3o%20de%20Dados.pdf'},
+        { title: 'A Biblia Hacker', file: 'A Biblia Hacker.pdf', cover: 'biblia-hacker.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/A%20Biblia%20Hacker.pdf'},
+        { title: 'Criptografia e segurança de redes Princípios e práticas (William Stalings)', file: 'Criptografia e segurança de redes Princípios e práticas (William Stalings).pdf', cover: 'criptografia.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Criptografia%20e%20seguran%C3%A7a%20de%20redes%20Princ%C3%ADpios%20e%20pr%C3%A1ticas%20%28William%20Stalings%29.pdf'},
+        { title: 'Desenvolvimento web com PHP e MySQL (Evaldo Junior Bento)', file: 'Desenvolvimento web com PHP e MySQL (Evaldo Junior Bento).pdf', cover: 'php-mysql.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Desenvolvimento%20web%20com%20PHP%20e%20MySQL%20%28Evaldo%20Junior%20Bento%29.pdf'},
+        { title: 'Engenharia reversa de código malicioso (Guilherme Venere)', file: 'Engenharia reversa de código malicioso (Guilherme Venere).pdf', cover: 'engenharia-reversa.webp', url: 'https://dv5hwsmbrlvue79r.public.blob.vercel-storage.com/Engenharia%20reversa%20de%20c%C3%B3digo%20malicioso%20%28Guilherme%20Venere%29.pdf'}
+
     ];
 
     // ── Render ────────────────────────────────────────────
@@ -340,17 +332,9 @@
         count.textContent   = `${lista.length} TÍTULO${lista.length === 1 ? '' : 'S'} DISPONÍVE${lista.length === 1 ? 'L' : 'IS'}`;
 
         lista.forEach((eb, i) => {
-            const url  = `${BASE}/${encodeURIComponent(eb.file)}?download=1`;
+            const url  = eb.url ? eb.url : `${BASE}/${encodeURIComponent(eb.file)}?download=1`;
 
-            // Nome do arquivo de capa esperado (você coloca na pasta covers/)
-            // Ex: covers/analise-malware.webp
-            // Se não existir, mostra o placeholder automaticamente
-            const coverName = 'covers/' + eb.file
-                .replace('.pdf', '')
-                .toLowerCase()
-                .replace(/\s+/g, '-')
-                .replace(/[^a-z0-9\-]/g, '')
-                + '.webp';
+            const coverName = eb.cover ? 'covers/' + eb.cover : 'covers/' + eb.file.replace('.pdf', '').toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '') + '.webp';
 
             const card = document.createElement('div');
             card.className = 'ebook-card';
