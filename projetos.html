@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projetos — FORTSEC OFFENSIVE SECURITY</title>
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <link rel="icon" href="profile.webp" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:ital,wght@0,200;0,400;0,700;1,200&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-black: #0a0a0a;
+            --carbon-dark:   #121212;
+            --carbon-medium: #1a1a1a;
+            --accent-green:  #00ff88;
+            --accent-cyan:   #00ffff;
+            --accent-purple: #9945ff;
+            --accent-red:    #ff3333;
+            --text-primary:  #ffffff;
+            --text-secondary:#b0b0b0;
+            --text-dim:      #606060;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: var(--primary-black);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background:
+                repeating-linear-gradient(0deg,   transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px),
+                repeating-linear-gradient(90deg,  transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px);
+            z-index: -1; pointer-events: none;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(10,10,10,0.96); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(153,69,255,0.2);
+        }
+
+        .nav-container {
+            max-width: 1400px; margin: 0 auto; padding: 18px 40px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .logo { display: flex; align-items: center; gap: 14px; text-decoration: none; color: #fff; }
+        .logo-icon img { width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--accent-purple); }
+        .logo-text { display: flex; flex-direction: column; }
+        .fortsec  { font-size: 22px; font-weight: 900; letter-spacing: 2px; }
+        .security { font-size: 11px; letter-spacing: 3px; color: var(--accent-cyan); }
+
+        .back-link {
+            font-family: 'Exo 2', sans-serif; font-size: 13px; letter-spacing: 1px;
+            color: var(--text-secondary); text-decoration: none; transition: color .2s;
+        }
+        .back-link:hover { color: var(--accent-cyan); }
+
+        /* ── HERO ── */
+        .hero {
+            padding: 120px 40px 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute; top: 80px; left: 50%; transform: translateX(-50%);
+            width: 600px; height: 300px;
+            background: radial-gradient(ellipse, rgba(0,255,136,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.3);
+            border-radius: 20px; padding: 6px 18px;
+            font-size: 10px; letter-spacing: 4px; color: var(--accent-green);
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-size: clamp(36px, 6vw, 72px); font-weight: 900; letter-spacing: 4px;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-green) 50%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: 16px; line-height: 1.1;
+        }
+
+        .hero-sub {
+            font-family: 'Exo 2', sans-serif; font-size: 15px; letter-spacing: 2px;
+            color: var(--text-secondary); max-width: 600px; margin: 0 auto 12px;
+        }
+
+        .hero-count {
+            font-family: 'Exo 2', sans-serif; font-size: 13px;
+            color: var(--accent-green); letter-spacing: 2px;
+        }
+
+        /* ── BUSCA ── */
+        .search-wrap {
+            max-width: 500px; margin: 32px auto 0;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%; padding: 14px 48px 14px 20px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 30px;
+            color: var(--text-primary); font-family: 'Exo 2', sans-serif; font-size: 14px;
+            outline: none; transition: border-color .25s, box-shadow .25s;
+        }
+        .search-input::placeholder { color: rgba(255,255,255,0.25); }
+        .search-input:focus { border-color: var(--accent-green); box-shadow: 0 0 0 3px rgba(0,255,136,0.08); }
+
+        .search-icon {
+            position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+            color: var(--text-dim); font-size: 16px; pointer-events: none;
+        }
+
+        /* ── GRID ── */
+        .grid-section {
+            max-width: 1200px; margin: 0 auto; padding: 40px 40px 80px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        /* ── CARD ── */
+        .project-card {
+            background: var(--carbon-dark);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px; overflow: hidden;
+            transition: transform .3s, border-color .3s, box-shadow .3s;
+            display: flex; flex-direction: column;
+            animation: fadeUp .5s ease both;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0,255,136,0.35);
+            box-shadow: 0 16px 40px rgba(0,255,136,0.1);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Banner horizontal */
+        .card-banner {
+            width: 100%;
+            aspect-ratio: 16/7;
+            background: linear-gradient(145deg, var(--carbon-medium), #0d0d0d);
+            position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .card-banner img {
+            width: 100%; height: 100%; object-fit: cover;
+            display: none;
+        }
+
+        /* Placeholder do banner */
+        .banner-placeholder {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 10px; padding: 20px; text-align: center; width: 100%;
+        }
+
+        .banner-icon { font-size: 36px; opacity: .5; }
+
+        .banner-title-mini {
+            font-size: 12px; letter-spacing: 2px; color: var(--text-dim);
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        /* Faixa decorativa */
+        .card-banner::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+        }
+
+        /* Corpo */
+        .card-body {
+            padding: 18px 20px 20px;
+            flex: 1; display: flex; flex-direction: column; gap: 10px;
+        }
+
+        .card-header-row {
+            display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
+        }
+
+        .card-title {
+            font-family: 'Exo 2', sans-serif; font-size: 15px; font-weight: 700;
+            color: var(--text-primary); line-height: 1.4; flex: 1;
+        }
+
+        .card-tag {
+            display: inline-block; white-space: nowrap;
+            font-size: 9px; letter-spacing: 2px;
+            background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.25);
+            border-radius: 20px; padding: 3px 10px; color: var(--accent-green);
+            flex-shrink: 0;
+        }
+
+        .card-desc {
+            font-family: 'Exo 2', sans-serif; font-size: 12px;
+            color: var(--text-secondary); line-height: 1.6;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        .card-tags-row {
+            display: flex; flex-wrap: wrap; gap: 6px;
+        }
+
+        .tech-tag {
+            font-family: 'Exo 2', sans-serif; font-size: 10px; letter-spacing: 1px;
+            background: rgba(0,255,255,0.06); border: 1px solid rgba(0,255,255,0.15);
+            border-radius: 6px; padding: 2px 8px; color: var(--accent-cyan);
+        }
+
+        .btn-download {
+            display: block; width: 100%; padding: 12px;
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-cyan) 100%);
+            border: none; border-radius: 8px;
+            color: #000; font-family: 'Orbitron', sans-serif; font-weight: 700;
+            font-size: 10px; letter-spacing: 2px; text-align: center; text-decoration: none;
+            cursor: pointer; transition: opacity .2s, transform .2s;
+            margin-top: auto;
+        }
+        .btn-download:hover { opacity: .85; transform: translateY(-1px); }
+
+        /* Sem resultados */
+        .no-results {
+            text-align: center; padding: 80px 20px; display: none;
+            font-family: 'Exo 2', sans-serif; font-size: 16px; color: var(--text-dim);
+        }
+
+        /* ── FOOTER ── */
+        .footer {
+            text-align: center; padding: 24px;
+            font-family: 'Exo 2', sans-serif; font-size: 11px; letter-spacing: 2px;
+            color: var(--text-dim); border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        @media (max-width: 768px) {
+            .nav-container { padding: 15px 20px; }
+            .hero { padding: 100px 20px 40px; }
+            .grid-section { padding: 20px 20px 60px; }
+            .grid { grid-template-columns: 1fr; gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <nav class="nav-container">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">
+                <img src="profile.webp" alt="FortSec">
+            </div>
+            <span class="logo-text">
+                <span class="fortsec">FORTSEC</span>
+                <span class="security">SECURITY</span>
+            </span>
+        </a>
+        <a href="index.html" class="back-link">← VOLTAR</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-badge">CÓDIGO ABERTO</div>
+    <h1 class="hero-title">PROJETOS</h1>
+    <p class="hero-sub">FERRAMENTAS DESENVOLVIDAS PELA FORTSEC.</p>
+    <p class="hero-count" id="heroCount">— PROJETOS DISPONÍVEIS</p>
+
+    <div class="search-wrap">
+        <input type="text" class="search-input" id="searchInput"
+               placeholder="Buscar projeto..." oninput="filtrar()">
+        <span class="search-icon">⌕</span>
+    </div>
+</section>
+
+<section class="grid-section">
+    <div class="grid" id="projetosGrid"></div>
+    <div class="no-results" id="noResults">
+        Nenhum projeto encontrado para "<span id="searchTerm"></span>"
+    </div>
+</section>
+
+<footer class="footer">
+    FORTSEC OFFENSIVE SECURITY — TODOS OS DIREITOS RESERVADOS
+</footer>
+
+<script>
+(function () {
+    'use strict';
+
+    const projetos = [
+        {
+            title:  'Click-install',
+            desc:   'Instalador de pacotes Go',
+            tags:   ['Bash', 'Go', 'Linux'],
+            banner: 'banners/1.webp',
+            url:    'https://www.mediafire.com/file/xeobrfm2ky40aee/click-install.zip/file'
+        },
+
+        {
+            title:  'Linux_X',
+            desc:   'Instalador de ferramentas para pentest',
+            tags:   ['Bash', 'Python', 'Linux'],
+            banner: 'banners/4.webp',
+            url:    'https://www.mediafire.com/file/chwader6phxcttm/linux_X.zip/file'
+        },
+
+        {
+            title:  'Shell',
+            desc:   'Receptor de webshells controlado',
+            tags:   ['Bash', 'Linux'],
+            banner: 'banners/5.webp',
+            url:    'https://www.mediafire.com/file/14c2ulmc636sqnb/shell.zip/file'
+        },
+
+        {
+            title:  'Revshells',
+            desc:   'Gerador de webshells',
+            tags:   ['Bash', 'Linux'],
+            banner: 'banners/6.webp',
+            url:    'https://www.mediafire.com/file/zpdnb8ishysz2be/revshells.zip/file'
+        },
+
+        {
+            title:  'Pipx',
+            desc:   'Instalador de bibliotecas Python',
+            tags:   ['Bash', 'Python', 'Linux'],
+            banner: 'banners/3.webp',
+            url:    'https://www.mediafire.com/file/om276cewqknpa8w/pipx.zip/file'
+        },
+
+        {
+            title:  'Temp File',
+            desc:   'Hospedagem temporária de arquivos',
+            tags:   ['Bash', 'Linux'],
+            banner: 'banners/2.webp',
+            url:    'https://www.mediafire.com/file/he1fr9u9kh53ztk/temp.zip/file'
+        },
+    ];
+
+    // ── Render ────────────────────────────────────────────
+    function render(lista) {
+        const grid  = document.getElementById('projetosGrid');
+        const noRes = document.getElementById('noResults');
+        const count = document.getElementById('heroCount');
+
+        grid.innerHTML = '';
+
+        if (!lista.length) {
+            noRes.style.display = 'block';
+            count.textContent   = '0 PROJETOS DISPONÍVEIS';
+            return;
+        }
+
+        noRes.style.display = 'none';
+        count.textContent   = `${lista.length} PROJETO${lista.length === 1 ? '' : 'S'} DISPONÍVE${lista.length === 1 ? 'L' : 'IS'}`;
+
+        lista.forEach((p, i) => {
+            const tagsHTML = (p.tags || []).map(t => `<span class="tech-tag">${esc(t)}</span>`).join('');
+
+            const card = document.createElement('div');
+            card.className = 'project-card';
+            card.style.animationDelay = `${i * 0.06}s`;
+
+            card.innerHTML = `
+                <div class="card-banner">
+                    ${p.banner
+                        ? `<img src="${esc(p.banner)}" alt="${esc(p.title)}"
+                               onload="this.style.display='block';this.nextElementSibling.style.display='none'"
+                               onerror="this.style.display='none'">`
+                        : ''
+                    }
+                    <div class="banner-placeholder" ${p.banner ? '' : ''}>
+                        <span class="banner-icon">⚙️</span>
+                        <span class="banner-title-mini">${esc(p.title)}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-header-row">
+                        <div class="card-title">${esc(p.title)}</div>
+                        <span class="card-tag">GRATUITO</span>
+                    </div>
+                    ${p.desc ? `<div class="card-desc">${esc(p.desc)}</div>` : ''}
+                    ${tagsHTML ? `<div class="card-tags-row">${tagsHTML}</div>` : ''}
+                    <a href="${esc(p.url)}" class="btn-download" target="_blank" rel="noopener noreferrer">
+                        ⬇ BAIXAR
+                    </a>
+                </div>
+            `;
+
+            grid.appendChild(card);
+        });
+    }
+
+    // ── Filtro de busca ───────────────────────────────────
+    window.filtrar = function () {
+        const q = document.getElementById('searchInput').value.toLowerCase().trim();
+        document.getElementById('searchTerm').textContent = q;
+        render(q
+            ? projetos.filter(p =>
+                p.title.toLowerCase().includes(q) ||
+                (p.desc  || '').toLowerCase().includes(q) ||
+                (p.tags  || []).some(t => t.toLowerCase().includes(q))
+              )
+            : projetos
+        );
+    };
+
+    function esc(s) {
+        if (!s) return '';
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    render(projetos);
+})();
+</script>
+</body>
+</html>

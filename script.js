@@ -71,6 +71,19 @@ const coursesData = [
         secondaryAction: null,
         secondaryText: 'VER LISTA',
         singleButton: true
+    },
+    {
+        title: 'PROJETOS',
+        description: '',
+        image: 'projetos.webp',
+        tech: [],
+        badge: 'GRATUITO',
+        badgeColor: '#00ff88',
+        action: 'openSyllabus',
+        actionParam: 'projetos',
+        secondaryAction: null,
+        secondaryText: 'VER LISTA',
+        singleButton: true
     }
 ];
 
@@ -461,9 +474,13 @@ function handleCourseAction(action, param) {
 }
 
 function openSyllabus(courseType) {
-    // Redireciona ebooks para página dedicada
+    // Redireciona ebooks e projetos para páginas dedicadas
     if (courseType === 'ebooks') {
         window.location.href = '/ebooks';
+        return;
+    }
+    if (courseType === 'projetos') {
+        window.location.href = '/projetos';
         return;
     }
 
