@@ -633,9 +633,17 @@
         /* ── CAMPOS DO CARTÃO ─────────────────────────────── */
         .card-section { margin-top: 4px; }
         .mp-field {
-            width: 100%; height: 44px; padding: 0 4px;
+            width: 100%; height: 44px; padding: 0;
             background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px; overflow: hidden; transition: border-color .25s, box-shadow .25s;
+            border-radius: 10px; overflow: visible; transition: border-color .25s, box-shadow .25s;
+            position: relative; display: flex; align-items: center;
+        }
+        .mp-field iframe {
+            width: 100% !important;
+            height: 44px !important;
+            border: none !important;
+            border-radius: 10px !important;
+            background: transparent !important;
         }
         .mp-field.mp-focused { border-color: var(--accent-cyan); box-shadow: 0 0 0 2px rgba(0,255,255,0.09); }
         .mp-field.mp-error   { border-color: var(--accent-red); }
