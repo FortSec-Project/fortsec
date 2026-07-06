@@ -967,6 +967,7 @@
         </div><!-- /form-side -->
     </div><!-- /page-container -->
 
+<script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
 // ════════════════════════════════════════════════════════
 //  FORTSEC — relatorio.html
@@ -992,26 +993,24 @@
         await checkStock();
         setupMasks();
         setupCEP();
-        aguardarSDKMP();
+        initMP();
     });
 
-    // ── Aguarda o SDK do MP carregar e inicializa ─────────
-    function aguardarSDKMP() {
-        if (window.MercadoPago) {
-            initMP();
-            return;
-        }
-        // SDK ainda não carregou — tenta novamente em 300ms
-        setTimeout(aguardarSDKMP, 300);
-    }
-
+    // ── Inicializar SDK do Mercado Pago ───────────────────
     function initMP() {
         const publicKey = document.querySelector('meta[name="mp-public-key"]')?.content;
-        if (!publicKey) { console.error('MP: public key não encontrada'); return; }
-        try {
-            mpInstance = new MercadoPago(publicKey, { locale: 'pt-BR' });
-            console.log('MP SDK inicializado com sucesso');
-        } catch(e) { console.error('MP init error:', e); }
+        if (!publicKey) return;
+        function tentar(n) {
+            if (window.MercadoPago) {
+                try {
+                    mpInstance = new MercadoPago(publicKey, { locale: 'pt-BR' });
+                    console.log('MP pronto');
+                } catch(e) { console.error('MP erro:', e); }
+            } else if (n < 20) {
+                setTimeout(() => tentar(n + 1), 300);
+            }
+        }
+        tentar(0);
     }
 
     // ── Seletor de quantidade ────────────────────────────
