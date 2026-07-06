@@ -633,17 +633,9 @@
         /* ── CAMPOS DO CARTÃO ─────────────────────────────── */
         .card-section { margin-top: 4px; }
         .mp-field {
-            width: 100%; height: 44px; padding: 0;
+            width: 100%; height: 44px; padding: 0 4px;
             background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px; overflow: visible; transition: border-color .25s, box-shadow .25s;
-            position: relative; display: flex; align-items: center;
-        }
-        .mp-field iframe {
-            width: 100% !important;
-            height: 44px !important;
-            border: none !important;
-            border-radius: 10px !important;
-            background: transparent !important;
+            border-radius: 10px; overflow: hidden; transition: border-color .25s, box-shadow .25s;
         }
         .mp-field.mp-focused { border-color: var(--accent-cyan); box-shadow: 0 0 0 2px rgba(0,255,255,0.09); }
         .mp-field.mp-error   { border-color: var(--accent-red); }
@@ -871,7 +863,10 @@
                         <div id="cardSection" class="card-section" style="display:none">
                             <div class="form-group">
                                 <label>NÚMERO DO CARTÃO <span class="req">*</span></label>
-                                <div class="mp-field" id="mp-cardNumber"></div>
+                                <input type="text" id="mp-cardNumber" class="mp-input"
+                                       placeholder="0000 0000 0000 0000" maxlength="19"
+                                       inputmode="numeric" autocomplete="cc-number"
+                                       oninput="mascaraCartao(this)">
                                 <div class="mp-err" id="mp-cardNumber-err"></div>
                             </div>
                             <div class="form-row">
@@ -884,7 +879,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label>CVV <span class="req">*</span></label>
-                                    <div class="mp-field" id="mp-cvv"></div>
+                                    <input type="text" id="mp-cvv" class="mp-input"
+                                           placeholder="123" maxlength="4"
+                                           inputmode="numeric" autocomplete="cc-csc">
                                     <div class="mp-err" id="mp-cvv-err"></div>
                                 </div>
                             </div>
@@ -1070,35 +1067,10 @@
         }
     };
 
-    // ── Montar campos seguros do MP ───────────────────────
+    // ── Montar campos do cartão (inputs normais) ─────────
     function montarCamposCartao() {
-        if (!mpInstance || cardFields) return;
-        try {
-            cardFields = mpInstance.fields;
-            cardFields.create('cardNumber', {
-                placeholder: '0000 0000 0000 0000',
-                style: {
-                    base: {
-                        color: '#ffffff',
-                        fontFamily: '"Ubuntu Mono", monospace',
-                        fontSize: '14px',
-                        '::placeholder': { color: 'rgba(255,255,255,0.2)' }
-                    }
-                }
-            }).mount('#mp-cardNumber');
-
-            cardFields.create('securityCode', {
-                placeholder: '123',
-                style: {
-                    base: {
-                        color: '#ffffff',
-                        fontFamily: '"Ubuntu Mono", monospace',
-                        fontSize: '14px',
-                        '::placeholder': { color: 'rgba(255,255,255,0.2)' }
-                    }
-                }
-            }).mount('#mp-cvv');
-        } catch(_) {}
+        // Campos são inputs HTML normais — nada a montar
+        document.getElementById('mp-cardNumber').focus();
     }
 
     // ── Verificação de estoque ────────────────────────────
@@ -1154,10 +1126,16 @@
         });
     }
 
-    // ── Máscara validade cartão ───────────────────────────
+    // ── Máscaras cartão ──────────────────────────────────
     window.mascaraValidade = function(el) {
         let v = el.value.replace(/\D/g, '').slice(0, 4);
         if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
+        el.value = v;
+    };
+
+    window.mascaraCartao = function(el) {
+        let v = el.value.replace(/\D/g, '').slice(0, 16);
+        v = v.replace(/(\d{4})(?=\d)/g, '$1 ');
         el.value = v;
     };
 
@@ -1355,16 +1333,32 @@
                     btn.disabled = false; btn.classList.remove('btn-loading'); return;
                 }
 
-                // Tokenizar via SDK do MP (dados do cartão nunca passam pelo nosso servidor)
+                // Tokenizar via SDK do MP
+                const cardNum = document.getElementById('mp-cardNumber').value.replace(/\s/g, '');
+                const cvv     = document.getElementById('mp-cvv').value.trim();
+
+                if (cardNum.length < 13) {
+                    showFieldErr('mp-cardNumber', 'Número do cartão inválido');
+                    btn.disabled = false; btn.classList.remove('btn-loading'); return;
+                }
+                if (!cvv || cvv.length < 3) {
+                    document.getElementById('mp-cvv-err').textContent = 'CVV inválido';
+                    document.getElementById('mp-cvv-err').classList.add('show');
+                    btn.disabled = false; btn.classList.remove('btn-loading'); return;
+                }
+
                 let token;
                 try {
-                    const tokenResult = await mpInstance.fields.createCardToken({
-                        cardholderName:    nome,
+                    const tokenResult = await mpInstance.createCardToken({
+                        cardNumber:          cardNum,
+                        cardholderName:      nome,
                         cardExpirationMonth: expiry.slice(0, 2),
                         cardExpirationYear:  '20' + expiry.slice(2, 4),
+                        securityCode:        cvv,
                     });
                     token = tokenResult.id;
                 } catch(mpErr) {
+                    console.error('MP token error:', mpErr);
                     showAlert('form-alert', 'Dados do cartão inválidos. Verifique e tente novamente.', 'error');
                     btn.disabled = false; btn.classList.remove('btn-loading'); return;
                 }
