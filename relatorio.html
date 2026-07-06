@@ -992,16 +992,26 @@
         await checkStock();
         setupMasks();
         setupCEP();
-        initMP();
+        aguardarSDKMP();
     });
 
-    // ── Inicializar SDK do Mercado Pago ───────────────────
+    // ── Aguarda o SDK do MP carregar e inicializa ─────────
+    function aguardarSDKMP() {
+        if (window.MercadoPago) {
+            initMP();
+            return;
+        }
+        // SDK ainda não carregou — tenta novamente em 300ms
+        setTimeout(aguardarSDKMP, 300);
+    }
+
     function initMP() {
         const publicKey = document.querySelector('meta[name="mp-public-key"]')?.content;
-        if (!publicKey || !window.MercadoPago) return;
+        if (!publicKey) { console.error('MP: public key não encontrada'); return; }
         try {
             mpInstance = new MercadoPago(publicKey, { locale: 'pt-BR' });
-        } catch(_) {}
+            console.log('MP SDK inicializado com sucesso');
+        } catch(e) { console.error('MP init error:', e); }
     }
 
     // ── Seletor de quantidade ────────────────────────────
