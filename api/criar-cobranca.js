@@ -110,6 +110,7 @@ export default async function handler(req, res) {
 
   // ── Inicializar MP com token fresco ──────────────────
   const token = process.env.MP_ACCESS_TOKEN;
+  console.log('[criar-cobranca] token presente:', !!token, '| primeiros chars:', token ? token.slice(0, 10) : 'VAZIO');
   if (!token) {
     console.error('[criar-cobranca] MP_ACCESS_TOKEN não configurado');
     return res.status(500).json({ erro: 'Configuração de pagamento ausente' });
