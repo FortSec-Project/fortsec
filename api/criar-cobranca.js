@@ -9,8 +9,6 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_KEY
 );
 
-const mp = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
-
 // ── Helpers de validação (replicados do front, nunca confiar só no cliente) ──
 function sanitize(val, max = 300) {
   if (typeof val !== 'string') return '';
@@ -110,8 +108,16 @@ export default async function handler(req, res) {
     });
   }
 
+  // ── Inicializar MP com token fresco ──────────────────
+  const token = process.env.MP_ACCESS_TOKEN;
+  if (!token) {
+    console.error('[criar-cobranca] MP_ACCESS_TOKEN não configurado');
+    return res.status(500).json({ erro: 'Configuração de pagamento ausente' });
+  }
+  const mp = new MercadoPagoConfig({ accessToken: token });
+
   // ── Criar pagamento no Mercado Pago ───────────────────
-  const metodo    = d.metodo === 'cartao' ? 'cartao' : 'pix';
+  const metodo    = body.metodo === 'cartao' ? 'cartao' : 'pix';
   const cardToken = sanitize(body.card_token || '', 100);
   const parcelas  = Math.min(Math.max(parseInt(body.parcelas || 1, 10), 1), 5);
   const cardholder = sanitize(body.cardholder || '', 80);
