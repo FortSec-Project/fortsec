@@ -115,7 +115,10 @@ export default async function handler(req, res) {
     console.error('[criar-cobranca] MP_ACCESS_TOKEN não configurado');
     return res.status(500).json({ erro: 'Configuração de pagamento ausente' });
   }
-  const mp = new MercadoPagoConfig({ accessToken: token });
+  const mp = new MercadoPagoConfig({ 
+    accessToken: token,
+    options: { timeout: 5000 }
+  });
 
   // ── Criar pagamento no Mercado Pago ───────────────────
   const metodo    = body.metodo === 'cartao' ? 'cartao' : 'pix';
@@ -130,6 +133,7 @@ export default async function handler(req, res) {
   let mpPayment;
   try {
     const payment = new Payment(mp);
+    console.log('[criar-cobranca] Payment instanciado, criando cobrança...');
 
     const payBody = metodo === 'pix'
       ? {
