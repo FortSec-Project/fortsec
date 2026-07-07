@@ -137,7 +137,7 @@ export default async function handler(req, res) {
 
     const payBody = metodo === 'pix'
       ? {
-          transaction_amount: 320.00 * quantidade,
+          transaction_amount: 5.00 * quantidade,
           description:        `Bluetooth Jammer 2.4 GHz x${quantidade} - FORTSEC`,
           payment_method_id:  'pix',
           payer: {
