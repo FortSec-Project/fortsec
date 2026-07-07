@@ -967,6 +967,7 @@
         </div><!-- /form-side -->
     </div><!-- /page-container -->
 
+<script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
 // ════════════════════════════════════════════════════════
 //  FORTSEC — relatorio.html
@@ -992,6 +993,9 @@
         await checkStock();
         setupMasks();
         setupCEP();
+    });
+
+    window.addEventListener('load', () => {
         initMP();
     });
 
