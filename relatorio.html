@@ -986,7 +986,7 @@
     let cardFields    = null;
     let quantidade    = 1;
     let estoqueMax    = 1;
-    const PRECO_UNIT  = 320.00;
+    const PRECO_UNIT  = 350.00;
 
     // ── Inicialização ─────────────────────────────────────
     window.addEventListener('DOMContentLoaded', async () => {
@@ -1044,7 +1044,7 @@
             [5, total / 5],
         ];
         sel.innerHTML = opcoes.map(([n, v]) =>
-            `<option value="${n}">${n}x de R$ ${v.toFixed(2).replace('.', ',')} — sem juros</option>`
+            `<option value="${n}">${n}x de R$ ${v.toFixed(2).replace('.', ',')}</option>`
         ).join('');
     }
 
