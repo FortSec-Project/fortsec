@@ -225,5 +225,35 @@
     </div>
 
     <script src="script.js"></script>
+
+    <!-- Curso "A Base do Hacking" em produção: troca o botão ACESSAR AGORA por EM PRODUÇÃO (laranja).
+         Para liberar o curso de novo, é só apagar este bloco de código. -->
+    <script>
+    (function () {
+        function aplicar() {
+            document.querySelectorAll('#carousel .card-cta').forEach(function (btn) {
+                var card = btn.closest('#carousel > *');
+                if (!card) return;
+                var texto = btn.textContent.trim().toUpperCase();
+                if (card.textContent.toUpperCase().indexOf('A BASE DO HACKING') === -1) return;
+                if (texto.indexOf('ACESSAR') !== 0) return;
+
+                var novo = document.createElement('button');
+                novo.className = 'card-cta in-production';
+                novo.textContent = 'EM PRODUÇÃO';
+                novo.type = 'button';
+                novo.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                });
+                btn.replaceWith(novo);
+            });
+        }
+        var alvo = document.getElementById('carousel');
+        if (alvo) new MutationObserver(aplicar).observe(alvo, { childList: true, subtree: true });
+        aplicar();
+    })();
+    </script>
 </body>
 </html>

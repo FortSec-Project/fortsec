@@ -447,6 +447,22 @@ body::before {
     box-shadow: 0 0 25px rgba(255, 0, 51, 0.5);
 }
 
+/* Curso em produção (laranja) - mesmo esquema do botão "unavailable" vermelho */
+.card-cta.in-production {
+    background: linear-gradient(45deg, #000000, #331a00, #000000);
+    border: 2px solid #ff8800;
+    color: #ff8800;
+    box-shadow: 0 0 20px rgba(255, 136, 0, 0.3);
+    cursor: not-allowed;
+    opacity: 0.9;
+}
+
+.card-cta.in-production:hover {
+    transform: none;
+    background: linear-gradient(45deg, #000000, #663300, #000000);
+    box-shadow: 0 0 25px rgba(255, 136, 0, 0.5);
+}
+
 .card-cta.full-width {
     grid-column: 1 / -1;
 }
